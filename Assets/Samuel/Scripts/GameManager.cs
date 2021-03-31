@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,6 +9,12 @@ public class GameManager : MonoBehaviour
     public CameraFollow cameraFollow;
     public Image healthBarFill;
 
+    private List<AIMovement> enemyAIs;
+
+    private void Start()
+    {
+        UpdateEnemies();
+    }
     public void PlayerDeath(Character _killer)
     {
         currentCharacter = _killer;
@@ -18,4 +25,18 @@ public class GameManager : MonoBehaviour
         //TODO ui changes with faction
     }
     
+    private void UpdateEnemies()
+    {
+        enemyAIs = new List<AIMovement>();
+
+        foreach(GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
+        {
+            enemyAIs.Add(g.GetComponent<AIMovement>());
+        }
+        foreach(AIMovement ai in enemyAIs)
+        {
+            ai.UpdateTarget(currentCharacter.transform);
+        }
+        
+    }
 }

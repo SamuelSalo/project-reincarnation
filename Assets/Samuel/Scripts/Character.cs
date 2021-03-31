@@ -1,6 +1,10 @@
 using UnityEngine.UI;
+using UnityEngine.AI;
 using UnityEngine;
 
+[RequireComponent(typeof(AIMovement))]
+[RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class Character : MonoBehaviour
 {
     public enum Faction { Blue, Red};
@@ -10,6 +14,7 @@ public class Character : MonoBehaviour
     public Text healthText;
 
     private AIMovement aiMovement;
+    private NavMeshAgent agent;
     private PlayerMovement playerMovement;
     private GameManager gameManager;
 
@@ -20,6 +25,7 @@ public class Character : MonoBehaviour
 
     private void Start()
     {
+        agent = GetComponent<NavMeshAgent>();
         playerMovement = GetComponent<PlayerMovement>();
         aiMovement = GetComponent<AIMovement>();
         gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
@@ -41,6 +47,11 @@ public class Character : MonoBehaviour
         isPlayer = _controlled;
         playerMovement.enabled = _controlled;
         aiMovement.enabled = !_controlled;
+        agent.enabled = !_controlled;
+        if (_controlled)
+            transform.tag = "Player";
+        else
+            transform.tag = "Enemy";
     }
 
     public void TakeDamage(float _damage, Character _source)
