@@ -3,7 +3,9 @@ using UnityEngine.AI;
 using UnityEngine;
 
 [RequireComponent(typeof(AIMovement))]
+[RequireComponent(typeof(AICombat))]
 [RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(PlayerCombat))]
 [RequireComponent(typeof(NavMeshAgent))]
 public class Character : MonoBehaviour
 {
@@ -14,8 +16,10 @@ public class Character : MonoBehaviour
     public Text healthText;
 
     private AIMovement aiMovement;
+    private AICombat aiCombat;
     private NavMeshAgent agent;
     private PlayerMovement playerMovement;
+    private PlayerCombat playerCombat;
     private GameManager gameManager;
 
     public bool isPlayer;
@@ -27,7 +31,9 @@ public class Character : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         playerMovement = GetComponent<PlayerMovement>();
+        playerCombat = GetComponent<PlayerCombat>();
         aiMovement = GetComponent<AIMovement>();
+        aiCombat = GetComponent<AICombat>();
         gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         health = maxHealth;
         PlayerControlled(isPlayer);
@@ -46,8 +52,11 @@ public class Character : MonoBehaviour
     {
         isPlayer = _controlled;
         playerMovement.enabled = _controlled;
+        playerCombat.enabled = _controlled;
         aiMovement.enabled = !_controlled;
+        aiCombat.enabled = !_controlled;
         agent.enabled = !_controlled;
+
         if (_controlled)
             transform.tag = "Player";
         else
