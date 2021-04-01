@@ -30,11 +30,6 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         rb.velocity = Vector2.SmoothDamp(rb.velocity, (moveDirection * moveSpeed), ref refVelocity, moveSmoothing);
-
-        if (!rotationLock)
-        {
-            transform.up = Vector2.Lerp(transform.up, moveDirection, turnSmoothing);
-        }
-
+        transform.up = rotationLock ? (Vector2)transform.up : Vector2.Lerp(transform.up, moveDirection, turnSmoothing);
     }
 }

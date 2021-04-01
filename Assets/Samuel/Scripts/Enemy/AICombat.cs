@@ -5,6 +5,10 @@ using System.Collections;
 [RequireComponent(typeof(Character))]
 public class AICombat : MonoBehaviour
 {
+    /// <summary>
+    /// WIP TEST CODE
+    /// TODO DELETE & REFACTOR
+    /// </summary>
     private AIMovement aiMovement;
     private Character character;
 
@@ -16,15 +20,14 @@ public class AICombat : MonoBehaviour
 
     public void Attack()
     {
-        Debug.Log("Attack was called!");
-        aiMovement.attacking = true;
+        aiMovement.state = AIMovement.State.Attacking;
         StartCoroutine(ResetAttackTest());
     }
 
+    
     IEnumerator ResetAttackTest()
     {
         yield return new WaitForSeconds(1f);
-        aiMovement.attacking = false;
-        Debug.Log("Attack reset!");
+        aiMovement.state = AIMovement.State.Chasing;
     }
 }

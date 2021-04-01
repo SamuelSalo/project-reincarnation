@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     {
         UpdateEnemies();
     }
+
     public void PlayerDeath(Character _killer)
     {
         currentCharacter = _killer;
@@ -22,7 +23,7 @@ public class GameManager : MonoBehaviour
         currentCharacter.PlayerControlled(true);
         currentFaction = currentCharacter.faction;
         cameraFollow.target = currentCharacter.transform;
-        //TODO ui changes with faction
+        UpdateEnemies();
     }
     
     private void UpdateEnemies()
@@ -35,8 +36,7 @@ public class GameManager : MonoBehaviour
         }
         foreach(AIMovement ai in enemyAIs)
         {
-            ai.UpdateTarget(currentCharacter.transform);
+            ai.target = currentCharacter.transform;
         }
-        
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(AICombat))]
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerCombat))]
+[RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(NavMeshAgent))]
 public class Character : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class Character : MonoBehaviour
     private PlayerMovement playerMovement;
     private PlayerCombat playerCombat;
     private GameManager gameManager;
+    private Rigidbody2D rb;
 
     public bool isPlayer;
 
@@ -29,24 +31,17 @@ public class Character : MonoBehaviour
 
     private void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
         playerMovement = GetComponent<PlayerMovement>();
         playerCombat = GetComponent<PlayerCombat>();
         aiMovement = GetComponent<AIMovement>();
+        agent = GetComponent<NavMeshAgent>();
         aiCombat = GetComponent<AICombat>();
+        rb = GetComponent<Rigidbody2D>();
+
         gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         health = maxHealth;
         PlayerControlled(isPlayer);
     }
-
-    private void Update()
-    {
-        if(isPlayer)
-        {
-            UpdateHealthBar();
-        }
-    }
-
 
     public void PlayerControlled(bool _controlled)
     {
@@ -56,11 +51,14 @@ public class Character : MonoBehaviour
         aiMovement.enabled = !_controlled;
         aiCombat.enabled = !_controlled;
         agent.enabled = !_controlled;
-
+        rb.simulated = _controlled;
+        
         if (_controlled)
             transform.tag = "Player";
         else
             transform.tag = "Enemy";
+
+        UpdateHealthBar();
     }
 
     public void TakeDamage(float _damage, Character _source)
@@ -92,7 +90,6 @@ public class Character : MonoBehaviour
             gameManager.PlayerDeath(_killer);
 
         Destroy(gameObject);
-
         //TODO player death
     }
 }

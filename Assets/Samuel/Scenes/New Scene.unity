@@ -221,7 +221,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -543.42, y: 329.73}
+  m_AnchoredPosition: {x: -423, y: 328}
   m_SizeDelta: {x: 477.72, y: 83.73}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &289488118
@@ -5288,7 +5288,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -543.42, y: 328.94}
+  m_AnchoredPosition: {x: -423, y: 327.21}
   m_SizeDelta: {x: 427.15, y: 63.22}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1743127899
@@ -5544,8 +5544,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3.5
-  moveSmoothing: 0.03
-  turnSmoothing: 0.22
+  moveSmoothing: 0.1
+  turnSmoothing: 0.2
 --- !u!58 &2086103029
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5591,7 +5591,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2086103027}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.1279694, y: 0.123962864, z: -0.5575131}
+  m_LocalPosition: {x: 4.67, y: 1.26, z: -0.5575131}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2081717408}
@@ -5656,10 +5656,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e290c32c81b9cf04996e678d6fcce56f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 0
-  deAggroTimer: 0
+  state: 0
+  chaseRange: 0
+  patrolRange: 0
   attackRange: 0
-  attacking: 0
+  chaseSpeed: 0
+  patrolSpeed: 0
+  turnSmoothing: 0
+  target: {fileID: 0}
   drawRangeGizmos: 0
 --- !u!114 &2095891872910760098
 MonoBehaviour:
@@ -5992,11 +5996,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e290c32c81b9cf04996e678d6fcce56f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 5
-  deAggroTimer: 0.5
+  state: 0
+  chaseRange: 5
+  patrolRange: 4
   attackRange: 1
-  attacking: 0
-  drawRangeGizmos: 1
+  chaseSpeed: 3
+  patrolSpeed: 1.5
+  turnSmoothing: 0.2
+  target: {fileID: 0}
+  drawRangeGizmos: 0
 --- !u!114 &6701838580985761509
 MonoBehaviour:
   m_ObjectHideFlags: 0
