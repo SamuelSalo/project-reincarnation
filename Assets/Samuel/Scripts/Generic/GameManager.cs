@@ -16,6 +16,10 @@ public class GameManager : MonoBehaviour
         UpdateEnemies();
     }
 
+    /// <summary>
+    /// Switch character on player death.
+    /// Update UI accordingly.
+    /// </summary>
     public void PlayerDeath(Character _killer)
     {
         currentCharacter = _killer;
@@ -26,6 +30,11 @@ public class GameManager : MonoBehaviour
         UpdateEnemies();
     }
     
+    /// <summary>
+    /// Update list of enemies when player character is swapped.
+    /// Then set that updated list's target as the player.
+    /// TODO: faction differences
+    /// </summary>
     private void UpdateEnemies()
     {
         enemyAIs = new List<AIMovement>();
@@ -39,9 +48,12 @@ public class GameManager : MonoBehaviour
             ai.target = currentCharacter.transform;
         }
     }
-
+    /// <summary>
+    /// Player killed someone?
+    /// Call this to update list of enemies to avoid nullreference errors.
+    /// </summary>
     public void PlayerKill(Character character)
     {
-        
+        UpdateEnemies();
     }
 }

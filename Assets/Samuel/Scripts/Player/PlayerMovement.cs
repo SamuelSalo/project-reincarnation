@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
+    // Get inputs to determine movement direction and rotation lock
     private void Update()
     {
         rotationLock = Input.GetKey(KeyCode.LeftShift);
@@ -27,6 +28,8 @@ public class PlayerMovement : MonoBehaviour
         moveDirection.Normalize();
     }
 
+    // Move smoothly according to movement vector.
+    // Rotate character or strafe depending on rotation lock.
     private void FixedUpdate()
     {
         rb.velocity = Vector2.SmoothDamp(rb.velocity, (moveDirection * moveSpeed), ref refVelocity, moveSmoothing);

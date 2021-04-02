@@ -5,9 +5,8 @@ using System.Collections;
 [RequireComponent(typeof(Character))]
 public class AICombat : MonoBehaviour
 {
-    /// <summary>
-    /// Test code, to be completely/partially revamped.
-    /// </summary>
+    // Test code, to be completely/partially revamped.
+
     private AIMovement aiMovement;
     private Character character;
     private float timer;

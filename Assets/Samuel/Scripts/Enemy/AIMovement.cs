@@ -53,9 +53,7 @@ public class AIMovement : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, patrolRange);
     }
 
-    /// <summary>
-    /// Update state of AI, then do actions depending on said state.
-    /// </summary>
+    // Update state of AI, then do actions depending on said state.
     private void FixedUpdate()
     {
         UpdateAIState();

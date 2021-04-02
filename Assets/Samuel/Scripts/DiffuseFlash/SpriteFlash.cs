@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+
 public class SpriteFlash : MonoBehaviour
 {
     /// <summary> Renderer who's material we want to cause to flash. Material must have a "_FlashAmount" float property ([0-1]) to tween. </summary>

@@ -82,6 +82,9 @@ public class Character : MonoBehaviour
         spriteFlasher.Flash(1);
     }
 
+    /// <summary>
+    /// Update healthbar visuals
+    /// </summary>
     private void UpdateHealthBar()
     {
         healthBar.maxValue = maxHealth;
@@ -94,6 +97,10 @@ public class Character : MonoBehaviour
         _target.TakeDamage(_damage, this);
     }
 
+    /// <summary>
+    /// Handle character death.
+    /// Tells GameManager what died, and what killed it.
+    /// </summary>
     private void Death(Character _killer)
     {
         if (isPlayer)

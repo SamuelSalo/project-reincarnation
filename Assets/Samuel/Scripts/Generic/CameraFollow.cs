@@ -8,6 +8,7 @@ public class CameraFollow : MonoBehaviour
 
     public Transform target;
 
+    // Smoothly follow target character.
     private void LateUpdate()
     {
         if (!target) return;

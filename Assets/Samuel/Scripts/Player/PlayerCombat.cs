@@ -5,9 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Character))]
 public class PlayerCombat : MonoBehaviour
 {
-    /// <summary>
-    /// Test code, to be completely or partially revamped
-    /// </summary>
+    // Test code, to be completely or partially revamped
 
     private Character character;
     private float timer;
