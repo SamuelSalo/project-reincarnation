@@ -2,17 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Character))]
 public class PlayerCombat : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// Test code, to be completely or partially revamped
+    /// </summary>
+
+    private Character character;
+    private float timer;
+
+    private void Start()
     {
-        
+        character = GetComponent<Character>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.F) && Time.time >= timer)
+        {
+            Debug.Log("Player attacked");
+            timer = Time.time + 1f / character.attackRate;
+
+            var hits = Physics2D.RaycastAll(transform.position, transform.up, 2f);
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.transform.CompareTag("Enemy"))
+                    character.DealDamage(character.damage, hit.transform.GetComponent<Character>());
+            }
+        }
     }
 }

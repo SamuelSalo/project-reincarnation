@@ -39,4 +39,9 @@ public class GameManager : MonoBehaviour
             ai.target = currentCharacter.transform;
         }
     }
+
+    public void PlayerKill(Character character)
+    {
+        
+    }
 }

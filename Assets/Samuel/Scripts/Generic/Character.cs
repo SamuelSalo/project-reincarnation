@@ -13,6 +13,7 @@ public class Character : MonoBehaviour
     public enum Faction { Blue, Red};
     public Faction faction;
 
+    [Space()]
     public Slider healthBar;
     public Text healthText;
 
@@ -23,10 +24,14 @@ public class Character : MonoBehaviour
     private PlayerCombat playerCombat;
     private GameManager gameManager;
     private Rigidbody2D rb;
+    public SpriteFlash spriteFlasher;
 
+    [Space]
     public bool isPlayer;
-
     public float maxHealth;
+    public float damage;
+    [Range(0f,1f)]public float attackRate;
+
     private float health;
 
     private void Start()
@@ -45,13 +50,16 @@ public class Character : MonoBehaviour
 
     public void PlayerControlled(bool _controlled)
     {
+        rb.bodyType = _controlled ? RigidbodyType2D.Dynamic : RigidbodyType2D.Kinematic;
+
         isPlayer = _controlled;
+
         playerMovement.enabled = _controlled;
         playerCombat.enabled = _controlled;
         aiMovement.enabled = !_controlled;
         aiCombat.enabled = !_controlled;
         agent.enabled = !_controlled;
-        rb.simulated = _controlled;
+        
         
         if (_controlled)
             transform.tag = "Player";
@@ -70,6 +78,8 @@ public class Character : MonoBehaviour
 
         if (isPlayer)
             UpdateHealthBar();
+
+        spriteFlasher.Flash(1);
     }
 
     private void UpdateHealthBar()
@@ -88,8 +98,9 @@ public class Character : MonoBehaviour
     {
         if (isPlayer)
             gameManager.PlayerDeath(_killer);
+        else
+            gameManager.PlayerKill(this);
 
         Destroy(gameObject);
-        //TODO player death
     }
 }

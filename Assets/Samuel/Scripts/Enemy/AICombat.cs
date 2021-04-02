@@ -6,11 +6,11 @@ using System.Collections;
 public class AICombat : MonoBehaviour
 {
     /// <summary>
-    /// WIP TEST CODE
-    /// TODO DELETE & REFACTOR
+    /// Test code, to be completely/partially revamped.
     /// </summary>
     private AIMovement aiMovement;
     private Character character;
+    private float timer;
 
     private void Start()
     {
@@ -20,14 +20,28 @@ public class AICombat : MonoBehaviour
 
     public void Attack()
     {
-        aiMovement.state = AIMovement.State.Attacking;
+        Debug.Log("AI Attack Called");
+
+        if (Time.time < timer) return;
+
+        Debug.Log("AI Attacked");
+        timer = Time.time + 1f / character.attackRate;
+
+        var hits = Physics2D.RaycastAll(transform.position, transform.up, 2f);
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.transform.CompareTag("Player"))
+                character.DealDamage(character.damage, hit.transform.GetComponent<Character>());
+        }
+
         StartCoroutine(ResetAttackTest());
     }
 
     
     IEnumerator ResetAttackTest()
     {
-        yield return new WaitForSeconds(1f);
+        Debug.Log("AI Reset Attack State");
+        yield return new WaitForSeconds(1f/character.attackRate);
         aiMovement.state = AIMovement.State.Chasing;
     }
 }
