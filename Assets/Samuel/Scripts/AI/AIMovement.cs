@@ -28,6 +28,7 @@ public class AIMovement : MonoBehaviour
 
     private AICombat aiCombat;
 	private NavMeshAgent agent;
+    private Character character;
 
     private Vector2 patrolDestination = Vector2.zero;
     [Space]
@@ -38,6 +39,7 @@ public class AIMovement : MonoBehaviour
 	{
         aiCombat = GetComponent<AICombat>();
 		agent = GetComponent<NavMeshAgent>();
+        character = GetComponent<Character>();
 
 		agent.updateRotation = false;
 		agent.updateUpAxis = false;
@@ -97,7 +99,8 @@ public class AIMovement : MonoBehaviour
             state = State.Patrolling;
         } 
 
-        if (Vector2.Distance(transform.position, target.position) <= attackRange)
+        if (Vector2.Distance(transform.position, target.position) <= attackRange
+            && character.gameManager.currentFaction != character.faction)
         {
             agent.isStopped = true;
             state = State.Attacking;

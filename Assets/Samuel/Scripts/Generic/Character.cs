@@ -17,14 +17,16 @@ public class Character : MonoBehaviour
     public Slider healthBar;
     public Text healthText;
 
+    [HideInInspector]
+    public GameManager gameManager;
+
     private AIMovement aiMovement;
     private AICombat aiCombat;
     private NavMeshAgent agent;
     private PlayerMovement playerMovement;
     private PlayerCombat playerCombat;
-    private GameManager gameManager;
     private Rigidbody2D rb;
-    public SpriteFlash spriteFlasher;
+    private SpriteFlash spriteFlasher;
 
     [Space]
     public bool isPlayer;
@@ -36,7 +38,9 @@ public class Character : MonoBehaviour
 
     private void Start()
     {
+       
         playerMovement = GetComponent<PlayerMovement>();
+        spriteFlasher = GetComponent<SpriteFlash>();
         playerCombat = GetComponent<PlayerCombat>();
         aiMovement = GetComponent<AIMovement>();
         agent = GetComponent<NavMeshAgent>();
@@ -79,6 +83,12 @@ public class Character : MonoBehaviour
         if (isPlayer)
             UpdateHealthBar();
 
+        spriteFlasher.Flash(1);
+    }
+    public void RestoreHealth(float _amount)
+    {
+        health = Mathf.Clamp(health + _amount, 0, maxHealth);
+        UpdateHealthBar();
         spriteFlasher.Flash(1);
     }
 

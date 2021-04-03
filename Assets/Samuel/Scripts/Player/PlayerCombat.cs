@@ -19,13 +19,12 @@ public class PlayerCombat : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.F) && Time.time >= timer)
         {
-            Debug.Log("Player attacked");
             timer = Time.time + 1f / character.attackRate;
 
             var hits = Physics2D.RaycastAll(transform.position, transform.up, 2f);
             foreach (RaycastHit2D hit in hits)
             {
-                if (hit.transform.CompareTag("Enemy"))
+                if (hit.transform.CompareTag("Enemy") && hit.transform.GetComponent<Character>().faction != character.faction)
                     character.DealDamage(character.damage, hit.transform.GetComponent<Character>());
             }
         }

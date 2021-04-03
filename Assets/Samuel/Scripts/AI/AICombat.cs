@@ -19,11 +19,8 @@ public class AICombat : MonoBehaviour
 
     public void Attack()
     {
-        Debug.Log("AI Attack Called");
-
         if (Time.time < timer) return;
 
-        Debug.Log("AI Attacked");
         timer = Time.time + 1f / character.attackRate;
 
         var hits = Physics2D.RaycastAll(transform.position, transform.up, 2f);
@@ -39,7 +36,6 @@ public class AICombat : MonoBehaviour
     
     IEnumerator ResetAttackTest()
     {
-        Debug.Log("AI Reset Attack State");
         yield return new WaitForSeconds(1f/character.attackRate);
         aiMovement.state = AIMovement.State.Chasing;
     }
