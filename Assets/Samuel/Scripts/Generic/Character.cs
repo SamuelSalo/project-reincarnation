@@ -28,8 +28,12 @@ public class Character : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteFlash spriteFlasher;
 
+    [HideInInspector]
+    public Animator animator;
+
     [Space]
     public bool isPlayer;
+    public bool isBoss;
     public float maxHealth;
     public float damage;
     [Range(0f,1f)]public float attackRate;
@@ -45,6 +49,7 @@ public class Character : MonoBehaviour
         aiMovement = GetComponent<AIMovement>();
         agent = GetComponent<NavMeshAgent>();
         aiCombat = GetComponent<AICombat>();
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
 
         gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
@@ -52,6 +57,9 @@ public class Character : MonoBehaviour
         PlayerControlled(isPlayer);
     }
 
+    /// <summary>
+    /// Update variables according to this character's controller (AI/Player).
+    /// </summary>
     public void PlayerControlled(bool _controlled)
     {
         rb.bodyType = _controlled ? RigidbodyType2D.Dynamic : RigidbodyType2D.Kinematic;
@@ -72,7 +80,17 @@ public class Character : MonoBehaviour
 
         UpdateHealthBar();
     }
+    /// <summary>
+    /// This character deals damage to another character.
+    /// </summary>
+    public void DealDamage(float _damage, Character _target)
+    {
+        _target.TakeDamage(_damage, this);
+    }
 
+    /// <summary>
+    /// This character takes damage from another character.
+    /// </summary>
     public void TakeDamage(float _damage, Character _source)
     {
         health -= _damage;
@@ -85,6 +103,9 @@ public class Character : MonoBehaviour
 
         spriteFlasher.Flash(1);
     }
+    /// <summary>
+    /// Restore health to this character.
+    /// </summary>
     public void RestoreHealth(float _amount)
     {
         health = Mathf.Clamp(health + _amount, 0, maxHealth);
@@ -101,11 +122,26 @@ public class Character : MonoBehaviour
         healthBar.value = health;
         healthText.text = $"{health} / {maxHealth}";
     }
-
-    public void DealDamage(float _damage, Character _target)
+    /// <summary>
+    /// Updates animator movement variables.
+    /// Attack animations are handled separately.
+    /// </summary>
+    public void UpdateAnimator()
     {
-        _target.TakeDamage(_damage, this);
+        if(isPlayer)
+        {
+            animator.SetFloat("xMove", playerMovement.moveDirection.x);
+            animator.SetFloat("yMove", playerMovement.moveDirection.y);
+            animator.SetFloat("moveMagnitude", playerMovement.moveDirection.normalized.magnitude);
+            animator.SetBool("rotationLock", playerMovement.rotationLock);
+        }
+        else
+        {
+            animator.SetFloat("moveMagnitude", agent.velocity.normalized.magnitude);
+            animator.SetBool("rotationLock", false);
+        }
     }
+    
 
     /// <summary>
     /// Handle character death.
@@ -119,5 +155,16 @@ public class Character : MonoBehaviour
             gameManager.PlayerKill(this);
 
         Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// Call combat scripts to activate hurtboxes.
+    /// </summary>
+    public void ActivateHurtbox()
+    {
+        if (isPlayer)
+            playerCombat.ActivateAttackHurtbox();
+        else
+            aiCombat.ActivateAttackHurtbox();
     }
 }

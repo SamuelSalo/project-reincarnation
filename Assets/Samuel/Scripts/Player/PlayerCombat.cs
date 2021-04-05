@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Character))]
 public class PlayerCombat : MonoBehaviour
 {
-    // Test code, to be completely or partially revamped
-
     private Character character;
     private float timer;
 
@@ -21,8 +17,19 @@ public class PlayerCombat : MonoBehaviour
         {
             timer = Time.time + 1f / character.attackRate;
 
-            var hits = Physics2D.RaycastAll(transform.position, transform.up, 2f);
-            foreach (RaycastHit2D hit in hits)
+            character.animator.SetTrigger("Attack");
+        }
+    }
+
+    /// <summary>
+    /// Activates a temporary hurtbox and deals damage to all hostile characters inside it.
+    /// </summary>
+    public void ActivateAttackHurtbox()
+    {
+        var hits = Physics2D.OverlapBoxAll(transform.position + transform.up, new Vector2(1f, 1f), 0f);
+        if(hits.Length != 0)
+        {
+            foreach (Collider2D hit in hits)
             {
                 if (hit.transform.CompareTag("Enemy") && hit.transform.GetComponent<Character>().faction != character.faction)
                     character.DealDamage(character.damage, hit.transform.GetComponent<Character>());

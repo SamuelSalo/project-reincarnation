@@ -9,15 +9,21 @@ public class PlayerMovement : MonoBehaviour
     public float moveSmoothing;
     [Range(0.05f, 0.3f)]
     public float turnSmoothing;
-
-    private Vector2 moveDirection = Vector2.zero;
+    
+    [HideInInspector]
+    public Vector2 moveDirection = Vector2.zero;
     private Vector2 refVelocity = Vector2.zero;
+
     private Rigidbody2D rb;
-    private bool rotationLock;
+    private Character character;
+
+    [HideInInspector]
+    public bool rotationLock;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        character = GetComponent<Character>();
     }
 
     // Get inputs to determine movement direction and rotation lock
@@ -34,5 +40,6 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.velocity = Vector2.SmoothDamp(rb.velocity, (moveDirection * moveSpeed), ref refVelocity, moveSmoothing);
         transform.up = rotationLock ? (Vector2)transform.up : Vector2.Lerp(transform.up, moveDirection, turnSmoothing);
+        character.UpdateAnimator();
     }
 }

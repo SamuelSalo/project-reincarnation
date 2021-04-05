@@ -31,6 +31,7 @@ public class AIMovement : MonoBehaviour
     private Character character;
 
     private Vector2 patrolDestination = Vector2.zero;
+
     [Space]
     public bool drawRangeGizmos;
     private bool idling = false;
@@ -59,6 +60,7 @@ public class AIMovement : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateAIState();
+        character.UpdateAnimator();
 
         switch (state)
         {
