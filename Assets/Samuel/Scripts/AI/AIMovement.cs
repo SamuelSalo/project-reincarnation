@@ -23,8 +23,7 @@ public class AIMovement : MonoBehaviour
     [Space]
     [Range(0f, 0.3f)] public float turnSmoothing;
 
-    [HideInInspector]
-    public Transform target;
+    [HideInInspector] public Transform target;
 
     private AICombat aiCombat;
 	private NavMeshAgent agent;
@@ -87,7 +86,8 @@ public class AIMovement : MonoBehaviour
     /// </summary>
     private void UpdateAIState()
     {
-        if (Vector2.Distance(transform.position, target.position) < chaseRange)
+        if (Vector2.Distance(transform.position, target.position) < chaseRange
+            && character.gameManager.currentFaction != character.faction)
         {
             state = State.Chasing;
         }

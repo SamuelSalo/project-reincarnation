@@ -13,13 +13,8 @@ public class Character : MonoBehaviour
     public enum Faction { Blue, Red};
     public Faction faction;
 
-    [Space()]
-    public Slider healthBar;
-    public Text healthText;
-
-    [HideInInspector]
-    public GameManager gameManager;
-
+    [HideInInspector] public GameManager gameManager;
+    [HideInInspector] public Animator animator;
     private AIMovement aiMovement;
     private AICombat aiCombat;
     private NavMeshAgent agent;
@@ -28,21 +23,18 @@ public class Character : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteFlash spriteFlasher;
 
-    [HideInInspector]
-    public Animator animator;
-
     [Space]
+
     public bool isPlayer;
     public bool isBoss;
     public float maxHealth;
     public float damage;
     [Range(0f,1f)]public float attackRate;
 
-    private float health;
+    [HideInInspector] public float health;
 
     private void Start()
     {
-       
         playerMovement = GetComponent<PlayerMovement>();
         spriteFlasher = GetComponent<SpriteFlash>();
         playerCombat = GetComponent<PlayerCombat>();
@@ -77,8 +69,6 @@ public class Character : MonoBehaviour
             transform.tag = "Player";
         else
             transform.tag = "Enemy";
-
-        UpdateHealthBar();
     }
     /// <summary>
     /// This character deals damage to another character.
@@ -98,10 +88,7 @@ public class Character : MonoBehaviour
         if (health <= 0)
             Death(_source);
 
-        if (isPlayer)
-            UpdateHealthBar();
-
-        spriteFlasher.Flash(1);
+        spriteFlasher.Flash();
     }
     /// <summary>
     /// Restore health to this character.
@@ -109,19 +96,9 @@ public class Character : MonoBehaviour
     public void RestoreHealth(float _amount)
     {
         health = Mathf.Clamp(health + _amount, 0, maxHealth);
-        UpdateHealthBar();
-        spriteFlasher.Flash(1);
+        spriteFlasher.Flash();
     }
-
-    /// <summary>
-    /// Update healthbar visuals
-    /// </summary>
-    private void UpdateHealthBar()
-    {
-        healthBar.maxValue = maxHealth;
-        healthBar.value = health;
-        healthText.text = $"{health} / {maxHealth}";
-    }
+   
     /// <summary>
     /// Updates animator movement variables.
     /// Attack animations are handled separately.
@@ -141,7 +118,6 @@ public class Character : MonoBehaviour
             animator.SetBool("rotationLock", false);
         }
     }
-    
 
     /// <summary>
     /// Handle character death.

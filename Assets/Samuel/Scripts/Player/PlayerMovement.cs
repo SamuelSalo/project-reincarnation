@@ -3,22 +3,17 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
-    [Range(1, 4)]
-    public float moveSpeed;
-    [Range(0.05f, 0.3f)]
-    public float moveSmoothing;
-    [Range(0.05f, 0.3f)]
-    public float turnSmoothing;
+    [Range(1, 4)] public float moveSpeed;
+    [Range(0.05f, 0.3f)] public float moveSmoothing;
+    [Range(0.05f, 0.3f)] public float turnSmoothing;
     
-    [HideInInspector]
-    public Vector2 moveDirection = Vector2.zero;
+    [HideInInspector] public Vector2 moveDirection = Vector2.zero;
     private Vector2 refVelocity = Vector2.zero;
 
     private Rigidbody2D rb;
     private Character character;
 
-    [HideInInspector]
-    public bool rotationLock;
+    [HideInInspector] public bool rotationLock;
 
     private void Start()
     {

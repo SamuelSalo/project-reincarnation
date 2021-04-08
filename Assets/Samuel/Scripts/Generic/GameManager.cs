@@ -8,8 +8,9 @@ public class GameManager : MonoBehaviour
     public Character currentCharacter;
     public CameraFollow cameraFollow;
 
-    [Space]
-    [Header("UI")]
+    [Space] [Header("UI")]
+    public Slider healthBar;
+    public Text healthText;
     public Image healthBarFill;
     public Text permaDeathText;
     public Slider permaDeathBar;
@@ -17,8 +18,7 @@ public class GameManager : MonoBehaviour
 
     private List<AIMovement> enemyAIs;
 
-    [Space]
-    [Header("PermaDeath")]
+    [Space] [Header("PermaDeath")]
     public bool permaDeath;
     public float permaDeathTimer = 300f;
     public int lives = 3;
@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         UpdatePermaDeath();
+        UpdateHealthBar();
     }
 
     /// <summary>
@@ -71,7 +72,7 @@ public class GameManager : MonoBehaviour
         foreach(AIMovement ai in enemyAIs)
         {
             ai.target = currentCharacter.transform;
-        }
+        }  
     }
     /// <summary>
     /// Player killed someone?
@@ -107,5 +108,15 @@ public class GameManager : MonoBehaviour
 
         livesText.gameObject.SetActive(!permaDeath);
         livesText.text = "Lives: " + lives;
+    }
+
+    /// <summary>
+    /// Update healthbar visuals
+    /// </summary>
+    private void UpdateHealthBar()
+    {
+        healthBar.maxValue = currentCharacter.maxHealth;
+        healthBar.value = currentCharacter.health;
+        healthText.text = $"{currentCharacter.health} / {currentCharacter.maxHealth}";
     }
 }
