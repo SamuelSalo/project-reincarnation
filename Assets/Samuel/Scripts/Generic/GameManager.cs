@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public Character.Faction currentFaction;
     public Character currentCharacter;
     public CameraFollow cameraFollow;
+    public LightFollow lightFollow;
 
     [Space] [Header("UI")]
     public Slider healthBar;
@@ -53,6 +54,8 @@ public class GameManager : MonoBehaviour
         currentCharacter.PlayerControlled(true);
         currentFaction = currentCharacter.faction;
         cameraFollow.target = currentCharacter.transform;
+        lightFollow.target = currentCharacter.transform;
+
         UpdateEnemies();
     }
     
