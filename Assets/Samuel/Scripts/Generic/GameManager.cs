@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
         }
 
         currentCharacter = _killer;
+        currentCharacter.transform.SetParent(null);
         healthBarFill.color = currentFaction == Character.Faction.Blue ? Color.red : Color.blue;
         currentCharacter.PlayerControlled(true);
         currentFaction = currentCharacter.faction;

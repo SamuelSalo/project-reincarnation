@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GameManager
   - Enemy
+  - FaderOverlay
   layers:
   - Default
   - TransparentFX
@@ -48,6 +49,9 @@ TagManager:
     locked: 0
   - name: Wall
     uniqueID: 438993961
+    locked: 0
+  - name: Characters
+    uniqueID: 1722927047
     locked: 0
   - name: UI
     uniqueID: 2161408709

@@ -1,4 +1,3 @@
-using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEngine;
 
@@ -15,10 +14,12 @@ public class Character : MonoBehaviour
 
     [HideInInspector] public GameManager gameManager;
     [HideInInspector] public Animator animator;
+    [HideInInspector] public PlayerMovement playerMovement;
+
     private AIMovement aiMovement;
     private AICombat aiCombat;
     private NavMeshAgent agent;
-    private PlayerMovement playerMovement;
+    
     private PlayerCombat playerCombat;
     private Rigidbody2D rb;
     private SpriteFlash spriteFlasher;
