@@ -9,28 +9,26 @@ using UnityEngine;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Character : MonoBehaviour
 {
-    public enum Faction { Blue, Red};
+    public enum Faction { Blue, Red };
     public Faction faction;
 
     [HideInInspector] public GameManager gameManager;
     [HideInInspector] public Animator animator;
     [HideInInspector] public PlayerMovement playerMovement;
+    [HideInInspector] public FloatingHealthbar floatingHealthbar;
 
     private AIMovement aiMovement;
     private AICombat aiCombat;
     private NavMeshAgent agent;
-    
     private PlayerCombat playerCombat;
     private Rigidbody2D rb;
     private SpriteFlash spriteFlasher;
 
-    [Space]
-
+    [Space] [Range(0f, 1f)] public float attackRate;
     public bool isPlayer;
     public bool isBoss;
     public float maxHealth;
     public float damage;
-    [Range(0f,1f)]public float attackRate;
 
     [HideInInspector] public float health;
 
@@ -44,10 +42,12 @@ public class Character : MonoBehaviour
         aiCombat = GetComponent<AICombat>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-
         gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+
         health = maxHealth;
         PlayerControlled(isPlayer);
+
+        CreateHealthbar();
     }
 
     /// <summary>
@@ -64,12 +64,12 @@ public class Character : MonoBehaviour
         aiMovement.enabled = !_controlled;
         aiCombat.enabled = !_controlled;
         agent.enabled = !_controlled;
-        
-        
+
+
         if (_controlled)
             transform.tag = "Player";
         else
-            transform.tag = "Enemy";
+            transform.tag = "AI";
     }
     /// <summary>
     /// This character deals damage to another character.
@@ -90,6 +90,7 @@ public class Character : MonoBehaviour
             Death(_source);
 
         spriteFlasher.Flash();
+        UpdateHealthbar();
     }
     /// <summary>
     /// Restore health to this character.
@@ -98,15 +99,17 @@ public class Character : MonoBehaviour
     {
         health = Mathf.Clamp(health + _amount, 0, maxHealth);
         spriteFlasher.Flash();
+
+        UpdateHealthbar();
     }
-   
+
     /// <summary>
     /// Updates animator movement variables.
     /// Attack animations are handled separately.
     /// </summary>
     public void UpdateAnimator()
     {
-        if(isPlayer)
+        if (isPlayer)
         {
             animator.SetFloat("xMove", playerMovement.moveDirection.x);
             animator.SetFloat("yMove", playerMovement.moveDirection.y);
@@ -132,6 +135,8 @@ public class Character : MonoBehaviour
             gameManager.PlayerKill(this);
 
         Destroy(gameObject);
+
+        floatingHealthbar.Dispose();
     }
 
     /// <summary>
@@ -143,5 +148,26 @@ public class Character : MonoBehaviour
             playerCombat.ActivateAttackHurtbox();
         else
             aiCombat.ActivateAttackHurtbox();
+    }
+
+    /// <summary>
+    /// Creates a floating UI healthbar above the character
+    /// </summary>
+    public void CreateHealthbar()
+    {
+        var healthBarGO = Instantiate(Resources.Load("HealthbarPrefab"), GameObject.FindWithTag("HealthbarHolder").transform) as GameObject;
+        floatingHealthbar = healthBarGO.GetComponent<FloatingHealthbar>();
+        floatingHealthbar.target = transform;
+        UpdateHealthbar();
+    }
+
+    /// <summary>
+    /// Update value&color of healthbar.
+    /// </summary>
+    public void UpdateHealthbar()
+    {
+        if (isPlayer) floatingHealthbar.visible = true;
+        floatingHealthbar.SetFillColor(isPlayer ? Color.green : faction == Faction.Red ? Color.red : Color.blue);
+        floatingHealthbar.SetHealthValue(health, maxHealth);
     }
 }

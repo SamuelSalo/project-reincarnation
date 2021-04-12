@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
@@ -11,11 +12,11 @@ public class GameManager : MonoBehaviour
 
     [Space] [Header("UI")]
     public Slider healthBar;
-    public Text healthText;
+    public TMP_Text healthText;
     public Image healthBarFill;
-    public Text permaDeathText;
+    public TMP_Text permaDeathText;
     public Slider permaDeathBar;
-    public Text livesText;
+    public TMP_Text livesText;
 
     private List<AIMovement> enemyAIs;
 
@@ -50,13 +51,16 @@ public class GameManager : MonoBehaviour
         }
 
         currentCharacter = _killer;
-        currentCharacter.transform.SetParent(null);
-        healthBarFill.color = currentFaction == Character.Faction.Blue ? Color.red : Color.blue;
-        currentCharacter.PlayerControlled(true);
         currentFaction = currentCharacter.faction;
+        currentCharacter.PlayerControlled(true);
+        currentCharacter.transform.SetParent(null);
+
+        healthBarFill.color = currentFaction == Character.Faction.Red ? Color.red : Color.blue;
+        _killer.UpdateHealthbar();
+
         cameraFollow.target = currentCharacter.transform;
         lightFollow.target = currentCharacter.transform;
-
+        
         UpdateEnemies();
     }
     
@@ -69,7 +73,7 @@ public class GameManager : MonoBehaviour
     {
         enemyAIs = new List<AIMovement>();
 
-        foreach(GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
+        foreach(GameObject g in GameObject.FindGameObjectsWithTag("AI"))
         {
             enemyAIs.Add(g.GetComponent<AIMovement>());
         }

@@ -9,18 +9,22 @@ public class AIMovement : MonoBehaviour
     public enum State { Patrolling, Chasing, Attacking }
 
     [Header("Properties")]
+
     public State state = State.Patrolling;
 
     [Space]
+
     [Range(0,10)]public float chaseRange;
     [Range(0, 10)] public float patrolRange;
     [Range(0, 10)] public float attackRange;
 
     [Space]
+
     [Range(0, 5)] public float chaseSpeed;
     [Range(0, 5)] public float patrolSpeed;
 
     [Space]
+
     [Range(0f, 0.3f)] public float turnSmoothing;
 
     [HideInInspector] public Transform target;
@@ -32,6 +36,7 @@ public class AIMovement : MonoBehaviour
     private Vector2 patrolDestination = Vector2.zero;
 
     [Space]
+
     public bool drawRangeGizmos;
     private bool idling = false;
 
@@ -66,15 +71,18 @@ public class AIMovement : MonoBehaviour
             case State.Patrolling:
                 UpdatePatrolCycle();
                 agent.speed = patrolSpeed;
+                character.floatingHealthbar.visible = false;
                 break;
 
             case State.Chasing:
                 UpdateChaseCycle();
                 agent.speed = chaseSpeed;
+                character.floatingHealthbar.visible = true;
                 break;
 
             case State.Attacking:
                 transform.up = (Vector2)(target.position - transform.position).normalized;
+                character.floatingHealthbar.visible = true;
                 break;
         }
     }

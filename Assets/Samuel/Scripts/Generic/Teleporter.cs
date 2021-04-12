@@ -28,13 +28,19 @@ public class Teleporter : MonoBehaviour
         if (collision.CompareTag("Player"))
             reach = false;
     }
-
+    /// <summary>
+    /// Is player pressing interact key and inside the trigger area? Teleport.
+    /// </summary>
     private void Update()
     {
         if (reach && Input.GetKeyDown(KeyCode.E) && npcs.childCount == 0 && !teleporting)
             StartCoroutine(TeleportPlayer());
     }
 
+    /// <summary>
+    /// Simple teleportation logic, fade the screen out to black, teleport the player to destination and fade the screen back in.
+    /// Also locks player movement and inputs during teleport;
+    /// </summary>
     private IEnumerator TeleportPlayer()
     {
         teleporting = true;

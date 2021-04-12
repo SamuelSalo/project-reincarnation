@@ -31,7 +31,7 @@ public class PlayerCombat : MonoBehaviour
         {
             foreach (Collider2D hit in hits)
             {
-                if (hit.transform.CompareTag("Enemy") && hit.transform.GetComponent<Character>().faction != character.faction)
+                if (hit.transform.CompareTag("AI") && hit.transform.GetComponent<Character>().faction != character.faction)
                     character.DealDamage(character.damage, hit.transform.GetComponent<Character>());
             }
         }
