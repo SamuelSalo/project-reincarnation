@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Samuel/Scenes/TestMenu.unity
-    guid: b4f48f08b2be15f4bb6c418394000f28
+    path: Assets/Samuel/Scenes/MainMenu.unity
+    guid: c4d29b5cfbe0d654bb618a0bc987a317
   - enabled: 1
     path: Assets/Samuel/Scenes/New Scene.unity
     guid: 04e753c303e085142b3f131c0a7ae4e4

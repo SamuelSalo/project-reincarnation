@@ -54,6 +54,9 @@ TagManager:
   - name: Characters
     uniqueID: 1722927047
     locked: 0
+  - name: Healthbars
+    uniqueID: 3630126139
+    locked: 0
   - name: UI
     uniqueID: 2161408709
     locked: 0
