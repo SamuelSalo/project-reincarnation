@@ -23,6 +23,7 @@ public class Character : MonoBehaviour
     private PlayerCombat playerCombat;
     private Rigidbody2D rb;
     private SpriteFlash spriteFlasher;
+    private GameSFX gameSFX;
 
     [Space] [Range(0f, 1f)] public float attackRate;
     public bool isPlayer;
@@ -35,6 +36,7 @@ public class Character : MonoBehaviour
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        gameSFX = Camera.main.GetComponent<GameSFX>();
         spriteFlasher = GetComponent<SpriteFlash>();
         playerCombat = GetComponent<PlayerCombat>();
         aiMovement = GetComponent<AIMovement>();
@@ -84,6 +86,7 @@ public class Character : MonoBehaviour
     /// </summary>
     public void TakeDamage(float _damage, Character _source)
     {
+        gameSFX.PlayHurtSFX();
         health -= _damage;
 
         if (health <= 0)
@@ -129,6 +132,7 @@ public class Character : MonoBehaviour
     /// </summary>
     private void Death(Character _killer)
     {
+        gameSFX.PlayDeathSFX();
         if (isPlayer)
             gameManager.PlayerDeath(_killer);
         else

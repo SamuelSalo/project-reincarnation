@@ -19,6 +19,11 @@ public class MainMenu : MonoBehaviour
         StartCoroutine(StartGameRoutine());
     }
 
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
     IEnumerator StartGameRoutine()
     {
         GameObject.FindWithTag("FaderOverlay").GetComponent<FaderOverlay>().FadeOut();

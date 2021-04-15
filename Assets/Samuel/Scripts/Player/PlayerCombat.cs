@@ -4,11 +4,14 @@ using UnityEngine;
 public class PlayerCombat : MonoBehaviour
 {
     private Character character;
+    private GameSFX gameSFX;
+
     private float timer;
 
     private void Start()
     {
         character = GetComponent<Character>();
+        gameSFX = Camera.main.GetComponent<GameSFX>();
     }
 
     private void Update()
@@ -26,6 +29,7 @@ public class PlayerCombat : MonoBehaviour
     /// </summary>
     public void ActivateAttackHurtbox()
     {
+        gameSFX.PlaySlashSFX();
         var hits = Physics2D.OverlapBoxAll(transform.position + transform.up, new Vector2(1f, 1f), 0f);
         if(hits.Length != 0)
         {
