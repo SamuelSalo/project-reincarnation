@@ -10,7 +10,7 @@ public class FaderOverlay : MonoBehaviour
     private void Start()
     {
         animator = GetComponent<Animator>(); 
-
+     
         if(fadeIntoScene)
             FadeIn();
     }

@@ -60,3 +60,6 @@ TagManager:
   - name: UI
     uniqueID: 2161408709
     locked: 0
+  - name: FaderOverlay
+    uniqueID: 3001558595
+    locked: 0
