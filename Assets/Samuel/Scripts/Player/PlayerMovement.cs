@@ -3,10 +3,18 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Movement")]
     [Range(1, 4)] public float moveSpeed;
     [Range(0.05f, 0.3f)] public float moveSmoothing;
     [Range(0.05f, 0.3f)] public float turnSmoothing;
-    
+
+    [Space] [Header("Dashing")]
+    [Range(0f, 3f)] public float dashCooldown;
+    [Range(10f, 20f)] public float dashSpeed;
+
+    private float dashTimer;
+    private bool dash;
+
     [HideInInspector] public Vector2 moveDirection = Vector2.zero;
     private Vector2 refVelocity = Vector2.zero;
 
@@ -27,6 +35,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (teleporting) return;
 
+        if(Input.GetKeyDown(KeyCode.Space) && Time.time >= dashTimer)
+        {
+            dashTimer = Time.time + dashCooldown;
+            dash = true;
+        }
+
         rotationLock = Input.GetKey(KeyCode.LeftShift);
         moveDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         moveDirection.Normalize();
@@ -41,5 +55,11 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = Vector2.SmoothDamp(rb.velocity, (moveDirection * moveSpeed), ref refVelocity, moveSmoothing);
         transform.up = rotationLock ? (Vector2)transform.up : Vector2.Lerp(transform.up, moveDirection, turnSmoothing);
         character.UpdateAnimator();
+
+        if(dash)
+        {
+            rb.velocity = moveDirection * dashSpeed;
+            dash = false;
+        }
     }
 }

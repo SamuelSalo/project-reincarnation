@@ -1,7 +1,7 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-
+/// <summary>
+/// Main menu UI functionality
+/// </summary>
 public class MainMenu : MonoBehaviour
 {
     [Header("UI Panels")]
@@ -16,7 +16,7 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
-        StartCoroutine(StartGameRoutine());
+        GameObject.FindWithTag("SceneChanger").GetComponent<SceneChanger>().FadeToScene(1);
     }
 
     public void QuitGame()
@@ -24,10 +24,4 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
     }
 
-    IEnumerator StartGameRoutine()
-    {
-        GameObject.FindWithTag("FaderOverlay").GetComponent<FaderOverlay>().FadeOut();
-        yield return new WaitForSeconds(1f);
-        SceneManager.LoadScene(1);
-    }
 }

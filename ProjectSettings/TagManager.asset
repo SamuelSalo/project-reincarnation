@@ -8,6 +8,7 @@ TagManager:
   - FaderOverlay
   - HealthbarHolder
   - AI
+  - SceneChanger
   layers:
   - Default
   - TransparentFX

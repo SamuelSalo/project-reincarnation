@@ -17,7 +17,9 @@ public class GameManager : MonoBehaviour
     public TMP_Text permaDeathText;
     public Slider permaDeathBar;
     public TMP_Text livesText;
-
+    [Space]
+    public GameObject deathUI;
+    public GameObject gameUI;
     private List<AIMovement> enemyAIs;
 
     [Space] [Header("PermaDeath")]
@@ -96,7 +98,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void PermanentDeath()
     {
-        Debug.Log("Permanent death!");
+        deathUI.SetActive(true);
+        gameUI.SetActive(false);
+        GetComponent<PauseMenu>().enabled = false;
+        Time.timeScale = 0f;
     }
 
     /// <summary>

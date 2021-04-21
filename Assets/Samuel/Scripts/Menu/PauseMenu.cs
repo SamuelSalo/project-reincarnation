@@ -1,7 +1,8 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Collections;
 
+/// <summary>
+/// Pause UI functionality
+/// </summary>
 public class PauseMenu : MonoBehaviour
 {
     private bool paused;
@@ -40,15 +41,7 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitToMenu()
     {
-        StartCoroutine(QuitCoroutine());
-    }
-
-    private IEnumerator QuitCoroutine()
-    {
-        GameObject.FindWithTag("FaderOverlay").GetComponent<FaderOverlay>().FadeOut();
-        yield return new WaitForSecondsRealtime(1f);
-        SceneManager.LoadScene(0);
-        Time.timeScale = 1f;
+        GameObject.FindWithTag("SceneChanger").GetComponent<SceneChanger>().FadeToScene(0);
     }
 
     public void TogglePanels()

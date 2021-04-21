@@ -11,7 +11,7 @@ public class PlayerCombat : MonoBehaviour
     private void Start()
     {
         character = GetComponent<Character>();
-        gameSFX = Camera.main.GetComponent<GameSFX>();
+        gameSFX = GetComponent<GameSFX>();
     }
 
     private void Update()

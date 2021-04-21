@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
 [RequireComponent(typeof(Light2D))]
 public class LightFlicker : MonoBehaviour
 {
+    //Simple logic to flicker a 2d lightsource
     public float randomness;
     private new Light2D light;
     private float radius;

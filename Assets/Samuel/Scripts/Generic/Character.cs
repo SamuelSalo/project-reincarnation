@@ -36,7 +36,7 @@ public class Character : MonoBehaviour
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
-        gameSFX = Camera.main.GetComponent<GameSFX>();
+        gameSFX = GetComponent<GameSFX>();
         spriteFlasher = GetComponent<SpriteFlash>();
         playerCombat = GetComponent<PlayerCombat>();
         aiMovement = GetComponent<AIMovement>();

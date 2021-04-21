@@ -15,14 +15,17 @@ public class GameSFX : MonoBehaviour
 
     public void PlayHurtSFX()
     {
+        audioSource.Stop();
         audioSource.PlayOneShot(hurtSFX[Random.Range(0, hurtSFX.Length)]);
     }
     public void PlaySlashSFX()
     {
+        audioSource.Stop();
         audioSource.PlayOneShot(slashSFX[Random.Range(0, slashSFX.Length)]);
     }
     public void PlayDeathSFX()
     {
+        audioSource.Stop();
         audioSource.PlayOneShot(deathSFX[Random.Range(0, deathSFX.Length)]);
     }
 }

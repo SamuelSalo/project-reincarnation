@@ -1,21 +1,24 @@
 using System.Collections;
 using UnityEngine;
+using Faction = Character.Faction;
 
 public class Teleporter : MonoBehaviour
 {
+    public Room destinationRoom;
+    private Room currentRoom;
+
     private FaderOverlay fader;
     private GameManager gameManager;
-
-    public Transform targetLocation;
-    public Transform npcs;
-
+    private Vector2 destination;
     private bool reach;
     private bool teleporting;
 
     private void Start()
     {
+        currentRoom = transform.parent.GetComponent<Room>();
         fader = GameObject.FindWithTag("FaderOverlay").GetComponent<FaderOverlay>();
         gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+        destination = transform.GetChild(0).position;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -28,12 +31,14 @@ public class Teleporter : MonoBehaviour
         if (collision.CompareTag("Player"))
             reach = false;
     }
-    /// <summary>
-    /// Is player pressing interact key and inside the trigger area? Teleport.
-    /// </summary>
+
     private void Update()
     {
-        if (reach && Input.GetKeyDown(KeyCode.E) && npcs.childCount == 0 && !teleporting)
+        //Allow player to backtrack freely and roam across cleared/own faction rooms, but require room to be cleared to advance
+        if (reach && Input.GetKeyDown(KeyCode.E) &&
+            (currentRoom.cleared || destinationRoom.cleared || destinationRoom.faction == gameManager.currentFaction || currentRoom.faction == gameManager.currentFaction)
+            && !teleporting)
+
             StartCoroutine(TeleportPlayer());
     }
 
@@ -48,7 +53,7 @@ public class Teleporter : MonoBehaviour
         fader.FadeOut();
 
         yield return new WaitForSeconds(1f);
-        gameManager.currentCharacter.transform.position = targetLocation.position;
+        gameManager.currentCharacter.transform.position = destination;
 
         
         teleporting = false;
