@@ -6,6 +6,7 @@ public class GameSFX : MonoBehaviour
     public AudioClip[] hurtSFX;
     public AudioClip[] slashSFX;
     public AudioClip[] deathSFX;
+    public AudioClip[] dashSFX;
     private AudioSource audioSource;
 
     private void Start()
@@ -27,5 +28,10 @@ public class GameSFX : MonoBehaviour
     {
         audioSource.Stop();
         audioSource.PlayOneShot(deathSFX[Random.Range(0, deathSFX.Length)]);
+    }
+    public void PlayDashSFX()
+    {
+        audioSource.Stop();
+        audioSource.PlayOneShot(dashSFX[Random.Range(0, dashSFX.Length)]);
     }
 }

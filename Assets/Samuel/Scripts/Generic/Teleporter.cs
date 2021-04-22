@@ -35,11 +35,14 @@ public class Teleporter : MonoBehaviour
     private void Update()
     {
         //Allow player to backtrack freely and roam across cleared/own faction rooms, but require room to be cleared to advance
-        if (reach && Input.GetKeyDown(KeyCode.E) &&
-            (currentRoom.cleared || destinationRoom.cleared || destinationRoom.faction == gameManager.currentFaction || currentRoom.faction == gameManager.currentFaction)
-            && !teleporting)
-
-            StartCoroutine(TeleportPlayer());
+        if (reach && Input.GetKeyDown(KeyCode.E) && !teleporting)
+        {
+            if(currentRoom.cleared || destinationRoom.cleared || destinationRoom.faction == gameManager.currentFaction || currentRoom.faction == gameManager.currentFaction)
+                StartCoroutine(TeleportPlayer());
+            else if(!currentRoom.cleared)
+                GameObject.FindWithTag("Tooltip").GetComponent<Tooltip>().ShowTooltip("Clear the room of enemies first!", 2f);
+        }
+            
     }
 
     /// <summary>

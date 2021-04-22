@@ -18,14 +18,4 @@ public class Room : MonoBehaviour
             if (t.CompareTag("AI")) npcs.Add(t);
         }
     }
-
-    public void UpdateRoom()
-    {
-        npcs.Clear();
-
-        foreach (Transform t in GetComponentsInChildren<Transform>())
-        {
-            if (t.CompareTag("AI")) npcs.Add(t);
-        }
-    }
 }

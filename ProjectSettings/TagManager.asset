@@ -9,6 +9,8 @@ TagManager:
   - HealthbarHolder
   - AI
   - SceneChanger
+  - Tooltip
+  - Room
   layers:
   - Default
   - TransparentFX

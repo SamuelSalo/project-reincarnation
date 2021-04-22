@@ -24,6 +24,7 @@ public class Character : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteFlash spriteFlasher;
     private GameSFX gameSFX;
+    private Room room;
 
     [Space] [Range(0f, 1f)] public float attackRate;
     public bool isPlayer;
@@ -45,7 +46,6 @@ public class Character : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
-
         health = maxHealth;
         PlayerControlled(isPlayer);
 
@@ -58,7 +58,7 @@ public class Character : MonoBehaviour
     public void PlayerControlled(bool _controlled)
     {
         rb.bodyType = _controlled ? RigidbodyType2D.Dynamic : RigidbodyType2D.Kinematic;
-
+        room = _controlled ? null : transform.parent.GetComponent<Room>();
         isPlayer = _controlled;
 
         playerMovement.enabled = _controlled;
@@ -133,13 +133,18 @@ public class Character : MonoBehaviour
     private void Death(Character _killer)
     {
         gameSFX.PlayDeathSFX();
+
         if (isPlayer)
+        {
             gameManager.PlayerDeath(_killer);
+        }  
         else
+        {
             gameManager.PlayerKill(this);
+            room.npcs.Remove(transform);
+        }
 
         Destroy(gameObject);
-
         floatingHealthbar.Dispose();
     }
 

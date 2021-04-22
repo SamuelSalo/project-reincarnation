@@ -7,6 +7,10 @@ using Faction = Character.Faction;
 public class Finish : MonoBehaviour
 {
     public Faction faction;
+    [Space]
+    public GameObject gameUI;
+    public GameObject finishUI;
+
     private Room room;
     private GameManager gameManager;
     private bool reach;
@@ -30,14 +34,21 @@ public class Finish : MonoBehaviour
 
     private void Update()
     {
-        //Allow player to backtrack freely and roam across cleared/own faction rooms, but require room to be cleared to advance
-        if (reach && Input.GetKeyDown(KeyCode.E) && gameManager.currentFaction != faction && room.cleared)
-            FinishGame();
+        if (reach && Input.GetKeyDown(KeyCode.E))
+        {
+            if (gameManager.currentFaction != faction && room.cleared)
+                FinishGame();
+            else if(gameManager.currentFaction == faction)
+                GameObject.FindWithTag("Tooltip").GetComponent<Tooltip>().ShowTooltip("Wrong direction! Go to the other end...", 2f);
+            else if(gameManager.currentFaction != faction && !room.cleared)
+                GameObject.FindWithTag("Tooltip").GetComponent<Tooltip>().ShowTooltip("Clear the room of enemies first!", 2f);
+        }
     }
 
     private void FinishGame()
     {
-        //todo
-        print("finished game, gg");
+        gameUI.SetActive(false);
+        finishUI.SetActive(true);
+        Time.timeScale = 0f;
     }
 }
