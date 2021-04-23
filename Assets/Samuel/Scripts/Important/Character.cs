@@ -35,13 +35,14 @@ public class Character : MonoBehaviour
     private void Start()
     {
         player = GetComponent<Player>();
-        gameSFX = GetComponent<GameSFX>();
         spriteFlasher = GetComponent<SpriteFlash>();
         ai = GetComponent<AI>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+
         gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+        gameSFX = GameObject.FindWithTag("AudioManager").GetComponent<GameSFX>();
 
         health = maxHealth;
         PlayerControlled(isPlayer);
@@ -97,6 +98,7 @@ public class Character : MonoBehaviour
         spriteFlasher.Flash();
 
         UpdateHealthbar();
+        gameSFX.PlayHealSFX();
     }
 
     /// <summary>
@@ -130,12 +132,14 @@ public class Character : MonoBehaviour
         if (isPlayer)
         {
             gameManager.PlayerDeath(_killer);
-            room.npcs.Remove(_killer.transform);
         }  
         else
         {
             gameManager.PlayerKill(this);
             room.npcs.Remove(transform);
+
+            if (_killer.faction == Faction.Red)
+                _killer.RestoreHealth(20f);
         }
 
         Destroy(gameObject);

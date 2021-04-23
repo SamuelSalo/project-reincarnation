@@ -1,37 +1,57 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
-[RequireComponent(typeof(AudioSource))]
 public class GameSFX : MonoBehaviour
 {
     public AudioClip[] hurtSFX;
     public AudioClip[] slashSFX;
     public AudioClip[] deathSFX;
     public AudioClip[] dashSFX;
-    private AudioSource audioSource;
-
-    private void Start()
-    {
-        audioSource = GetComponent<AudioSource>();
-    }
+    public AudioClip[] healSFX;
+    public AudioMixerGroup sfxGroup;
 
     public void PlayHurtSFX()
     {
-        audioSource.Stop();
-        audioSource.PlayOneShot(hurtSFX[Random.Range(0, hurtSFX.Length)]);
+        var audioSource = NewAudioInstance();
+        audioSource.clip = hurtSFX[Random.Range(0, hurtSFX.Length)];
+        audioSource.Play();
+        Destroy(audioSource.gameObject, audioSource.clip.length);
     }
     public void PlaySlashSFX()
     {
-        audioSource.Stop();
-        audioSource.PlayOneShot(slashSFX[Random.Range(0, slashSFX.Length)]);
+        var audioSource = NewAudioInstance();
+        audioSource.clip = slashSFX[Random.Range(0, slashSFX.Length)];
+        audioSource.Play();
+        Destroy(audioSource.gameObject, audioSource.clip.length);
     }
     public void PlayDeathSFX()
     {
-        audioSource.Stop();
-        audioSource.PlayOneShot(deathSFX[Random.Range(0, deathSFX.Length)]);
+        var audioSource = NewAudioInstance();
+        audioSource.clip = deathSFX[Random.Range(0, deathSFX.Length)];
+        audioSource.Play();
+        Destroy(audioSource.gameObject, audioSource.clip.length);
     }
     public void PlayDashSFX()
     {
-        audioSource.Stop();
-        audioSource.PlayOneShot(dashSFX[Random.Range(0, dashSFX.Length)]);
+        var audioSource = NewAudioInstance();
+        audioSource.clip = dashSFX[Random.Range(0, dashSFX.Length)];
+        audioSource.Play();
+        Destroy(audioSource.gameObject, audioSource.clip.length);
+    }
+    public void PlayHealSFX()
+    {
+        var audioSource = NewAudioInstance();
+        audioSource.clip = healSFX[Random.Range(0, healSFX.Length)];
+        audioSource.Play();
+        Destroy(audioSource.gameObject, audioSource.clip.length);
+    }
+
+    private AudioSource NewAudioInstance()
+    {
+        var audioObject = new GameObject("AudioSource Instance");
+        audioObject.transform.parent = transform;
+        var audioSource = audioObject.AddComponent<AudioSource>();
+        audioSource.outputAudioMixerGroup = sfxGroup;
+        return audioSource;
     }
 }

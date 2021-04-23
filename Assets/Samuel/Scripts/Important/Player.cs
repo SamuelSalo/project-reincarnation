@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         character = GetComponent<Character>();
-        gameSFX = GetComponent<GameSFX>();
+        gameSFX = GameObject.FindWithTag("AudioManager").GetComponent<GameSFX>();
         stamina = character.maxStamina;
     }
     private void Update()

@@ -1,23 +1,33 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class MenuSFX : MonoBehaviour
 {
     public AudioClip select;
     public AudioClip click;
-    private AudioSource audioSource;
-
-    private void Start()
-    {
-        audioSource = Camera.main.GetComponent<AudioSource>();
-    }
+    public AudioMixerGroup sfxGroup;
 
     public void PlaySelectSound()
     {
-        audioSource.PlayOneShot(select);
+        var audioSource = NewAudioInstance();
+        audioSource.clip = select;
+        audioSource.Play();
+        Destroy(audioSource.gameObject, audioSource.clip.length);
     }
 
     public void PlayClickSound()
     {
-        audioSource.PlayOneShot(click);
+        var audioSource = NewAudioInstance();
+        audioSource.clip = click;
+        audioSource.Play();
+        Destroy(audioSource.gameObject, audioSource.clip.length);
+    }
+    private AudioSource NewAudioInstance()
+    {
+        var audioObject = new GameObject("AudioSource Instance");
+        audioObject.transform.parent = transform;
+        var audioSource = audioObject.AddComponent<AudioSource>();
+        audioSource.outputAudioMixerGroup = sfxGroup;
+        return audioSource;
     }
 }
