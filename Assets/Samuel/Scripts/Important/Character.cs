@@ -1,10 +1,8 @@
 using UnityEngine.AI;
 using UnityEngine;
 
-[RequireComponent(typeof(AIMovement))]
-[RequireComponent(typeof(AICombat))]
-[RequireComponent(typeof(PlayerMovement))]
-[RequireComponent(typeof(PlayerCombat))]
+[RequireComponent(typeof(AI))]
+[RequireComponent(typeof(Player))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(NavMeshAgent))]
 public class Character : MonoBehaviour
@@ -14,13 +12,11 @@ public class Character : MonoBehaviour
 
     [HideInInspector] public GameManager gameManager;
     [HideInInspector] public Animator animator;
-    [HideInInspector] public PlayerMovement playerMovement;
+    [HideInInspector] public Player player;
     [HideInInspector] public FloatingHealthbar floatingHealthbar;
 
-    private AIMovement aiMovement;
-    private AICombat aiCombat;
+    private AI ai;
     private NavMeshAgent agent;
-    private PlayerCombat playerCombat;
     private Rigidbody2D rb;
     private SpriteFlash spriteFlasher;
     private GameSFX gameSFX;
@@ -30,25 +26,25 @@ public class Character : MonoBehaviour
     public bool isPlayer;
     public bool isBoss;
     public float maxHealth;
+    public float maxStamina;
+    public float staminaRecovery;
     public float damage;
 
     [HideInInspector] public float health;
 
     private void Start()
     {
-        playerMovement = GetComponent<PlayerMovement>();
+        player = GetComponent<Player>();
         gameSFX = GetComponent<GameSFX>();
         spriteFlasher = GetComponent<SpriteFlash>();
-        playerCombat = GetComponent<PlayerCombat>();
-        aiMovement = GetComponent<AIMovement>();
+        ai = GetComponent<AI>();
         agent = GetComponent<NavMeshAgent>();
-        aiCombat = GetComponent<AICombat>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+
         health = maxHealth;
         PlayerControlled(isPlayer);
-
         CreateHealthbar();
     }
 
@@ -61,12 +57,9 @@ public class Character : MonoBehaviour
         room = _controlled ? null : transform.parent.GetComponent<Room>();
         isPlayer = _controlled;
 
-        playerMovement.enabled = _controlled;
-        playerCombat.enabled = _controlled;
-        aiMovement.enabled = !_controlled;
-        aiCombat.enabled = !_controlled;
+        player.enabled = _controlled;
+        ai.enabled = !_controlled;
         agent.enabled = !_controlled;
-
 
         if (_controlled)
             transform.tag = "Player";
@@ -114,10 +107,10 @@ public class Character : MonoBehaviour
     {
         if (isPlayer)
         {
-            animator.SetFloat("xMove", playerMovement.moveDirection.x);
-            animator.SetFloat("yMove", playerMovement.moveDirection.y);
-            animator.SetFloat("moveMagnitude", playerMovement.moveDirection.normalized.magnitude);
-            animator.SetBool("rotationLock", playerMovement.rotationLock);
+            animator.SetFloat("xMove", player.moveDirection.x);
+            animator.SetFloat("yMove", player.moveDirection.y);
+            animator.SetFloat("moveMagnitude", player.moveDirection.normalized.magnitude);
+            animator.SetBool("rotationLock", player.rotationLock);
         }
         else
         {
@@ -137,6 +130,7 @@ public class Character : MonoBehaviour
         if (isPlayer)
         {
             gameManager.PlayerDeath(_killer);
+            room.npcs.Remove(_killer.transform);
         }  
         else
         {
@@ -154,9 +148,9 @@ public class Character : MonoBehaviour
     public void ActivateHurtbox()
     {
         if (isPlayer)
-            playerCombat.ActivateAttackHurtbox();
+            player.ActivateAttackHurtbox();
         else
-            aiCombat.ActivateAttackHurtbox();
+            ai.ActivateAttackHurtbox();
     }
 
     /// <summary>

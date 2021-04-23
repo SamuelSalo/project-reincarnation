@@ -52,7 +52,7 @@ public class Teleporter : MonoBehaviour
     private IEnumerator TeleportPlayer()
     {
         teleporting = true;
-        gameManager.currentCharacter.playerMovement.teleporting = teleporting;
+        gameManager.currentCharacter.player.teleporting = teleporting;
         fader.FadeOut();
 
         yield return new WaitForSeconds(1f);
@@ -60,7 +60,7 @@ public class Teleporter : MonoBehaviour
 
         
         teleporting = false;
-        gameManager.currentCharacter.playerMovement.teleporting = teleporting;
+        gameManager.currentCharacter.player.teleporting = teleporting;
         fader.FadeIn();
     }
 }

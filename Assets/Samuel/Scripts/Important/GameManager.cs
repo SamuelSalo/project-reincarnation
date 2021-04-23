@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     [Space]
     public GameObject deathUI;
     public GameObject gameUI;
-    private List<AIMovement> enemyAIs;
+    private List<AI> enemyAIs;
 
     [Space] [Header("PermaDeath")]
     public bool permaDeath;
@@ -73,13 +73,13 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void UpdateEnemies()
     {
-        enemyAIs = new List<AIMovement>();
+        enemyAIs = new List<AI>();
 
         foreach(GameObject g in GameObject.FindGameObjectsWithTag("AI"))
         {
-            enemyAIs.Add(g.GetComponent<AIMovement>());
+            enemyAIs.Add(g.GetComponent<AI>());
         }
-        foreach(AIMovement ai in enemyAIs)
+        foreach(AI ai in enemyAIs)
         {
             ai.target = currentCharacter.transform;
         }  

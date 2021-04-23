@@ -3,8 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(AICombat))]
-public class AIMovement : MonoBehaviour
+public class AI : MonoBehaviour
 {
     public enum State { Patrolling, Chasing, Attacking }
 
@@ -29,7 +28,6 @@ public class AIMovement : MonoBehaviour
 
     [HideInInspector] public Transform target;
 
-    private AICombat aiCombat;
 	private NavMeshAgent agent;
     private Character character;
 
@@ -39,10 +37,10 @@ public class AIMovement : MonoBehaviour
 
     public bool drawRangeGizmos;
     private bool idling = false;
+    private float timer;
 
     private void Start()
 	{
-        aiCombat = GetComponent<AICombat>();
 		agent = GetComponent<NavMeshAgent>();
         character = GetComponent<Character>();
 
@@ -114,7 +112,7 @@ public class AIMovement : MonoBehaviour
         {
             agent.isStopped = true;
             state = State.Attacking;
-            aiCombat.Attack();
+            Attack();
         }
     }
 
@@ -190,5 +188,40 @@ public class AIMovement : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(3f, 5f));
         patrolDestination = Vector2.zero;
         idling = false;
+    }
+
+    /// <summary>
+    /// Activates a temporary hurtbox and deals damage to all hostile characters inside it.
+    /// </summary>
+    public void ActivateAttackHurtbox()
+    {
+        var hits = Physics2D.OverlapBoxAll(transform.position + transform.up, new Vector2(1f, 1f), 0f);
+        if (hits.Length != 0)
+        {
+            foreach (Collider2D hit in hits)
+            {
+                if (hit.transform.CompareTag("Player") && hit.transform.GetComponent<Character>().faction != character.faction)
+                    character.DealDamage(character.damage, hit.transform.GetComponent<Character>());
+            }
+        }
+    }
+    /// <summary>
+    /// AIMovement calls this to attack when in range.
+    /// </summary>
+    public void Attack()
+    {
+        if (Time.time < timer) return;
+
+        timer = Time.time + 1f / character.attackRate;
+        character.animator.SetTrigger("Attack");
+        StartCoroutine(ResetAttack());
+    }
+    /// <summary>
+    /// Reset AI after attack.
+    /// </summary>
+    IEnumerator ResetAttack()
+    {
+        yield return new WaitForSeconds(1f / character.attackRate);
+        state = State.Chasing;
     }
 }
