@@ -2,11 +2,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
-    public Character.Faction currentFaction;
-    public Character currentCharacter;
+    [HideInInspector] public Character.Faction playerFaction;
+    [HideInInspector] public Character playerCharacter;
+
     public CameraFollow cameraFollow;
     public LightFollow lightFollow;
 
@@ -14,6 +16,7 @@ public class GameManager : MonoBehaviour
     public Slider healthBar;
     public TMP_Text healthText;
     public Image healthBarFill;
+    public Slider staminaBar;
     public TMP_Text permaDeathText;
     public Slider permaDeathBar;
     public TMP_Text livesText;
@@ -27,15 +30,12 @@ public class GameManager : MonoBehaviour
     public float permaDeathTimer = 300f;
     public int lives = 3;
 
-    private void Start()
-    {
-        UpdateEnemies();
-    }
-
     private void FixedUpdate()
     {
         UpdatePermaDeath();
-        UpdateHealthBar();
+
+        if(playerCharacter)
+            UpdateUI();
     }
 
     /// <summary>
@@ -52,18 +52,9 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        currentCharacter = _killer;
-        currentFaction = currentCharacter.faction;
-        currentCharacter.PlayerControlled(true);
-        currentCharacter.transform.SetParent(null);
-
-        healthBarFill.color = currentFaction == Character.Faction.Red ? Color.red : Color.blue;
-        _killer.UpdateHealthbar();
-
-        cameraFollow.target = currentCharacter.transform;
-        lightFollow.target = currentCharacter.transform;
-        
-        UpdateEnemies();
+        SetPlayer(_killer);
+        playerCharacter.PlayerControlled(true);
+        playerCharacter.transform.SetParent(null);
     }
     
     /// <summary>
@@ -71,7 +62,7 @@ public class GameManager : MonoBehaviour
     /// Then set that updated list's target as the player.
     /// TODO: faction differences
     /// </summary>
-    private void UpdateEnemies()
+    private void UpdateAIs()
     {
         enemyAIs = new List<AI>();
 
@@ -81,7 +72,7 @@ public class GameManager : MonoBehaviour
         }
         foreach(AI ai in enemyAIs)
         {
-            ai.target = currentCharacter.transform;
+            ai.target = playerCharacter.transform;
         }  
     }
     /// <summary>
@@ -90,7 +81,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void PlayerKill(Character character)
     {
-        UpdateEnemies();
+        UpdateAIs();
     }
 
     /// <summary>
@@ -126,10 +117,27 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Update healthbar visuals
     /// </summary>
-    private void UpdateHealthBar()
+    private void UpdateUI()
     {
-        healthBar.maxValue = currentCharacter.maxHealth;
-        healthBar.value = currentCharacter.health;
-        healthText.text = $"{currentCharacter.health} / {currentCharacter.maxHealth}";
+        healthBar.maxValue = playerCharacter.maxHealth;
+        healthBar.value = playerCharacter.health;
+        healthText.text = $"{playerCharacter.health} / {playerCharacter.maxHealth}";
+        staminaBar.maxValue = playerCharacter.maxStamina;
+        staminaBar.value = playerCharacter.player.stamina;
+    }
+
+    /// <summary>
+    /// Sets player character as param
+    /// Sets other stuff accordingly
+    /// </summary>
+    public void SetPlayer(Character _playerCharacter)
+    {
+        playerCharacter = _playerCharacter;
+        playerFaction = playerCharacter.faction;
+        healthBarFill.color = playerFaction == Character.Faction.Red ? Color.red : Color.blue;
+        cameraFollow.target = playerCharacter.transform;
+        lightFollow.target = playerCharacter.transform;
+
+        UpdateAIs();
     }
 }

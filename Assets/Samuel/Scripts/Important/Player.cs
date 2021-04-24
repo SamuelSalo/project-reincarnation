@@ -1,23 +1,19 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
     [Header("Movement")]
-    [Range(1, 4)] public float moveSpeed;
-    [Range(0.05f, 0.3f)] public float moveSmoothing;
-    [Range(0.05f, 1f)] public float turnSmoothing;
+    [Range(1, 4)] public float moveSpeed = 3f;
+    [Range(0.05f, 0.3f)] public float moveSmoothing = 0.1f;
+    [Range(0.05f, 1f)] public float turnSmoothing = 0.5f;
 
     [Space] [Header("Dashing")]
-    [Range(0f, 3f)] public float dashCooldown;
-    [Range(10f, 20f)] public float dashSpeed;
+    [Range(0f, 3f)] public float dashCooldown = 1f;
+    [Range(10f, 20f)] public float dashSpeed = 15f;
 
-    [Space] [Header("UI")]
-    public Slider staminaBar;
-
-    private float stamina;
+    [HideInInspector] public float stamina;
     private float dashTimer;
     private float attackTimer;
     private bool dash;
@@ -30,7 +26,6 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Character character;
     private GameSFX gameSFX;
-    [HideInInspector] public bool rotationLock;
     [HideInInspector] public bool teleporting;
 
     private void Start()
@@ -95,7 +90,6 @@ public class Player : MonoBehaviour
     private void GetInput()
     {
         //Movement Input
-        rotationLock = Input.GetKey(KeyCode.LeftShift);
         moveDirection = transform.TransformDirection(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0f);
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         var heading = mousePos - transform.position;
@@ -132,10 +126,6 @@ public class Player : MonoBehaviour
             stamina += Time.deltaTime * character.staminaRecovery;
             stamina = Mathf.Clamp(stamina, 0f, character.maxStamina);
         }
-
-        //Stamina UI
-        staminaBar.maxValue = character.maxStamina;
-        staminaBar.value = stamina;
     }
 
     private IEnumerator RecoveryDelay()

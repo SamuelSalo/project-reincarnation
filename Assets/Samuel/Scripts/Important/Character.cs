@@ -22,13 +22,13 @@ public class Character : MonoBehaviour
     private GameSFX gameSFX;
     private Room room;
 
-    [Space] [Range(0f, 1f)] public float attackRate;
+    [Space] [Range(0f, 1f)] public float attackRate = 0.75f;
     public bool isPlayer;
-    public bool isBoss;
-    public float maxHealth;
-    public float maxStamina;
-    public float staminaRecovery;
-    public float damage;
+    public bool isBoss = false;
+    public float maxHealth = 100f;
+    public float maxStamina = 100f;
+    public float staminaRecovery = 10f;
+    public float damage = 25f;
 
     [HideInInspector] public float health;
 
@@ -112,7 +112,6 @@ public class Character : MonoBehaviour
             animator.SetFloat("xMove", player.moveDirection.x);
             animator.SetFloat("yMove", player.moveDirection.y);
             animator.SetFloat("moveMagnitude", player.moveDirection.normalized.magnitude);
-            animator.SetBool("rotationLock", player.rotationLock);
         }
         else
         {

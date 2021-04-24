@@ -33,11 +33,11 @@ public class Finish : MonoBehaviour
     {
         if (reach && Input.GetKeyDown(KeyCode.E))
         {
-            if (gameManager.currentFaction != faction && room.cleared)
+            if (gameManager.playerFaction != faction && room.cleared)
                 FinishGame();
-            else if(gameManager.currentFaction == faction)
+            else if(gameManager.playerFaction == faction)
                 GameObject.FindWithTag("Tooltip").GetComponent<Tooltip>().ShowTooltip("Wrong direction! Go to the other end...", 2f);
-            else if(gameManager.currentFaction != faction && !room.cleared)
+            else if(gameManager.playerFaction != faction && !room.cleared)
                 GameObject.FindWithTag("Tooltip").GetComponent<Tooltip>().ShowTooltip("Clear the room of enemies first!", 2f);
         }
     }

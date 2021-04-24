@@ -13,18 +13,18 @@ public class AI : MonoBehaviour
 
     [Space]
 
-    [Range(0,10)]public float chaseRange;
-    [Range(0, 10)] public float patrolRange;
-    [Range(0, 10)] public float attackRange;
+    [Range(0,10)]public float chaseRange = 5f;
+    [Range(0, 10)] public float patrolRange = 4f;
+    [Range(0, 10)] public float attackRange = 1f;
 
     [Space]
 
-    [Range(0, 5)] public float chaseSpeed;
-    [Range(0, 5)] public float patrolSpeed;
+    [Range(0, 5)] public float chaseSpeed = 2.5f;
+    [Range(0, 5)] public float patrolSpeed = 1.5f;
 
     [Space]
 
-    [Range(0f, 0.3f)] public float turnSmoothing;
+    [Range(0f, 0.3f)] public float turnSmoothing = 0.2f;
 
     [HideInInspector] public Transform target;
 
@@ -35,9 +35,10 @@ public class AI : MonoBehaviour
 
     [Space]
 
-    public bool drawRangeGizmos;
+    public bool drawRangeGizmos = false;
     private bool idling = false;
     private float timer;
+    private float patrollingTimer;
 
     private void Start()
 	{
@@ -56,11 +57,14 @@ public class AI : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, chaseRange);
         Gizmos.DrawWireSphere(transform.position, attackRange);
         Gizmos.DrawWireSphere(transform.position, patrolRange);
+        Gizmos.DrawLine(transform.position, agent.destination);
     }
 
     // Update state of AI, then do actions depending on said state.
     private void FixedUpdate()
     {
+        if (!target) return;
+
         UpdateAIState();
         character.UpdateAnimator();
 
@@ -93,7 +97,7 @@ public class AI : MonoBehaviour
     private void UpdateAIState()
     {
         if (Vector2.Distance(transform.position, target.position) < chaseRange
-            && character.gameManager.currentFaction != character.faction)
+            && character.gameManager.playerFaction != character.faction)
         {
             state = State.Chasing;
         }
@@ -108,7 +112,7 @@ public class AI : MonoBehaviour
         } 
 
         if (Vector2.Distance(transform.position, target.position) <= attackRange
-            && character.gameManager.currentFaction != character.faction)
+            && character.gameManager.playerFaction != character.faction)
         {
             agent.isStopped = true;
             state = State.Attacking;
@@ -144,8 +148,9 @@ public class AI : MonoBehaviour
 
         transform.up = Vector2.Lerp(transform.up, agent.velocity.normalized, turnSmoothing);
         agent.isStopped = false;
+        patrollingTimer += Time.fixedDeltaTime;
 
-        if (Vector2.Distance(transform.position, patrolDestination) < attackRange)
+        if (Vector2.Distance(transform.position, patrolDestination) < attackRange || agent.isPathStale || patrollingTimer > 5f)
             StartCoroutine(ResetPatrol());
     }
 
@@ -173,7 +178,7 @@ public class AI : MonoBehaviour
             position = Random.insideUnitCircle.normalized * Random.Range(2f, patrolRange);
             position = transform.TransformPoint(position);
         }
-        while (Physics2D.OverlapCircle(position, 0.5f, LayerMask.GetMask("Wall")));
+        while (Physics2D.OverlapCircle(position, 0.5f, LayerMask.GetMask("Wall")) || !Physics2D.OverlapCircle(position, 0.5f));
         return position;
     }
 
@@ -183,6 +188,7 @@ public class AI : MonoBehaviour
     /// </summary>
     private IEnumerator ResetPatrol()
     {
+        patrollingTimer = 0f;
         idling = true;
         agent.isStopped = true;
         yield return new WaitForSeconds(Random.Range(3f, 5f));

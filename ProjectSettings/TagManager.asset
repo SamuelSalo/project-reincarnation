@@ -12,6 +12,7 @@ TagManager:
   - Tooltip
   - Room
   - AudioManager
+  - StaminaBar
   layers:
   - Default
   - TransparentFX
