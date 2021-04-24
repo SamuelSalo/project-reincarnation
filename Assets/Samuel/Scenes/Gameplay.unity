@@ -12893,7 +12893,7 @@ MonoBehaviour:
   patrolSpeed: 1.5
   turnSmoothing: 0.2
   target: {fileID: 0}
-  drawRangeGizmos: 1
+  drawRangeGizmos: 0
 --- !u!114 &561936857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13144,11 +13144,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -3602923481966018634, guid: 917c9f827359d19419eec58b49ef982f, type: 2}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 21202cd0b34a5b640b4b2dbe9f923f65, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -17337,8 +17337,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   faction: 0
-  gameUI: {fileID: 0}
-  finishUI: {fileID: 0}
+  gameUI: {fileID: 1652794956}
+  finishUI: {fileID: 1949486192}
 --- !u!212 &1269774150
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -30896,7 +30896,7 @@ MonoBehaviour:
   patrolSpeed: 1.5
   turnSmoothing: 0.2
   target: {fileID: 0}
-  drawRangeGizmos: 1
+  drawRangeGizmos: 0
 --- !u!114 &2104317289
 MonoBehaviour:
   m_ObjectHideFlags: 0
