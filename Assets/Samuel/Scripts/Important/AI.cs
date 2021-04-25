@@ -217,17 +217,8 @@ public class AI : MonoBehaviour
     public void Attack()
     {
         if (Time.time < timer) return;
-
-        timer = Time.time + 1f / character.attackRate;
+        timer = Time.time + (1f / character.attackRate);
         character.animator.SetTrigger("Attack");
-        StartCoroutine(ResetAttack());
-    }
-    /// <summary>
-    /// Reset AI after attack.
-    /// </summary>
-    IEnumerator ResetAttack()
-    {
-        yield return new WaitForSeconds(1f / character.attackRate);
         state = State.Chasing;
     }
 }
