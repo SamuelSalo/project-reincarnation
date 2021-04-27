@@ -32,7 +32,7 @@ public class StartMenu : MonoBehaviour
     public void StartAsHuman()
     {
         Time.timeScale = 1f;
-        var player = Instantiate(Resources.Load("Characters/Player/PlayerHuman"), Vector2.zero, Quaternion.identity) as GameObject;
+        var player = Instantiate(Resources.Load("Characters/Player/Human/PlayerHuman"), Vector2.zero, Quaternion.identity) as GameObject;
         gameManager.SetPlayer(player.GetComponent<Character>());
         gameUI.SetActive(true);
         Destroy(gameObject);

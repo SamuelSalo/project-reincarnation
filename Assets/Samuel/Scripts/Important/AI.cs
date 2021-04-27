@@ -97,7 +97,7 @@ public class AI : MonoBehaviour
     private void UpdateAIState()
     {
         if (Vector2.Distance(transform.position, target.position) < chaseRange
-            && character.gameManager.playerFaction != character.faction)
+            && character.gameManager.playerFaction != character.faction && Vector2.Distance(transform.position, target.position) > attackRange)
         {
             state = State.Chasing;
         }
@@ -219,6 +219,5 @@ public class AI : MonoBehaviour
         if (Time.time < timer) return;
         timer = Time.time + (1f / character.attackRate);
         character.animator.SetTrigger("Attack");
-        state = State.Chasing;
     }
 }
