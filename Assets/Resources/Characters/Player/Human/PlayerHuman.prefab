@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 451280612535066565}
   - component: {fileID: 8335649446791732639}
   m_Layer: 0
-  m_Name: PlayerHumanPrefab
+  m_Name: PlayerHuman
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 1722927047
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: -6834504477835316451, guid: 1a9c4cf63ef67ab4aaac618f35f030f4, type: 3}
+  m_Sprite: {fileID: -5771691187248850798, guid: 04a1f2d8954893a46b390ffce295293e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -165,6 +165,7 @@ MonoBehaviour:
   turnSmoothing: 0.5
   dashCooldown: 1
   dashSpeed: 15
+  stamina: 0
   moveDirection: {x: 0, y: 0}
   teleporting: 0
 --- !u!114 &784194987325364161
