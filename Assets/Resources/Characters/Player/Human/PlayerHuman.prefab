@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 8195697080878502728}
   - component: {fileID: 3442402509231621274}
   - component: {fileID: 7401800105152664630}
-  - component: {fileID: 3395877143363640303}
   - component: {fileID: 3052319445244958276}
   - component: {fileID: 4179035785331642260}
   - component: {fileID: 784194987325364161}
   - component: {fileID: 7551683567157436563}
   - component: {fileID: 451280612535066565}
   - component: {fileID: 8335649446791732639}
+  - component: {fileID: -2309118064029980862}
   m_Layer: 0
   m_Name: PlayerHuman
   m_TagString: Player
@@ -111,22 +111,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &3395877143363640303
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7253177314476736474}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!114 &3052319445244958276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,3 +230,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!58 &-2309118064029980862
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7253177314476736474}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.55

@@ -20,7 +20,7 @@ public class Character : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteFlash spriteFlasher;
     private GameSFX gameSFX;
-    private Room room;
+    [HideInInspector] public Room room;
 
     [Space]
 
@@ -57,7 +57,10 @@ public class Character : MonoBehaviour
     public void PlayerControlled(bool _controlled)
     {
         rb.bodyType = _controlled ? RigidbodyType2D.Dynamic : RigidbodyType2D.Kinematic;
-        room = _controlled ? null : transform.parent.GetComponent<Room>();
+
+        if(!_controlled)
+            room = transform.parent.GetComponent<Room>();
+
         isPlayer = _controlled;
 
         player.enabled = _controlled;

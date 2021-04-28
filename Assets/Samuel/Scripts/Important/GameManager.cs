@@ -55,6 +55,9 @@ public class GameManager : MonoBehaviour
         SetPlayer(_killer);
         playerCharacter.PlayerControlled(true);
         playerCharacter.transform.SetParent(null);
+
+        if(_killer.room && _killer.room.npcs.Contains(_killer.transform))
+            _killer.room.npcs.Remove(_killer.transform);
     }
     
     /// <summary>

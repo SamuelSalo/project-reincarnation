@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 8764407121004817331}
   - component: {fileID: 8764407121004817342}
   - component: {fileID: 8764407121004817337}
-  - component: {fileID: 8764407121004817336}
   - component: {fileID: 8764407121004817339}
   - component: {fileID: 8764407121004817333}
   - component: {fileID: 8764407121004817335}
   - component: {fileID: 8764407121004817334}
   - component: {fileID: 8764407121004817329}
   - component: {fileID: 8764407121004817328}
+  - component: {fileID: -7344224624832261755}
   m_Layer: 0
   m_Name: PlayerRoach
   m_TagString: AI
@@ -111,22 +111,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &8764407121004817336
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8764407121004817330}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!114 &8764407121004817339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,3 +230,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!58 &-7344224624832261755
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8764407121004817330}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.56

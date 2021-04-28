@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 4185865905383392668}
   - component: {fileID: 4185865905383392657}
   - component: {fileID: 4185865905383392662}
-  - component: {fileID: 4185865905383392663}
   - component: {fileID: 4185865905383392660}
   - component: {fileID: 4185865905383392666}
   - component: {fileID: 4185865905383392664}
   - component: {fileID: 4185865905383392665}
   - component: {fileID: 4185865905383392670}
   - component: {fileID: 4185865905383392671}
+  - component: {fileID: -1391616618812343522}
   m_Layer: 0
   m_Name: PlayerSpider
   m_TagString: AI
@@ -111,22 +111,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &4185865905383392663
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4185865905383392669}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!114 &4185865905383392660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,3 +230,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!58 &-1391616618812343522
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4185865905383392669}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.58
