@@ -85,6 +85,7 @@ public class AI : MonoBehaviour
             case State.Attacking:
                 transform.up = (Vector2)(target.position - transform.position).normalized;
                 character.floatingHealthbar.visible = true;
+                agent.speed = .2f;
                 break;
         }
     }
@@ -175,7 +176,7 @@ public class AI : MonoBehaviour
 
         do
         {
-            position = Random.insideUnitCircle.normalized * Random.Range(2f, patrolRange);
+            position = Random.insideUnitCircle.normalized * Random.Range(attackRange * 2, patrolRange);
             position = transform.TransformPoint(position);
         }
         while (Physics2D.OverlapCircle(position, 0.5f, LayerMask.GetMask("Wall")) || !Physics2D.OverlapCircle(position, 0.5f));

@@ -23,10 +23,11 @@ public class Player : MonoBehaviour
     private Vector2 lookDirection;
     private Vector2 refVelocity = Vector2.zero;
 
-    private Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
     private Character character;
     private GameSFX gameSFX;
     [HideInInspector] public bool teleporting;
+    private float currentSpeed;
 
     private void Start()
     {
@@ -41,6 +42,7 @@ public class Player : MonoBehaviour
 
         GetInput();
         UpdateStamina();
+        currentSpeed = character.animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") ? .2f : moveSpeed;
     }
 
     // Move smoothly according to movement vector in relation to player direction.
@@ -48,8 +50,8 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         if (teleporting) return;
-
-        rb.velocity = Vector2.SmoothDamp(rb.velocity, moveDirection * moveSpeed, ref refVelocity, moveSmoothing);
+        
+        rb.velocity = Vector2.SmoothDamp(rb.velocity, moveDirection * currentSpeed, ref refVelocity, moveSmoothing);
         transform.up = Vector2.Lerp(transform.up, lookDirection, turnSmoothing);
 
         character.UpdateAnimator();
@@ -90,7 +92,7 @@ public class Player : MonoBehaviour
     private void GetInput()
     {
         //Movement Input
-        moveDirection = transform.TransformDirection(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0f);
+        moveDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         var heading = mousePos - transform.position;
         lookDirection = heading / heading.magnitude;

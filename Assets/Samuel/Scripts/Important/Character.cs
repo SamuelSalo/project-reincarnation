@@ -114,14 +114,21 @@ public class Character : MonoBehaviour
     {
         if (isPlayer)
         {
-            animator.SetFloat("xMove", player.moveDirection.x);
-            animator.SetFloat("yMove", player.moveDirection.y);
-            animator.SetFloat("moveMagnitude", player.moveDirection.normalized.magnitude);
+            if(player.moveDirection == Vector2.zero)
+            {
+                animator.SetFloat("xMove", 0f);
+                animator.SetFloat("yMove", 0f);
+                return;
+            }
+            var velocity = transform.InverseTransformVector(player.rb.velocity.normalized);
+            animator.SetFloat("xMove", velocity.x);
+            animator.SetFloat("yMove", velocity.y);
         }
         else
         {
-            animator.SetFloat("moveMagnitude", agent.velocity.normalized.magnitude);
-            animator.SetBool("rotationLock", false);
+            var velocity = transform.InverseTransformVector(agent.velocity.normalized);
+            animator.SetFloat("xMove", velocity.x);
+            animator.SetFloat("yMove", velocity.y);
         }
     }
 

@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 1722927047
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9169104380055688222, guid: 1a9c4cf63ef67ab4aaac618f35f030f4, type: 3}
+  m_Sprite: {fileID: 4687347902702853, guid: 6965407fab45fb949bb024e1b943bfa4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -130,6 +130,7 @@ MonoBehaviour:
   dashSpeed: 15
   stamina: 0
   moveDirection: {x: 0, y: 0}
+  rb: {fileID: 0}
   teleporting: 0
 --- !u!114 &4185865905383392666
 MonoBehaviour:
@@ -169,6 +170,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   player: {fileID: 0}
   floatingHealthbar: {fileID: 0}
+  room: {fileID: 0}
   attackRate: 1
   isPlayer: 0
   isBoss: 0
@@ -245,4 +247,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.58
+  m_Radius: 1.69

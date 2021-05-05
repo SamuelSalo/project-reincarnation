@@ -12,17 +12,7 @@ public class StartMenu : MonoBehaviour
     public void StartAsMonster()
     {
         Time.timeScale = 1f;
-        GameObject player;
-        var rng = Random.Range(1, 3);
-        if(rng == 1)
-            player = Instantiate(Resources.Load("Characters/Player/Monster/PlayerSpider"), Vector2.zero, Quaternion.identity) as GameObject;
-        else if (rng == 2)
-            player = Instantiate(Resources.Load("Characters/Player/Monster/PlayerRoach"), Vector2.zero, Quaternion.identity) as GameObject;
-        else if (rng == 3)
-            player = Instantiate(Resources.Load("Characters/Player/Monster/PlayerAnt"), Vector2.zero, Quaternion.identity) as GameObject;
-
-        else player = Instantiate(Resources.Load("Characters/Player/Monster/PlayerSpider"), Vector2.zero, Quaternion.identity) as GameObject;
-
+        GameObject player = Instantiate(Resources.Load("Characters/Player/PlayerSpider"), Vector2.zero, Quaternion.identity) as GameObject;
         gameManager.SetPlayer(player.GetComponent<Character>());
         gameUI.SetActive(true);
         gameObject.SetActive(false);
@@ -32,7 +22,7 @@ public class StartMenu : MonoBehaviour
     public void StartAsHuman()
     {
         Time.timeScale = 1f;
-        var player = Instantiate(Resources.Load("Characters/Player/Human/PlayerHuman"), Vector2.zero, Quaternion.identity) as GameObject;
+        var player = Instantiate(Resources.Load("Characters/Player/PlayerHuman"), Vector2.zero, Quaternion.identity) as GameObject;
         gameManager.SetPlayer(player.GetComponent<Character>());
         gameUI.SetActive(true);
         Destroy(gameObject);
