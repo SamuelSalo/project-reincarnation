@@ -124,12 +124,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  chaseRange: 0
-  patrolRange: 0
-  attackRange: 0
-  chaseSpeed: 0
-  patrolSpeed: 0
-  turnSmoothing: 0
+  chaseRange: 5
+  patrolRange: 4
+  attackRange: 1
+  chaseSpeed: 2.5
+  patrolSpeed: 1.5
+  turnSmoothing: 0.2
   target: {fileID: 0}
   drawRangeGizmos: 0
 --- !u!114 &4179035785331642260
@@ -144,13 +144,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98961f2f3a500fb4abc1b9d768d0d7ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  moveSpeed: 2.5
   moveSmoothing: 0.1
   turnSmoothing: 0.5
   dashCooldown: 1
   dashSpeed: 15
   stamina: 0
   moveDirection: {x: 0, y: 0}
+  rb: {fileID: 0}
   teleporting: 0
 --- !u!114 &784194987325364161
 MonoBehaviour:
@@ -169,6 +170,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   player: {fileID: 0}
   floatingHealthbar: {fileID: 0}
+  room: {fileID: 0}
   attackRate: 0.75
   isPlayer: 1
   isBoss: 0
@@ -187,13 +189,13 @@ NavMeshAgent:
   m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.5
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 0.1
   m_BaseOffset: 0
