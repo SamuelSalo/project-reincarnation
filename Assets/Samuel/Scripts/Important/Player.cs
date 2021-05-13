@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     private GameSFX gameSFX;
     [HideInInspector] public bool teleporting;
     private float currentSpeed;
+    private bool attacking;
+    private float attackDuration;
 
     private void Start()
     {
@@ -35,10 +37,11 @@ public class Player : MonoBehaviour
         character = GetComponent<Character>();
         gameSFX = GameObject.FindWithTag("AudioManager").GetComponent<GameSFX>();
         stamina = character.maxStamina;
+        attackDuration = character.faction == Character.Faction.Blue ? 0.5f : 0.7f;
     }
     private void Update()
     {
-        if (teleporting) { rb.velocity = Vector2.zero; return; }
+        if (teleporting || attacking) { rb.velocity = Vector2.zero; return; }
 
         GetInput();
         UpdateStamina();
@@ -49,7 +52,7 @@ public class Player : MonoBehaviour
     // Rotate character towards mouse cursor.
     private void FixedUpdate()
     {
-        if (teleporting) return;
+        if (teleporting || attacking) return;
         
         rb.velocity = Vector2.SmoothDamp(rb.velocity, moveDirection * currentSpeed, ref refVelocity, moveSmoothing);
         transform.up = Vector2.Lerp(transform.up, lookDirection, turnSmoothing);
@@ -63,8 +66,8 @@ public class Player : MonoBehaviour
             gameSFX.PlayDashSFX();
 
             stamina -= 20f;
-            StopCoroutine(nameof(RecoveryDelay));
-            StartCoroutine(RecoveryDelay());
+            StopCoroutine(nameof(DashRoutine));
+            StartCoroutine(DashRoutine());
 
         }
     }
@@ -104,8 +107,8 @@ public class Player : MonoBehaviour
             attackTimer = Time.time + 1f / character.attackRate;
             stamina -= 20f;
 
-            StopCoroutine(nameof(RecoveryDelay));
-            StartCoroutine(RecoveryDelay());
+            StopCoroutine(nameof(AttackRoutine));
+            StartCoroutine(AttackRoutine());
 
             character.animator.SetTrigger("Attack");
         }
@@ -130,7 +133,15 @@ public class Player : MonoBehaviour
         }
     }
 
-    private IEnumerator RecoveryDelay()
+    private IEnumerator AttackRoutine()
+    {
+        recoveringStamina = false;
+        attacking = true;
+        yield return new WaitForSeconds(attackDuration);
+        recoveringStamina = true;
+        attacking = false;
+    }
+    private IEnumerator DashRoutine()
     {
         recoveringStamina = false;
         yield return new WaitForSeconds(0.5f);

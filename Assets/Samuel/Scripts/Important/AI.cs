@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -32,13 +33,15 @@ public class AI : MonoBehaviour
     private Character character;
 
     private Vector2 patrolDestination = Vector2.zero;
-
+    private Vector2 atkDirection;
     [Space]
 
     public bool drawRangeGizmos = false;
     private bool idling = false;
     private float timer;
     private float patrollingTimer;
+    private bool attacking;
+    private float attackDuration;
 
     private void Start()
 	{
@@ -48,7 +51,9 @@ public class AI : MonoBehaviour
 		agent.updateRotation = false;
 		agent.updateUpAxis = false;
         agent.isStopped = true;
-	}
+
+        attackDuration = character.faction == Character.Faction.Blue ? 0.5f : 0.7f;
+    }
 
     private void OnDrawGizmos()
     {
@@ -83,10 +88,14 @@ public class AI : MonoBehaviour
                 break;
 
             case State.Attacking:
-                transform.up = (Vector2)(target.position - transform.position).normalized;
                 character.floatingHealthbar.visible = true;
-                agent.speed = .2f;
                 break;
+        }
+
+        if(attacking)
+        {
+            agent.velocity = Vector3.zero;
+            transform.up = atkDirection;
         }
     }
 
@@ -115,7 +124,6 @@ public class AI : MonoBehaviour
         if (Vector2.Distance(transform.position, target.position) <= attackRange
             && character.gameManager.playerFaction != character.faction)
         {
-            agent.isStopped = true;
             state = State.Attacking;
             Attack();
         }
@@ -142,9 +150,9 @@ public class AI : MonoBehaviour
         if (idling) return;
 
         if (patrolDestination == Vector2.zero)
-            patrolDestination = RandomPatrolDestination();
+            StartCoroutine(RandomPatrolDestination());
 
-        else if((Vector2)agent.destination != patrolDestination)
+        else if ((Vector2)agent.destination != patrolDestination)
             agent.SetDestination(patrolDestination);
 
         transform.up = Vector2.Lerp(transform.up, agent.velocity.normalized, turnSmoothing);
@@ -169,18 +177,22 @@ public class AI : MonoBehaviour
     /// <summary>
     /// Returns a random unobstructed location within a min/max radius of this character in world space.
     /// </summary>
-    private Vector2 RandomPatrolDestination()
+    private IEnumerator RandomPatrolDestination()
     {
-        
         Vector2 position;
-
+        var range = patrolRange;
+        int debug = 0;
         do
         {
-            position = Random.insideUnitCircle.normalized * Random.Range(attackRange * 2, patrolRange);
+            range += 0.1f;
+            debug++;
+            position = Random.insideUnitCircle.normalized * Random.Range(attackRange * 2, range);
             position = transform.TransformPoint(position);
         }
         while (Physics2D.OverlapCircle(position, 0.5f, LayerMask.GetMask("Wall")) || !Physics2D.OverlapCircle(position, 0.5f));
-        return position;
+        print(debug);
+        patrolDestination = position;
+        yield return new WaitForSeconds(0f);
     }
 
     /// <summary>
@@ -218,7 +230,16 @@ public class AI : MonoBehaviour
     public void Attack()
     {
         if (Time.time < timer) return;
+        StartCoroutine(AttackRoutine());
+        atkDirection = transform.up;
         timer = Time.time + (1f / character.attackRate);
         character.animator.SetTrigger("Attack");
+    }
+
+    private IEnumerator AttackRoutine()
+    {
+        attacking = true;
+        yield return new WaitForSeconds(attackDuration);
+        attacking = false;
     }
 }
