@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
     /// Then set that updated list's target as the player.
     /// TODO: faction differences
     /// </summary>
-    public void UpdateAIs()
+    private void UpdateAIs()
     {
         enemyAIs = new List<AI>();
 

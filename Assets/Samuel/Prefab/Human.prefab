@@ -123,14 +123,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98961f2f3a500fb4abc1b9d768d0d7ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2.5
+  moveSpeed: 3.5
   moveSmoothing: 0.1
   turnSmoothing: 0.5
   dashCooldown: 1
   dashSpeed: 15
   stamina: 0
   moveDirection: {x: 0, y: 0}
-  rb: {fileID: 0}
   teleporting: 0
 --- !u!114 &5236459263669677197
 MonoBehaviour:
@@ -170,7 +169,6 @@ MonoBehaviour:
   animator: {fileID: 0}
   player: {fileID: 0}
   floatingHealthbar: {fileID: 0}
-  room: {fileID: 0}
   attackRate: 0.75
   isPlayer: 0
   isBoss: 0
