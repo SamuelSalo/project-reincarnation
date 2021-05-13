@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4185865905383392668}
   - component: {fileID: 4185865905383392657}
   - component: {fileID: 4185865905383392662}
-  - component: {fileID: 4185865905383392660}
   - component: {fileID: 4185865905383392666}
+  - component: {fileID: 4185865905383392660}
   - component: {fileID: 4185865905383392664}
   - component: {fileID: 4185865905383392665}
   - component: {fileID: 4185865905383392670}
@@ -33,8 +33,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4185865905383392669}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.87, y: 3.07, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -107,31 +107,10 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &4185865905383392660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4185865905383392669}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98961f2f3a500fb4abc1b9d768d0d7ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2.5
-  moveSmoothing: 0.1
-  turnSmoothing: 0.5
-  dashCooldown: 1
-  dashSpeed: 15
-  stamina: 0
-  moveDirection: {x: 0, y: 0}
-  rb: {fileID: 0}
-  teleporting: 0
 --- !u!114 &4185865905383392666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,6 +132,27 @@ MonoBehaviour:
   turnSmoothing: 0.2
   target: {fileID: 0}
   drawRangeGizmos: 0
+--- !u!114 &4185865905383392660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4185865905383392669}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98961f2f3a500fb4abc1b9d768d0d7ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2.5
+  moveSmoothing: 0.1
+  turnSmoothing: 0.5
+  dashCooldown: 1
+  dashSpeed: 15
+  stamina: 0
+  moveDirection: {x: 0, y: 0}
+  rb: {fileID: 0}
+  teleporting: 0
 --- !u!114 &4185865905383392664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,7 +171,7 @@ MonoBehaviour:
   player: {fileID: 0}
   floatingHealthbar: {fileID: 0}
   room: {fileID: 0}
-  attackRate: 1
+  attackRate: 0.75
   isPlayer: 1
   isBoss: 0
   maxHealth: 100
@@ -186,7 +186,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4185865905383392669}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3

@@ -25,7 +25,7 @@ public class Character : MonoBehaviour
     [Space]
 
     public float attackRate = 0.75f;
-    public bool isPlayer;
+    public bool isPlayer = false;
     public bool isBoss = false;
     public float maxHealth = 100f;
     public float maxStamina = 100f;
