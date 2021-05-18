@@ -181,18 +181,15 @@ public class AI : MonoBehaviour
     {
         Vector2 position;
         var range = patrolRange;
-        int debug = 0;
         do
         {
             range += 0.1f;
-            debug++;
             position = Random.insideUnitCircle.normalized * Random.Range(attackRange * 2, range);
             position = transform.TransformPoint(position);
         }
         while (Physics2D.OverlapCircle(position, 0.5f, LayerMask.GetMask("Wall")) || !Physics2D.OverlapCircle(position, 0.5f));
-        print(debug);
         patrolDestination = position;
-        yield return new WaitForSeconds(0f);
+        yield return null;
     }
 
     /// <summary>

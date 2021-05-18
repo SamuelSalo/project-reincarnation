@@ -20,7 +20,7 @@ public class TutorialScript : MonoBehaviour
             if (!enemy || GameObject.FindWithTag("GameManager").GetComponent<GameManager>().playerCharacter.gameObject == enemy)
                 AdvanceTutorial();
         }
-        else if (tutorialStage != 0)
+        else if (tutorialStage != 0 && tutorialStage != 10)
         {
             WaitForPlayer();
         }
@@ -77,9 +77,6 @@ public class TutorialScript : MonoBehaviour
                 break;
             case 10:
                 ShowTooltip(9);
-                break;
-            case 11:
-                GameObject.FindWithTag("SceneChanger").GetComponent<SceneChanger>().FadeToScene(0);
                 break;
 
         }

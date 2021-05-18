@@ -13,7 +13,12 @@ public class SceneChanger : MonoBehaviour
     {
         GameObject.FindWithTag("FaderOverlay").GetComponent<FaderOverlay>().FadeOut();
         yield return new WaitForSecondsRealtime(1f);
-        SceneManager.LoadScene(_index);
+        var asyncLoad = SceneManager.LoadSceneAsync(_index);
+        while(!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
         Time.timeScale = 1f;
     }
 }
