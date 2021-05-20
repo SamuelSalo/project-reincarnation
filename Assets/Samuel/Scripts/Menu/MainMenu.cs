@@ -9,6 +9,8 @@ public class MainMenu : MonoBehaviour
     public GameObject settingsPanel;
     public GameObject tutorialPanel;
 
+    
+
     public void TogglePanel()
     {
         titlePanel.SetActive(!titlePanel.activeSelf);
@@ -51,4 +53,5 @@ public class MainMenu : MonoBehaviour
     {
         tutorialPanel.SetActive(_active);
     }
+
 }
