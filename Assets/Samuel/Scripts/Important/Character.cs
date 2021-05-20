@@ -148,11 +148,9 @@ public class Character : MonoBehaviour
         {
             gameManager.PlayerKill(this);
             room.npcs.Remove(transform);
-
-            if (_killer.faction == Faction.Red)
-                _killer.RestoreHealth(20f);
         }
-
+        var remains = Instantiate(Resources.Load("Remains"), transform.position, Quaternion.identity) as GameObject;
+        remains.GetComponent<Remains>().faction = faction;
         Destroy(gameObject);
         floatingHealthbar.Dispose();
     }
