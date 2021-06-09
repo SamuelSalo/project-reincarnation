@@ -4,6 +4,8 @@ using Faction = Character.Faction;
 
 public class Teleporter : MonoBehaviour
 {
+    private PlayerControls playerControls;
+
     public Room destinationRoom;
     private Room currentRoom;
 
@@ -12,6 +14,18 @@ public class Teleporter : MonoBehaviour
     private Vector2 destination;
     private bool reach;
     private bool teleporting;
+
+    private void OnEnable()
+    {
+        if (playerControls == null)
+        {
+            playerControls = new PlayerControls();
+
+            playerControls.Gameplay.Interact.performed += context => Activate();
+        }
+
+        playerControls.Enable();
+    }
 
     private void Start()
     {
@@ -32,17 +46,17 @@ public class Teleporter : MonoBehaviour
             reach = false;
     }
 
-    private void Update()
+
+    private void Activate()
     {
         //Allow player to backtrack freely and roam across cleared/own faction rooms, but require room to be cleared to advance
-        if (reach && Input.GetKeyDown(KeyCode.E) && !teleporting)
+        if (reach && !teleporting)
         {
-            if(currentRoom.cleared || destinationRoom.cleared || destinationRoom.faction == gameManager.playerFaction || currentRoom.faction == gameManager.playerFaction)
+            if (currentRoom.cleared || destinationRoom.cleared || destinationRoom.faction == gameManager.playerFaction || currentRoom.faction == gameManager.playerFaction)
                 StartCoroutine(TeleportPlayer());
-            else if(!currentRoom.cleared)
+            else if (!currentRoom.cleared)
                 GameObject.FindWithTag("Tooltip").GetComponent<Tooltip>().ShowTooltip("Clear the room of enemies first!", 2f);
         }
-            
     }
 
     /// <summary>

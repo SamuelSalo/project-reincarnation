@@ -5,6 +5,7 @@ using UnityEngine;
 /// </summary>
 public class PauseMenu : MonoBehaviour
 {
+    private PlayerControls playerControls;
     private bool paused;
 
     [Header("Canvases")]
@@ -14,8 +15,16 @@ public class PauseMenu : MonoBehaviour
     [Space] [Header("UI Panels")]
     public GameObject mainPanel;
     public GameObject settingsPanel;
-    
-    private void Update()
+
+    private void OnEnable()
+    {
+        if (playerControls == null)
+            playerControls = new PlayerControls();
+
+        playerControls.Gameplay.Pause.performed += context => TryPause();
+    }
+
+    private void TryPause()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {

@@ -3,10 +3,23 @@ using Faction = Character.Faction;
 
 public class Remains : MonoBehaviour
 {
+    private PlayerControls playerControls;
+
     [HideInInspector] public Faction faction;
     [Range(0,100)] public float restoreAmount;
     private Character character;
 
+    private void OnEnable()
+    {
+        if (playerControls == null)
+        {
+            playerControls = new PlayerControls();
+
+            playerControls.Gameplay.Interact.performed += context => Activate();
+        }
+        playerControls.Enable();
+            
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
@@ -25,14 +38,20 @@ public class Remains : MonoBehaviour
     private void Update()
     {
         if (character && Input.GetKeyDown(KeyCode.E))
-            if (character.faction == Faction.Red && faction == Faction.Blue)
+            if (character.faction == Faction.Red)
             {
                 character.RestoreHealth(restoreAmount);
                 Destroy(gameObject);
             }
-            else if (character.faction == Faction.Blue)
-                return;
-            else if (character.faction == Faction.Red && faction == Faction.Red)
-                GameObject.FindWithTag("Tooltip").GetComponent<Tooltip>().ShowTooltip("You can only devour human remains!", 2f);
+    }
+
+    private void Activate()
+    {
+        if (character)
+            if (character.faction == Faction.Red)
+            {
+                character.RestoreHealth(restoreAmount);
+                Destroy(gameObject);
+            }
     }
 }

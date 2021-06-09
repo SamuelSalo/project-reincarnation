@@ -4,6 +4,8 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
+    private PlayerControls playerControls;
+
     [Header("Movement")]
     [Range(1, 4)] public float moveSpeed = 3f;
     [Range(0.05f, 0.3f)] public float moveSmoothing = 0.1f;
@@ -20,6 +22,7 @@ public class Player : MonoBehaviour
     private bool recoveringStamina;
 
     [HideInInspector] public Vector2 moveDirection = Vector2.zero;
+    private Vector2 mousePosition;
     private Vector2 lookDirection;
     private Vector2 refVelocity = Vector2.zero;
 
@@ -31,6 +34,23 @@ public class Player : MonoBehaviour
     private bool attacking;
     private float attackDuration;
 
+    private void OnEnable()
+    {
+        if (playerControls == null)
+        {
+            playerControls = new PlayerControls();
+
+            //Bind inputactions to functions
+            playerControls.Gameplay.Attack.performed += context => Attack();
+            playerControls.Gameplay.Dash.performed += context => Dash();
+
+            playerControls.Gameplay.Movement.performed += context => moveDirection = context.ReadValue<Vector2>();
+            playerControls.Gameplay.MousePosition.performed += context => mousePosition = context.ReadValue<Vector2>();
+        }
+
+        playerControls.Enable();
+    }
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -39,17 +59,16 @@ public class Player : MonoBehaviour
         stamina = character.maxStamina;
         attackDuration = character.faction == Character.Faction.Blue ? 0.5f : 0.7f;
     }
+
     private void Update()
     {
         if (teleporting || attacking) { rb.velocity = Vector2.zero; return; }
 
-        GetInput();
+        GetLookDirection();
         UpdateStamina();
         currentSpeed = character.animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") ? .2f : moveSpeed;
     }
 
-    // Move smoothly according to movement vector in relation to player direction.
-    // Rotate character towards mouse cursor.
     private void FixedUpdate()
     {
         if (teleporting || attacking) return;
@@ -68,8 +87,9 @@ public class Player : MonoBehaviour
             stamina -= 20f;
             StopCoroutine(nameof(DashRoutine));
             StartCoroutine(DashRoutine());
-
         }
+
+        print("kb: " + moveDirection + ", m: " + mousePosition);
     }
 
     /// <summary>
@@ -90,34 +110,14 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Get player inputs
+    /// Get look direction from mouse position
     /// </summary>
-    private void GetInput()
+    private void GetLookDirection()
     {
-        //Movement Input
-        moveDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        var mousePos = Camera.main.ScreenToWorldPoint(mousePosition);
         var heading = mousePos - transform.position;
         lookDirection = heading / heading.magnitude;
         moveDirection.Normalize();
-
-        //Attack input
-        if (Input.GetKeyDown(KeyCode.F) && Time.time >= attackTimer && stamina > 20f)
-        {
-            attackTimer = Time.time + 1f / character.attackRate;
-            stamina -= 20f;
-
-            StopCoroutine(nameof(AttackRoutine));
-            StartCoroutine(AttackRoutine());
-
-            character.animator.SetTrigger("Attack");
-        }
-        //Dash input
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time >= dashTimer && stamina > 20f)
-        {
-            dashTimer = Time.time + dashCooldown;
-            dash = true;
-        }
     }
 
     /// <summary>
@@ -130,6 +130,35 @@ public class Player : MonoBehaviour
         {
             stamina += Time.deltaTime * character.staminaRecovery;
             stamina = Mathf.Clamp(stamina, 0f, character.maxStamina);
+        }
+    }
+
+    /// <summary>
+    /// Triggers attack functionality
+    /// </summary>
+    private void Attack()
+    {
+        if(Time.time >= attackTimer && stamina > 20f)
+        {
+            attackTimer = Time.time + 1f / character.attackRate;
+            stamina -= 20f;
+
+            StopCoroutine(nameof(AttackRoutine));
+            StartCoroutine(AttackRoutine());
+
+            character.animator.SetTrigger("Attack");
+        }
+    }
+
+    /// <summary>
+    /// Ques a new dash to happen on next FixedUpdate
+    /// </summary>
+    private void Dash()
+    {
+        if(Time.time >= dashTimer && stamina > 20f)
+        {
+            dashTimer = Time.time + dashCooldown;
+            dash = true;
         }
     }
 

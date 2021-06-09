@@ -5,6 +5,8 @@ using UnityEngine;
 /// </summary>
 public class TutorialScript : MonoBehaviour
 {
+    private PlayerControls playerControls;
+
     public int tutorialStage = 0;
     public GameObject[] tutorialTooltips = new GameObject[10];
     public GameObject[] tutorialObjects1 = new GameObject[10];
@@ -13,16 +15,24 @@ public class TutorialScript : MonoBehaviour
     private GameObject enemy;
     public Transform room0;
 
+    private void OnEnable()
+    {
+        if(playerControls == null)
+        {
+            playerControls = new PlayerControls();
+
+            playerControls.Tutorial.AdvanceTutorial.performed += context => AdvanceTutorial();
+        }
+
+        playerControls.Enable();
+    }
+
     private void Update()
     {
         if(tutorialStage == 7)
         {
             if (!enemy || GameObject.FindWithTag("GameManager").GetComponent<GameManager>().playerCharacter.gameObject == enemy)
                 AdvanceTutorial();
-        }
-        else if (tutorialStage != 0 && tutorialStage != 10)
-        {
-            WaitForPlayer();
         }
     }
 
@@ -83,6 +93,8 @@ public class TutorialScript : MonoBehaviour
     }
     public void AdvanceTutorial()
     {
+        if (tutorialStage == 7) return;
+
         tutorialStage++;
         UpdateTutorial();
     }
@@ -93,12 +105,6 @@ public class TutorialScript : MonoBehaviour
         {
             go.SetActive(_active);
         }
-    }
-
-    private void WaitForPlayer()
-    {
-        if (Input.GetKeyDown(KeyCode.B))
-            AdvanceTutorial();
     }
 
     private void ShowTooltip(int _index)
