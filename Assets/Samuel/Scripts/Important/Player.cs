@@ -6,29 +6,27 @@ public class Player : MonoBehaviour
 {
     private PlayerControls playerControls;
 
-    [Header("Movement")]
-    [Range(1, 4)] public float moveSpeed = 3f;
-    [Range(0.05f, 0.3f)] public float moveSmoothing = 0.1f;
-    [Range(0.05f, 1f)] public float turnSmoothing = 0.5f;
+    public float moveSpeed = 3f;
+    public float moveSmoothing = 0.1f;
+    public float turnSmoothing = 0.5f;
 
-    [Space] [Header("Dashing")]
-    [Range(0f, 3f)] public float dashCooldown = 1f;
-    [Range(10f, 20f)] public float dashSpeed = 15f;
+    public float dashCooldown = 1f;
+    public float dashSpeed = 15f;
 
     [HideInInspector] public float stamina;
     private float dashTimer;
     private float attackTimer;
     private bool dash;
     private bool recoveringStamina;
+    private bool dashSlowdown;
 
     [HideInInspector] public Vector2 moveDirection = Vector2.zero;
     private Vector2 mousePosition;
     private Vector2 lookDirection;
     private Vector2 refVelocity = Vector2.zero;
 
-    [HideInInspector] public Rigidbody2D rb;
     private Character character;
-    private GameSFX gameSFX;
+    
     [HideInInspector] public bool freeze;
     private float currentSpeed;
     private float attackDuration;
@@ -57,36 +55,36 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         character = GetComponent<Character>();
-        gameSFX = GameObject.FindWithTag("AudioManager").GetComponent<GameSFX>();
         stamina = character.maxStamina;
         attackDuration = character.faction == Character.Faction.Blue ? 0.5f : 0.7f;
     }
 
     private void Update()
     {
-        if (freeze) { rb.velocity = Vector2.zero; return; }
+        if (freeze) { character.rb.velocity = Vector2.zero; return; }
 
         GetLookDirection();
         UpdateStamina();
         currentSpeed = character.animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") ? .2f : moveSpeed;
+        currentSpeed = dashSlowdown ? 1f : moveSpeed;
     }
 
     private void FixedUpdate()
     {
         if (freeze) return;
         
-        rb.velocity = Vector2.SmoothDamp(rb.velocity, moveDirection * currentSpeed, ref refVelocity, moveSmoothing);
+        character.rb.velocity = Vector2.SmoothDamp(character.rb.velocity, moveDirection * currentSpeed, ref refVelocity, moveSmoothing);
         transform.up = Vector2.Lerp(transform.up, lookDirection, turnSmoothing);
 
         character.UpdateAnimator();
 
         if (dash)
         {
-            rb.velocity = moveDirection * dashSpeed;
+            StartCoroutine(DashIFrames());
+            character.rb.velocity = moveDirection * dashSpeed;
             dash = false;
-            gameSFX.PlayDashSFX();
+            character.gameSFX.PlayDashSFX();
 
             stamina -= 20f;
             StopCoroutine(nameof(DashRoutine));
@@ -99,7 +97,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void ActivateAttackHurtbox()
     {
-        gameSFX.PlaySlashSFX();
+        character.gameSFX.PlaySlashSFX();
         var hits = Physics2D.OverlapBoxAll(transform.position + transform.up, new Vector2(1f, 1f), 0f);
         if (hits.Length != 0)
         {
@@ -175,7 +173,17 @@ public class Player : MonoBehaviour
     private IEnumerator DashRoutine()
     {
         recoveringStamina = false;
+        dashSlowdown = true;
         yield return new WaitForSeconds(0.5f);
         recoveringStamina = true;
+        dashSlowdown = false;
     }
+
+    private IEnumerator DashIFrames()
+    {
+        character.invincible = true;
+        yield return new WaitForSeconds(0.2f);
+        character.invincible = false;
+    }
+    
 }

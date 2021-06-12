@@ -1,5 +1,6 @@
 using UnityEngine.AI;
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(AI))]
 [RequireComponent(typeof(Player))]
@@ -10,28 +11,33 @@ public class Character : MonoBehaviour
     public enum Faction { Blue, Red };
     public Faction faction;
 
+    //stats
+
+    public float attackRate = 0.75f;
+    public float dashSpeed = 15f;
+    public float dashCooldown = 1f;
+    public float maxHealth = 100f;
+    public float maxStamina = 100f;
+    public float staminaRecovery = 10f;
+    public float damage = 25f;
+
+    //stats
+
     [HideInInspector] public GameManager gameManager;
     [HideInInspector] public Animator animator;
     [HideInInspector] public Player player;
     [HideInInspector] public FloatingHealthbar floatingHealthbar;
     [HideInInspector] public Room room;
-
-    private AI ai;
-    private NavMeshAgent agent;
-    private Rigidbody2D rb;
+    [HideInInspector] public GameSFX gameSFX;
+    [HideInInspector] public Rigidbody2D rb;
+    [HideInInspector] public AI ai;
+    [HideInInspector] public NavMeshAgent agent;
     private SpriteFlash spriteFlasher;
-    private GameSFX gameSFX;
     
-
     [Space]
-
-    public float attackRate = 0.75f;
+    public bool invincible; 
     public bool isPlayer = false;
     public bool isBoss = false;
-    public float maxHealth = 100f;
-    public float maxStamina = 100f;
-    public float staminaRecovery = 10f;
-    public float damage = 25f;
     [HideInInspector] public float health;
 
     private void Start()
@@ -85,6 +91,8 @@ public class Character : MonoBehaviour
     /// </summary>
     public void TakeDamage(float _damage, Character _source)
     {
+        if (invincible || (!isPlayer && ai.WillDodgeAttack())) return;
+
         gameSFX.PlayHurtSFX();
         health -= _damage;
 
@@ -120,7 +128,7 @@ public class Character : MonoBehaviour
                 animator.SetFloat("yMove", 0f);
                 return;
             }
-            var velocity = transform.InverseTransformVector(player.rb.velocity.normalized);
+            var velocity = transform.InverseTransformVector(rb.velocity.normalized);
             animator.SetFloat("xMove", velocity.x);
             animator.SetFloat("yMove", velocity.y);
         }

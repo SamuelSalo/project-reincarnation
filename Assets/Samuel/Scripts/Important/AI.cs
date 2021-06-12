@@ -14,7 +14,7 @@ public class AI : MonoBehaviour
 
     [Space]
 
-    [Range(0,10)]public float chaseRange = 5f;
+    [Range(0,10)] public float chaseRange = 5f;
     [Range(0, 10)] public float patrolRange = 4f;
     [Range(0, 10)] public float attackRange = 1f;
 
@@ -29,9 +29,8 @@ public class AI : MonoBehaviour
 
     [HideInInspector] public Transform target;
 
-	private NavMeshAgent agent;
     private Character character;
-    private GameSFX gameSFX;
+    private NavMeshAgent agent;
     private Vector2 patrolDestination = Vector2.zero;
     private Vector2 atkDirection;
     [Space]
@@ -41,13 +40,13 @@ public class AI : MonoBehaviour
     private float timer;
     private float patrollingTimer;
     private bool attacking;
+    private bool dashing;
     private float attackDuration;
 
     private void Start()
 	{
-		agent = GetComponent<NavMeshAgent>();
         character = GetComponent<Character>();
-        gameSFX = GameObject.FindWithTag("AudioManager").GetComponent<GameSFX>();
+        agent = character.agent;
 
         agent.updateRotation = false;
 		agent.updateUpAxis = false;
@@ -69,7 +68,7 @@ public class AI : MonoBehaviour
     // Update state of AI, then do actions depending on said state.
     private void FixedUpdate()
     {
-        if (!target) return;
+        if (!target || dashing) return;
 
         UpdateAIState();
         character.UpdateAnimator();
@@ -212,7 +211,7 @@ public class AI : MonoBehaviour
     /// </summary>
     public void ActivateAttackHurtbox()
     {
-        gameSFX.PlaySlashSFX();
+        character.gameSFX.PlaySlashSFX();
         var hits = Physics2D.OverlapBoxAll(transform.position + transform.up, new Vector2(1f, 1f), 0f);
         if (hits.Length != 0)
         {
@@ -234,6 +233,45 @@ public class AI : MonoBehaviour
         atkDirection = transform.up;
         timer = Time.time + (1f / character.attackRate);
         character.animator.SetTrigger("Attack");
+    }
+
+
+    /// <summary>
+    /// Roll dice to dodge attack or not
+    /// Perform dash independent of AI in separate class
+    /// </summary>
+    /// <returns></returns>
+    public bool WillDodgeAttack()
+    {
+        if(Random.Range(0,100) > 50)
+        {
+            return false;
+        }
+        else
+        {
+            var dir = -(target.position - transform.position).normalized;
+            StartCoroutine(AIPerformDash(dir));
+            return true;
+        }
+    }
+
+    /// <summary>
+    /// AI Dashing is performed here
+    /// RB interferes with AI, so disable AI for the duration.
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <returns></returns>
+    public IEnumerator AIPerformDash(Vector2 direction)
+    {
+        dashing = true;
+        agent.enabled = false;
+        character.rb.bodyType = RigidbodyType2D.Dynamic;
+        character.rb.velocity = direction * character.dashSpeed;
+        yield return new WaitForSeconds(0.1f);
+        character.rb.velocity = Vector2.zero;
+        agent.enabled = true;
+        character.rb.bodyType = RigidbodyType2D.Kinematic;
+        dashing = false;
     }
 
     private IEnumerator AttackRoutine()
