@@ -31,7 +31,7 @@ public class AI : MonoBehaviour
 
 	private NavMeshAgent agent;
     private Character character;
-
+    private GameSFX gameSFX;
     private Vector2 patrolDestination = Vector2.zero;
     private Vector2 atkDirection;
     [Space]
@@ -47,8 +47,9 @@ public class AI : MonoBehaviour
 	{
 		agent = GetComponent<NavMeshAgent>();
         character = GetComponent<Character>();
+        gameSFX = GameObject.FindWithTag("AudioManager").GetComponent<GameSFX>();
 
-		agent.updateRotation = false;
+        agent.updateRotation = false;
 		agent.updateUpAxis = false;
         agent.isStopped = true;
 
@@ -211,6 +212,7 @@ public class AI : MonoBehaviour
     /// </summary>
     public void ActivateAttackHurtbox()
     {
+        gameSFX.PlaySlashSFX();
         var hits = Physics2D.OverlapBoxAll(transform.position + transform.up, new Vector2(1f, 1f), 0f);
         if (hits.Length != 0)
         {
@@ -228,6 +230,7 @@ public class AI : MonoBehaviour
     {
         if (Time.time < timer) return;
         StartCoroutine(AttackRoutine());
+        
         atkDirection = transform.up;
         timer = Time.time + (1f / character.attackRate);
         character.animator.SetTrigger("Attack");

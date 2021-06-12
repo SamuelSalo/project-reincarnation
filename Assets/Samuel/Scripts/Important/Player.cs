@@ -29,9 +29,8 @@ public class Player : MonoBehaviour
     [HideInInspector] public Rigidbody2D rb;
     private Character character;
     private GameSFX gameSFX;
-    [HideInInspector] public bool teleporting;
+    [HideInInspector] public bool freeze;
     private float currentSpeed;
-    private bool attacking;
     private float attackDuration;
 
     private void OnEnable()
@@ -51,6 +50,11 @@ public class Player : MonoBehaviour
         playerControls.Enable();
     }
 
+    private void OnDisable()
+    {
+        playerControls.Disable();
+    }
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -62,7 +66,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (teleporting || attacking) { rb.velocity = Vector2.zero; return; }
+        if (freeze) { rb.velocity = Vector2.zero; return; }
 
         GetLookDirection();
         UpdateStamina();
@@ -71,7 +75,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (teleporting || attacking) return;
+        if (freeze) return;
         
         rb.velocity = Vector2.SmoothDamp(rb.velocity, moveDirection * currentSpeed, ref refVelocity, moveSmoothing);
         transform.up = Vector2.Lerp(transform.up, lookDirection, turnSmoothing);
@@ -88,8 +92,6 @@ public class Player : MonoBehaviour
             StopCoroutine(nameof(DashRoutine));
             StartCoroutine(DashRoutine());
         }
-
-        print("kb: " + moveDirection + ", m: " + mousePosition);
     }
 
     /// <summary>
@@ -165,10 +167,10 @@ public class Player : MonoBehaviour
     private IEnumerator AttackRoutine()
     {
         recoveringStamina = false;
-        attacking = true;
+        freeze = true;
         yield return new WaitForSeconds(attackDuration);
         recoveringStamina = true;
-        attacking = false;
+        freeze = false;
     }
     private IEnumerator DashRoutine()
     {

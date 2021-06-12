@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using Faction = Character.Faction;
 
 public class Teleporter : MonoBehaviour
 {
@@ -21,7 +20,7 @@ public class Teleporter : MonoBehaviour
         {
             playerControls = new PlayerControls();
 
-            playerControls.Gameplay.Interact.performed += context => Activate();
+            playerControls.Gameplay.Interact.performed += context => Teleport();
         }
 
         playerControls.Enable();
@@ -47,7 +46,7 @@ public class Teleporter : MonoBehaviour
     }
 
 
-    private void Activate()
+    private void Teleport()
     {
         //Allow player to backtrack freely and roam across cleared/own faction rooms, but require room to be cleared to advance
         if (reach && !teleporting)
@@ -66,7 +65,7 @@ public class Teleporter : MonoBehaviour
     private IEnumerator TeleportPlayer()
     {
         teleporting = true;
-        gameManager.playerCharacter.player.teleporting = teleporting;
+        gameManager.playerCharacter.player.freeze = teleporting;
         fader.FadeOut();
 
         yield return new WaitForSeconds(1f);
@@ -74,7 +73,7 @@ public class Teleporter : MonoBehaviour
 
         
         teleporting = false;
-        gameManager.playerCharacter.player.teleporting = teleporting;
+        gameManager.playerCharacter.player.freeze = teleporting;
         fader.FadeIn();
     }
 }

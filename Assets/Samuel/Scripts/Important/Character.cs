@@ -14,13 +14,14 @@ public class Character : MonoBehaviour
     [HideInInspector] public Animator animator;
     [HideInInspector] public Player player;
     [HideInInspector] public FloatingHealthbar floatingHealthbar;
+    [HideInInspector] public Room room;
 
     private AI ai;
     private NavMeshAgent agent;
     private Rigidbody2D rb;
     private SpriteFlash spriteFlasher;
     private GameSFX gameSFX;
-    [HideInInspector] public Room room;
+    
 
     [Space]
 
@@ -31,7 +32,6 @@ public class Character : MonoBehaviour
     public float maxStamina = 100f;
     public float staminaRecovery = 10f;
     public float damage = 25f;
-
     [HideInInspector] public float health;
 
     private void Start()

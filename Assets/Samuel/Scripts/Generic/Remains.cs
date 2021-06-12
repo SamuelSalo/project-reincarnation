@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using Faction = Character.Faction;
 
 public class Remains : MonoBehaviour
@@ -8,6 +9,8 @@ public class Remains : MonoBehaviour
     [HideInInspector] public Faction faction;
     [Range(0,100)] public float restoreAmount;
     private Character character;
+    private bool running = false;
+    private float timer;
 
     private void OnEnable()
     {
@@ -15,7 +18,8 @@ public class Remains : MonoBehaviour
         {
             playerControls = new PlayerControls();
 
-            playerControls.Gameplay.Interact.performed += context => Activate();
+            playerControls.Gameplay.HoldInteract.started += context => StartConsume();
+            playerControls.Gameplay.HoldInteract.canceled += context => CancelConsume();
         }
         playerControls.Enable();
             
@@ -35,23 +39,45 @@ public class Remains : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void StartConsume()
     {
-        if (character && Input.GetKeyDown(KeyCode.E))
+        if (character && !running)
             if (character.faction == Faction.Red)
             {
-                character.RestoreHealth(restoreAmount);
-                Destroy(gameObject);
+                running = true;
+                character.player.freeze = true;
+                GameObject.FindWithTag("ProgressBar").GetComponent<InteractProgressBar>().StartProgress(2f);
             }
     }
 
-    private void Activate()
+    private void CancelConsume()
     {
-        if (character)
-            if (character.faction == Faction.Red)
-            {
-                character.RestoreHealth(restoreAmount);
-                Destroy(gameObject);
-            }
+        if (character && running)
+        {
+            running = false;
+            timer = 0f;
+            character.player.freeze = false;
+            GameObject.FindWithTag("ProgressBar").GetComponent<InteractProgressBar>().StopProgress();
+        }
+    }
+
+    private void Update()
+    {
+        if(running && character)
+        {
+            timer += Time.deltaTime;
+
+            if (timer >= 2f)
+                FinishConsume();
+        }
+    }
+
+    private void FinishConsume()
+    {
+        running = false;
+        playerControls.Disable();
+        character.player.freeze = false;
+        character.RestoreHealth(restoreAmount);
+        Destroy(gameObject);
     }
 }
