@@ -7,33 +7,22 @@ using UnityEngine.AI;
 public class AI : MonoBehaviour
 {
     public enum State { Patrolling, Chasing, Attacking }
-
-    [Header("Properties")]
-
     public State state = State.Patrolling;
 
-    [Space]
-
-    [Range(0,10)] public float chaseRange = 5f;
-    [Range(0, 10)] public float patrolRange = 4f;
-    [Range(0, 10)] public float attackRange = 1f;
-
-    [Space]
-
-    [Range(0, 5)] public float chaseSpeed = 2.5f;
-    [Range(0, 5)] public float patrolSpeed = 1.5f;
-
-    [Space]
-
-    [Range(0f, 0.3f)] public float turnSmoothing = 0.2f;
-
+    [HideInInspector] public AIVariables aiVariables;
     [HideInInspector] public Transform target;
+
+    private float chaseRange;
+    private float patrolRange;
+    private float attackRange;
+    private float chaseSpeed;
+    private float patrolSpeed;
+    private float turnSmoothing;
 
     private Character character;
     private NavMeshAgent agent;
     private Vector2 patrolDestination = Vector2.zero;
     private Vector2 atkDirection;
-    [Space]
 
     public bool drawRangeGizmos = false;
     private bool idling = false;
@@ -53,6 +42,13 @@ public class AI : MonoBehaviour
         agent.isStopped = true;
 
         attackDuration = character.faction == Character.Faction.Blue ? 0.5f : 0.7f;
+
+        chaseRange = aiVariables.chaseRange;
+        patrolRange = aiVariables.chaseRange;
+        attackRange = aiVariables.attackRange;
+        chaseSpeed = character.characterSheet.movementSpeed;
+        patrolSpeed = aiVariables.patrolSpeed;
+        turnSmoothing = character.characterSheet.turnSmoothing;
     }
 
     private void OnDrawGizmos()

@@ -9,20 +9,22 @@ using System.Collections;
 public class Character : MonoBehaviour
 {
     public enum Faction { Blue, Red };
-    public Faction faction;
+    [HideInInspector] public Faction faction;
 
-    //stats
+    public CharacterSheet characterSheet;
 
-    public float attackRate = 0.75f;
-    public float dashSpeed = 15f;
-    public float dashCooldown = 1f;
-    public float maxHealth = 100f;
-    public float maxStamina = 100f;
-    public float staminaRecovery = 10f;
-    public float damage = 25f;
+    //Stats
+    [HideInInspector] public float attackRate;
+    [HideInInspector] public float dashSpeed;
+    [HideInInspector] public float dashCooldown;
+    [HideInInspector] public float maxHealth;
+    [HideInInspector] public float maxStamina;
+    [HideInInspector] public float staminaRecovery;
+    [HideInInspector] public float damage;
+    [HideInInspector] public float movementSpeed;
+    [HideInInspector] public float health;
 
-    //stats
-
+    //Components
     [HideInInspector] public GameManager gameManager;
     [HideInInspector] public Animator animator;
     [HideInInspector] public Player player;
@@ -32,13 +34,12 @@ public class Character : MonoBehaviour
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public AI ai;
     [HideInInspector] public NavMeshAgent agent;
-    private SpriteFlash spriteFlasher;
-    
-    [Space]
+    [HideInInspector] public SpriteFlash spriteFlasher;
+
     public bool invincible; 
     public bool isPlayer = false;
     public bool isBoss = false;
-    [HideInInspector] public float health;
+    
 
     private void Start()
     {
@@ -48,9 +49,23 @@ public class Character : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-
         gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         gameSFX = GameObject.FindWithTag("AudioManager").GetComponent<GameSFX>();
+
+        maxHealth = characterSheet.maxHealth;
+        maxStamina = characterSheet.maxStamina;
+        staminaRecovery = characterSheet.staminaRecovery;
+        damage = characterSheet.damage;
+        attackRate = characterSheet.attackRate;
+        dashCooldown = characterSheet.dashCooldown;
+        dashSpeed = characterSheet.dashSpeed;
+        movementSpeed = characterSheet.movementSpeed;
+        faction = characterSheet.faction;
+        ai.aiVariables = characterSheet.aiVariables;
+        agent.speed = movementSpeed;
+        player.moveSpeed = movementSpeed;
+        player.moveSmoothing = characterSheet.moveSmoothing;
+        player.turnSmoothing = characterSheet.turnSmoothing;
 
         health = maxHealth;
         PlayerControlled(isPlayer);

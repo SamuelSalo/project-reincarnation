@@ -6,14 +6,13 @@ public class Player : MonoBehaviour
 {
     private PlayerControls playerControls;
 
-    public float moveSpeed = 3f;
-    public float moveSmoothing = 0.1f;
-    public float turnSmoothing = 0.5f;
-
-    public float dashCooldown = 1f;
-    public float dashSpeed = 15f;
-
+    [HideInInspector] public float moveSpeed;
+    [HideInInspector] public float moveSmoothing;
+    [HideInInspector] public float turnSmoothing;
+    [HideInInspector] public float dashCooldown;
+    [HideInInspector] public float dashSpeed;
     [HideInInspector] public float stamina;
+
     private float dashTimer;
     private float attackTimer;
     private bool dash;
@@ -178,7 +177,6 @@ public class Player : MonoBehaviour
         recoveringStamina = true;
         dashSlowdown = false;
     }
-
     private IEnumerator DashIFrames()
     {
         character.invincible = true;
