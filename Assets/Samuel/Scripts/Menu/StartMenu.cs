@@ -17,6 +17,7 @@ public class StartMenu : MonoBehaviour
         gameUI.SetActive(true);
         gameObject.SetActive(false);
         Destroy(gameObject);
+        gameManager.canPause = true;
     }
 
     public void StartAsHuman()
@@ -26,5 +27,6 @@ public class StartMenu : MonoBehaviour
         gameManager.SetPlayer(player.GetComponent<Character>());
         gameUI.SetActive(true);
         Destroy(gameObject);
+        gameManager.canPause = true;
     }
 }

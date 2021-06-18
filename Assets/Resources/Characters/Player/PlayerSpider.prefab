@@ -124,12 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  chaseRange: 5
-  patrolRange: 4
-  attackRange: 1
-  chaseSpeed: 2.5
-  patrolSpeed: 1.5
-  turnSmoothing: 0.2
+  aiVariables: {fileID: 0}
   target: {fileID: 0}
   drawRangeGizmos: 0
 --- !u!114 &4185865905383392660
@@ -165,7 +160,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   faction: 1
-  characterSheet: {fileID: 11400000, guid: 873df6a4ecdabfc4a86530d2a238f19d, type: 2}
+  aiVariables: {fileID: 11400000, guid: 41a77d4821f629a4d8f65bae48bcf583, type: 2}
+  characterStats: {fileID: 11400000, guid: 873df6a4ecdabfc4a86530d2a238f19d, type: 2}
   attackRate: 0.75
   dashSpeed: 0
   dashCooldown: 0

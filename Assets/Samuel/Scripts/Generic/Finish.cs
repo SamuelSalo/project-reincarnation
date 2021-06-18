@@ -3,6 +3,25 @@ using Faction = Character.Faction;
 
 public class Finish : MonoBehaviour
 {
+    #region InputActions
+    private PlayerControls playerControls;
+    private void OnEnable()
+    {
+        if (playerControls == null)
+        {
+            playerControls = new PlayerControls();
+            playerControls.Gameplay.Interact.performed += context => TryFinish();
+        }
+
+        playerControls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        playerControls.Disable();
+    }
+    #endregion
+
     public Faction faction;
     [Space]
     public GameObject gameUI;
@@ -29,9 +48,9 @@ public class Finish : MonoBehaviour
             reach = false;
     }
 
-    private void Update()
+    private void TryFinish()
     {
-        if (reach && Input.GetKeyDown(KeyCode.E))
+        if (reach)
         {
             if (gameManager.playerFaction != faction && room.cleared)
                 FinishGame();
@@ -47,5 +66,6 @@ public class Finish : MonoBehaviour
         gameUI.SetActive(false);
         finishUI.SetActive(true);
         Time.timeScale = 0f;
+        gameManager.canPause = false;
     }
 }

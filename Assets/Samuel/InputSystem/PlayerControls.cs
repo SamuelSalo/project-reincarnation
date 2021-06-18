@@ -56,7 +56,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""id"": ""59f87621-6efe-4865-8b44-3819719e27f3"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Tap""
+                    ""interactions"": """"
                 },
                 {
                     ""name"": ""Interact"",
@@ -73,6 +73,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Hold""
+                },
+                {
+                    ""name"": ""Stats"",
+                    ""type"": ""Button"",
+                    ""id"": ""cdbbbec2-d41c-4dad-90e5-8dcd9e2b55f1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -262,6 +270,28 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""HoldInteract"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ace0b1b-e6fd-4941-97a9-078823cd7167"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KB&M"",
+                    ""action"": ""Stats"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""34380e0b-2a09-4c9e-9c4b-33677260a677"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Stats"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -332,6 +362,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
         m_Gameplay_HoldInteract = m_Gameplay.FindAction("HoldInteract", throwIfNotFound: true);
+        m_Gameplay_Stats = m_Gameplay.FindAction("Stats", throwIfNotFound: true);
         // Tutorial
         m_Tutorial = asset.FindActionMap("Tutorial", throwIfNotFound: true);
         m_Tutorial_AdvanceTutorial = m_Tutorial.FindAction("AdvanceTutorial", throwIfNotFound: true);
@@ -391,6 +422,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_Pause;
     private readonly InputAction m_Gameplay_Interact;
     private readonly InputAction m_Gameplay_HoldInteract;
+    private readonly InputAction m_Gameplay_Stats;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
@@ -402,6 +434,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
         public InputAction @HoldInteract => m_Wrapper.m_Gameplay_HoldInteract;
+        public InputAction @Stats => m_Wrapper.m_Gameplay_Stats;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -432,6 +465,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @HoldInteract.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnHoldInteract;
                 @HoldInteract.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnHoldInteract;
                 @HoldInteract.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnHoldInteract;
+                @Stats.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnStats;
+                @Stats.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnStats;
+                @Stats.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnStats;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -457,6 +493,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @HoldInteract.started += instance.OnHoldInteract;
                 @HoldInteract.performed += instance.OnHoldInteract;
                 @HoldInteract.canceled += instance.OnHoldInteract;
+                @Stats.started += instance.OnStats;
+                @Stats.performed += instance.OnStats;
+                @Stats.canceled += instance.OnStats;
             }
         }
     }
@@ -521,6 +560,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnHoldInteract(InputAction.CallbackContext context);
+        void OnStats(InputAction.CallbackContext context);
     }
     public interface ITutorialActions
     {

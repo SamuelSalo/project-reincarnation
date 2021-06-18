@@ -46,9 +46,9 @@ public class AI : MonoBehaviour
         chaseRange = aiVariables.chaseRange;
         patrolRange = aiVariables.chaseRange;
         attackRange = aiVariables.attackRange;
-        chaseSpeed = character.characterSheet.movementSpeed;
+        chaseSpeed = character.characterStats.movementSpeed;
         patrolSpeed = aiVariables.patrolSpeed;
-        turnSmoothing = character.characterSheet.turnSmoothing;
+        turnSmoothing = character.characterStats.turnSmoothing;
     }
 
     private void OnDrawGizmos()
@@ -239,7 +239,7 @@ public class AI : MonoBehaviour
     /// <returns></returns>
     public bool WillDodgeAttack()
     {
-        if(Random.Range(0,100) > 50)
+        if(Random.Range(0,100) >= 30)
         {
             return false;
         }

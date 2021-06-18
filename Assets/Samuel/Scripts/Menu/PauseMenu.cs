@@ -5,7 +5,25 @@ using UnityEngine;
 /// </summary>
 public class PauseMenu : MonoBehaviour
 {
+    #region InputActions
     private PlayerControls playerControls;
+    private void OnEnable()
+    {
+        if (playerControls == null)
+        {
+            playerControls = new PlayerControls();
+            playerControls.Gameplay.Pause.performed += context => TogglePause();
+        }
+
+        playerControls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        playerControls.Disable();
+    }
+    #endregion
+
     private bool paused;
 
     [Header("Canvases")]
@@ -16,36 +34,22 @@ public class PauseMenu : MonoBehaviour
     public GameObject mainPanel;
     public GameObject settingsPanel;
 
-    private void OnEnable()
-    {
-        if (playerControls == null)
-            playerControls = new PlayerControls();
+    private GameManager gameManager;
 
-        playerControls.Gameplay.Pause.performed += context => TryPause();
+    private void Start()
+    {
+        gameManager = GetComponent<GameManager>();
     }
 
-    private void TryPause()
+    public void TogglePause()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (!paused) Pause();
-        }
-    }
+        if (!paused && !gameManager.canPause) return;
 
-    public void Resume()
-    {
-        paused = false;
-        Time.timeScale = 1f;
-        pauseUi.SetActive(false);
-        gameUi.SetActive(true);
-    }
-
-    private void Pause()
-    {
-        paused = true;
-        Time.timeScale = 0f;
-        pauseUi.SetActive(true);
-        gameUi.SetActive(false);
+        paused = !paused;
+        gameManager.canPause = !gameManager.canPause;
+        Time.timeScale = paused ? 0f : 1f;
+        pauseUi.SetActive(!pauseUi.activeSelf);
+        gameUi.SetActive(!gameUi.activeSelf);
     }
 
     public void QuitToMenu()
@@ -56,6 +60,5 @@ public class PauseMenu : MonoBehaviour
     public void TogglePanels()
     {
         mainPanel.SetActive(!mainPanel.activeSelf);
-        settingsPanel.SetActive(!settingsPanel.activeSelf);
     }
 }

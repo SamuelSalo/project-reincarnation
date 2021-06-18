@@ -43,7 +43,7 @@
                     "id": "59f87621-6efe-4865-8b44-3819719e27f3",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Tap"
+                    "interactions": ""
                 },
                 {
                     "name": "Interact",
@@ -60,6 +60,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Hold"
+                },
+                {
+                    "name": "Stats",
+                    "type": "Button",
+                    "id": "cdbbbec2-d41c-4dad-90e5-8dcd9e2b55f1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -247,6 +255,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "HoldInteract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3ace0b1b-e6fd-4941-97a9-078823cd7167",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KB&M",
+                    "action": "Stats",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "34380e0b-2a09-4c9e-9c4b-33677260a677",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Stats",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

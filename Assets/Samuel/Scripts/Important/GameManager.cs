@@ -9,8 +9,10 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public Character.Faction playerFaction;
     [HideInInspector] public Character playerCharacter;
 
+    public bool canPause;
     public CameraFollow cameraFollow;
     public LightFollow lightFollow;
+    private StatsManager statsManager;
 
     [Space] [Header("UI")]
     public Slider healthBar;
@@ -36,6 +38,11 @@ public class GameManager : MonoBehaviour
 
         if(playerCharacter)
             UpdateUI();
+    }
+
+    private void Start()
+    {
+        statsManager = GetComponent<StatsManager>();
     }
 
     /// <summary>
@@ -85,6 +92,12 @@ public class GameManager : MonoBehaviour
     public void PlayerKill(Character character)
     {
         UpdateAIs();
+
+        if (statsManager == null)
+            statsManager = GetComponent<StatsManager>();
+
+        statsManager.GiveXP(50);
+        statsManager.UpdateCharacterStats();
     }
 
     /// <summary>
@@ -94,7 +107,7 @@ public class GameManager : MonoBehaviour
     {
         deathUI.SetActive(true);
         gameUI.SetActive(false);
-        GetComponent<PauseMenu>().enabled = false;
+        canPause = false;
         Time.timeScale = 0f;
     }
 
@@ -142,5 +155,6 @@ public class GameManager : MonoBehaviour
         lightFollow.target = playerCharacter.transform;
 
         UpdateAIs();
+        statsManager.UpdateCharacterStats();
     }
 }

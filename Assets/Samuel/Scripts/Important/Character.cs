@@ -11,7 +11,8 @@ public class Character : MonoBehaviour
     public enum Faction { Blue, Red };
     [HideInInspector] public Faction faction;
 
-    public CharacterSheet characterSheet;
+    public AIVariables aiVariables;
+    public CharacterStats characterStats;
 
     //Stats
     [HideInInspector] public float attackRate;
@@ -52,20 +53,7 @@ public class Character : MonoBehaviour
         gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         gameSFX = GameObject.FindWithTag("AudioManager").GetComponent<GameSFX>();
 
-        maxHealth = characterSheet.maxHealth;
-        maxStamina = characterSheet.maxStamina;
-        staminaRecovery = characterSheet.staminaRecovery;
-        damage = characterSheet.damage;
-        attackRate = characterSheet.attackRate;
-        dashCooldown = characterSheet.dashCooldown;
-        dashSpeed = characterSheet.dashSpeed;
-        movementSpeed = characterSheet.movementSpeed;
-        faction = characterSheet.faction;
-        ai.aiVariables = characterSheet.aiVariables;
-        agent.speed = movementSpeed;
-        player.moveSpeed = movementSpeed;
-        player.moveSmoothing = characterSheet.moveSmoothing;
-        player.turnSmoothing = characterSheet.turnSmoothing;
+        UpdateStats();
 
         health = maxHealth;
         PlayerControlled(isPlayer);
@@ -208,5 +196,22 @@ public class Character : MonoBehaviour
         if (isPlayer) floatingHealthbar.visible = true;
         floatingHealthbar.SetFillColor(isPlayer ? Color.green : faction == Faction.Red ? Color.red : Color.blue);
         floatingHealthbar.SetHealthValue(health, maxHealth);
+    }
+
+    public void UpdateStats()
+    {
+        maxHealth = characterStats.maxHealth;
+        maxStamina = characterStats.maxStamina;
+        staminaRecovery = characterStats.staminaRecovery;
+        damage = characterStats.damage;
+        attackRate = characterStats.attackRate;
+        dashCooldown = characterStats.dashCooldown;
+        dashSpeed = characterStats.dashSpeed;
+        movementSpeed = characterStats.movementSpeed;
+        ai.aiVariables = aiVariables;
+        agent.speed = movementSpeed;
+        player.moveSpeed = movementSpeed;
+        player.moveSmoothing = characterStats.moveSmoothing;
+        player.turnSmoothing = characterStats.turnSmoothing;
     }
 }
