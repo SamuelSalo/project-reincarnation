@@ -52,6 +52,8 @@ public class StatsManager : MonoBehaviour
     public float dashSpeedBonus;
     public float dashCooldownReduction;
 
+    [Space]
+
     public Slider inGameXpBar;
     public Button lvlUpButton;
     public TMP_Text inGameSpText, inMenuSpText;
