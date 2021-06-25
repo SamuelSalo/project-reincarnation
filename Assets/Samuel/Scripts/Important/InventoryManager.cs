@@ -17,7 +17,6 @@ public class InventoryManager : MonoBehaviour
 
     [Space]
 
-    public Item TEST_startingItem;
     public TMP_Dropdown inventoryDropdown;
     public TMP_Text goldText;
     public List<Item> itemInventory;
@@ -26,7 +25,6 @@ public class InventoryManager : MonoBehaviour
     {
         itemInventory = new List<Item>();
         //UpdateInventory();
-        AddItem(TEST_startingItem);
         UpdateEquipment(0);
     }
 
@@ -42,7 +40,7 @@ public class InventoryManager : MonoBehaviour
         AddItem(_item);
     }
 
-    private void AddItem(Item _item)
+    public void AddItem(Item _item)
     {
         itemInventory.Add(_item);
         UpdateInventory();
