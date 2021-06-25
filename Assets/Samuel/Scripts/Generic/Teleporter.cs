@@ -1,55 +1,30 @@
 using System.Collections;
 using UnityEngine;
 
-public class Teleporter : MonoBehaviour
+public class Teleporter : Interactable
 {
-    private PlayerControls playerControls;
-
     public Room destinationRoom;
     private Room currentRoom;
 
     private FaderOverlay fader;
-    private GameManager gameManager;
     private Vector2 destination;
-    private bool reach;
     private bool teleporting;
-
-    private void OnEnable()
-    {
-        if (playerControls == null)
-        {
-            playerControls = new PlayerControls();
-
-            playerControls.Gameplay.Interact.performed += context => Teleport();
-        }
-
-        playerControls.Enable();
-    }
 
     private void Start()
     {
         currentRoom = transform.parent.GetComponent<Room>();
         fader = GameObject.FindWithTag("FaderOverlay").GetComponent<FaderOverlay>();
-        gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         destination = transform.GetChild(0).position;
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-            reach = true;
-    }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    public override void Interact()
     {
-        if (collision.CompareTag("Player"))
-            reach = false;
-    }
+        base.Interact();
 
+        if (!interactable) return;
 
-    private void Teleport()
-    {
         //Allow player to backtrack freely and roam across cleared/own faction rooms, but require room to be cleared to advance
-        if (reach && !teleporting)
+        if (!teleporting)
         {
             if (currentRoom.cleared || destinationRoom.cleared || destinationRoom.faction == gameManager.playerFaction || currentRoom.faction == gameManager.playerFaction)
                 StartCoroutine(TeleportPlayer());

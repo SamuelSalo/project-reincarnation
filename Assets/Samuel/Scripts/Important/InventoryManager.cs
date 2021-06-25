@@ -19,6 +19,7 @@ public class InventoryManager : MonoBehaviour
 
     public Item TEST_startingItem;
     public TMP_Dropdown inventoryDropdown;
+    public TMP_Text goldText;
     public List<Item> itemInventory;
 
     private void Start()
@@ -29,9 +30,15 @@ public class InventoryManager : MonoBehaviour
         UpdateEquipment(0);
     }
 
+    public void GiveGold(int _amt)
+    {
+        gold += _amt;
+        goldText.text = gold + " Gold";
+    }
     public void BuyItem(Item _item)
     {
         gold -= _item.price;
+        goldText.text = gold + " Gold";
         AddItem(_item);
     }
 
@@ -65,17 +72,25 @@ public class InventoryManager : MonoBehaviour
 
     public void UpdateEquipment(int _index)
     {
-        print(_index);
         if (_index == 0)
-        {
             equippedItem = null;
-            equippedItemDisplay.item = equippedItem;
-            equippedItemDisplay.UpdateDisplay();
-            return;
-        }
+        else
+            equippedItem = itemInventory[_index - 1];
 
-        equippedItem = itemInventory[_index - 1];
         equippedItemDisplay.item = equippedItem;
         equippedItemDisplay.UpdateDisplay();
+        UpdateStatEffects();
+    }
+
+    public void UpdateStatEffects()
+    {
+        //TODO
+
+
+        //test code here
+        if (equippedItem == null)
+            return;
+        statsManager.itemMaxHpBonus = equippedItem.name == "TestHPItem1" ? 5 : 0;
+        statsManager.UpdateCharacterStats();
     }
 }

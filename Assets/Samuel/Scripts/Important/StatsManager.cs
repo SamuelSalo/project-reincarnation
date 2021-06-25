@@ -54,6 +54,8 @@ public class StatsManager : MonoBehaviour
 
     [Space]
 
+    public int itemMaxHpBonus;
+
     public Slider inGameXpBar;
     public Button lvlUpButton;
     public TMP_Text inGameSpText, inMenuSpText;
@@ -162,10 +164,11 @@ public class StatsManager : MonoBehaviour
         var character = gameManager.playerCharacter;
 
         character.damage = characterStats.damage + atkDamageBonus;
-        character.maxHealth = characterStats.maxHealth + maxHPBonus;
+        character.maxHealth = characterStats.maxHealth + maxHPBonus + itemMaxHpBonus;
         character.maxStamina = characterStats.maxStamina + maxStaminaBonus;
         character.staminaRecovery = characterStats.staminaRecovery + staminaRecoveryBonus;
         character.attackRate = characterStats.attackRate - atkRateReduction;
         character.dashSpeed = characterStats.dashSpeed + dashSpeedBonus;
+        character.UpdateHealthbar();
     }
 }

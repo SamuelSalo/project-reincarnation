@@ -2,17 +2,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
-using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
     [HideInInspector] public Character.Faction playerFaction;
     [HideInInspector] public Character playerCharacter;
+    [HideInInspector] public StatsManager statsManager;
+    [HideInInspector] public InventoryManager invManager;
 
     public bool canPause;
     public CameraFollow cameraFollow;
     public LightFollow lightFollow;
-    private StatsManager statsManager;
 
     [Space] [Header("UI")]
     public Slider healthBar;
@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         statsManager = GetComponent<StatsManager>();
+        invManager = GetComponent<InventoryManager>();
     }
 
     /// <summary>
@@ -97,6 +98,7 @@ public class GameManager : MonoBehaviour
             statsManager = GetComponent<StatsManager>();
 
         statsManager.GiveXP(50);
+        invManager.GiveGold(25);
         statsManager.UpdateCharacterStats();
     }
 

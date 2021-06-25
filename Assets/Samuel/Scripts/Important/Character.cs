@@ -193,6 +193,8 @@ public class Character : MonoBehaviour
     /// </summary>
     public void UpdateHealthbar()
     {
+        if (!floatingHealthbar) return;
+
         if (isPlayer) floatingHealthbar.visible = true;
         floatingHealthbar.SetFillColor(isPlayer ? Color.green : faction == Faction.Red ? Color.red : Color.blue);
         floatingHealthbar.SetHealthValue(health, maxHealth);
