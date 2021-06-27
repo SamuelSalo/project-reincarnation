@@ -23,4 +23,4 @@ MonoBehaviour:
   dashSpeed: 7.5
   movementSpeed: 2
   moveSmoothing: 0.1
-  turnSmoothing: 0.8
+  turnSmoothing: 0.52

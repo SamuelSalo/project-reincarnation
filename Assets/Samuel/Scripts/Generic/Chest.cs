@@ -9,7 +9,12 @@ public class Chest : Interactable
     private bool opened;
 
     public DroptableItem[] rares, epics, legendaries;
-    
+
+    protected override void Start()
+    {
+        base.Start();
+    }
+
     public override void Interact()
     {
         base.Interact();

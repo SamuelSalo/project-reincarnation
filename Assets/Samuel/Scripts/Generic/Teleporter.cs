@@ -10,8 +10,10 @@ public class Teleporter : Interactable
     private Vector2 destination;
     private bool teleporting;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+
         currentRoom = transform.parent.GetComponent<Room>();
         fader = GameObject.FindWithTag("FaderOverlay").GetComponent<FaderOverlay>();
         destination = transform.GetChild(0).position;

@@ -26,6 +26,7 @@ public class InventoryManager : MonoBehaviour
         itemInventory = new List<Item>();
         //UpdateInventory();
         UpdateEquipment(0);
+        UpdateInventory();
     }
 
     public void GiveGold(int _amt)

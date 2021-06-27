@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
@@ -74,6 +74,7 @@ public class Player : MonoBehaviour
         if (freeze) return;
         
         character.rb.velocity = Vector2.SmoothDamp(character.rb.velocity, moveDirection * currentSpeed, ref refVelocity, moveSmoothing);
+        
         transform.up = Vector2.Lerp(transform.up, lookDirection, turnSmoothing);
 
         character.UpdateAnimator();
@@ -116,7 +117,7 @@ public class Player : MonoBehaviour
         var mousePos = Camera.main.ScreenToWorldPoint(mousePosition);
         var heading = mousePos - transform.position;
         lookDirection = heading / heading.magnitude;
-        moveDirection.Normalize();
+        lookDirection.Normalize();
     }
 
     /// <summary>
@@ -184,4 +185,18 @@ public class Player : MonoBehaviour
         character.invincible = false;
     }
     
+    /*
+    
+    FOR LATER USE
+
+    private Vector2 SnapVector2(Vector2 vectorToSnap)
+    {
+        Vector2 returnVector = new Vector2();
+
+        returnVector.x = Mathf.RoundToInt(vectorToSnap.x);
+        returnVector.y = Mathf.RoundToInt(vectorToSnap.y);
+
+        return returnVector;
+    }
+    */
 }

@@ -26,7 +26,7 @@ public class Interactable : MonoBehaviour
     [HideInInspector] public bool interactable;
     [HideInInspector] public GameManager gameManager;
 
-    private void Start()
+    protected virtual void Start()
     {
         gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
     }

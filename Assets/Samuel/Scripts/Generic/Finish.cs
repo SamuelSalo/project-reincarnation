@@ -10,8 +10,9 @@ public class Finish : Interactable
 
     private Room room;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         room = transform.parent.GetComponent<Room>();
     }
 
