@@ -118,6 +118,8 @@ public class StatsManager : MonoBehaviour
 
     public void LevelUp()
     {
+        GameObject.FindWithTag("Tooltip").GetComponent<Tooltip>().ShowTooltip("You gained a skill point! Press 'I' to level up!", 5f);
+
         skillPoints++;
         currentLevel++;
     }

@@ -60,5 +60,6 @@ public class PauseMenu : MonoBehaviour
     public void TogglePanels()
     {
         mainPanel.SetActive(!mainPanel.activeSelf);
+        settingsPanel.SetActive(!settingsPanel.activeSelf);
     }
 }

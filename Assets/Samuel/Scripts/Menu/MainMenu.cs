@@ -19,6 +19,9 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
+        GameObject.FindWithTag("SceneChanger").GetComponent<SceneChanger>().FadeToScene(1);
+
+        /* TUTORIAL DISABLED TEMPORARILY
         if(PlayerPrefs.HasKey("PlayTutorial"))
         {
             if(PlayerPrefs.GetInt("PlayTutorial") == 1)
@@ -35,7 +38,8 @@ public class MainMenu : MonoBehaviour
             PlayerPrefs.SetInt("PlayTutorial", 1);
             StartGame();
         }
-        
+        */
+
     }
 
     public void QuitGame()
@@ -45,8 +49,10 @@ public class MainMenu : MonoBehaviour
 
     public void StartTutorial()
     {
+        /*
         GameObject.FindWithTag("SceneChanger").GetComponent<SceneChanger>().FadeToScene(2);
         PlayerPrefs.SetInt("PlayTutorial", 0);
+        */
     }
 
     public void TutorialPanel(bool _active)
