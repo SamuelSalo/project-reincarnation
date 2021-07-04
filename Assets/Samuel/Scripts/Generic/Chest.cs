@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Rarity = Item.Rarity;
+using Rarity = PerkObject.Rarity;
 using Type = DroptableItem.Type;
 
 public class Chest : Interactable
@@ -49,17 +49,16 @@ public class Chest : Interactable
         switch (item.type)
         {
             case Type.Item:
-                gameManager.invManager.AddItem(item.item);
+               InventoryManager.instance.AddPerk(item.item);
                 break;
 
             case Type.Gold:
-                gameManager.invManager.GiveGold(item.goldAmount);
+                InventoryManager.instance.GiveTokens(item.goldAmount);
                 break;
         }
         OpenChest();
         //TODO droptable
     }
-
     private void OpenChest()
     {
         //TODO open chest sprite

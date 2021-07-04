@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
             StartCoroutine(DashIFrames());
             character.rb.velocity = moveDirection * dashSpeed;
             dash = false;
-            character.gameSFX.PlayDashSFX();
+            GameSFX.instance.PlayDashSFX();
 
             stamina -= 20f;
             StopCoroutine(nameof(DashRoutine));
@@ -97,7 +97,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void ActivateAttackHurtbox()
     {
-        character.gameSFX.PlaySlashSFX();
+        GameSFX.instance.PlaySlashSFX();
         var hits = Physics2D.OverlapBoxAll(transform.position + transform.up, new Vector2(1f, 1f), 0f);
         if (hits.Length != 0)
         {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,12 +25,12 @@ public class Interactable : MonoBehaviour
     #endregion
 
     [HideInInspector] public bool interactable;
-    [HideInInspector] public GameManager gameManager;
 
     protected virtual void Start()
     {
-        gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+        
     }
+
     public virtual void Interact()
     {
         if (!interactable) return;

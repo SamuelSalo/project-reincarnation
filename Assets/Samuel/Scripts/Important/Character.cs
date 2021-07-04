@@ -26,12 +26,10 @@ public class Character : MonoBehaviour
     [HideInInspector] public float health;
 
     //Components
-    [HideInInspector] public GameManager gameManager;
     [HideInInspector] public Animator animator;
     [HideInInspector] public Player player;
     [HideInInspector] public FloatingHealthbar floatingHealthbar;
     [HideInInspector] public Room room;
-    [HideInInspector] public GameSFX gameSFX;
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public AI ai;
     [HideInInspector] public NavMeshAgent agent;
@@ -50,8 +48,6 @@ public class Character : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
-        gameSFX = GameObject.FindWithTag("AudioManager").GetComponent<GameSFX>();
 
         UpdateStats();
 
@@ -96,7 +92,7 @@ public class Character : MonoBehaviour
     {
         if (invincible || (!isPlayer && ai.WillDodgeAttack())) return;
 
-        gameSFX.PlayHurtSFX();
+        GameSFX.instance.PlayHurtSFX();
         health -= _damage;
 
         if (health <= 0)
@@ -114,7 +110,7 @@ public class Character : MonoBehaviour
         spriteFlasher.Flash();
 
         UpdateHealthbar();
-        gameSFX.PlayHealSFX();
+        GameSFX.instance.PlayHealSFX();
     }
 
     /// <summary>
@@ -149,15 +145,15 @@ public class Character : MonoBehaviour
     /// </summary>
     private void Death(Character _killer)
     {
-        gameSFX.PlayDeathSFX();
+        GameSFX.instance.PlayDeathSFX();
 
         if (isPlayer)
         {
-            gameManager.PlayerDeath(_killer);
+            GameManager.instance.PlayerDeath(_killer);
         }  
         else
         {
-            gameManager.PlayerKill(this);
+            GameManager.instance.PlayerKill(this);
             room.npcs.Remove(transform);
         }
         var remains = Instantiate(Resources.Load("Remains"), transform.position, Quaternion.identity) as GameObject;

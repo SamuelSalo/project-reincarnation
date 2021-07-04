@@ -22,11 +22,11 @@ public class Finish : Interactable
 
         if (interactable)
         {
-            if (gameManager.playerFaction != faction && room.cleared)
+            if (GameManager.instance.playerFaction != faction && room.cleared)
                 FinishGame();
-            else if(gameManager.playerFaction == faction)
+            else if(GameManager.instance.playerFaction == faction)
                 GameObject.FindWithTag("Tooltip").GetComponent<Tooltip>().ShowTooltip("Wrong direction! Go to the other end...", 2f);
-            else if(gameManager.playerFaction != faction && !room.cleared)
+            else if(GameManager.instance.playerFaction != faction && !room.cleared)
                 GameObject.FindWithTag("Tooltip").GetComponent<Tooltip>().ShowTooltip("Clear the room of enemies first!", 2f);
         }
     }
@@ -36,6 +36,6 @@ public class Finish : Interactable
         gameUI.SetActive(false);
         finishUI.SetActive(true);
         Time.timeScale = 0f;
-        gameManager.canPause = false;
+        GameManager.instance.canPause = false;
     }
 }

@@ -6,7 +6,6 @@ public class Teleporter : Interactable
     public Room destinationRoom;
     private Room currentRoom;
 
-    private FaderOverlay fader;
     private Vector2 destination;
     private bool teleporting;
 
@@ -15,7 +14,6 @@ public class Teleporter : Interactable
         base.Start();
 
         currentRoom = transform.parent.GetComponent<Room>();
-        fader = GameObject.FindWithTag("FaderOverlay").GetComponent<FaderOverlay>();
         destination = transform.GetChild(0).position;
     }
 
@@ -28,7 +26,7 @@ public class Teleporter : Interactable
         //Allow player to backtrack freely and roam across cleared/own faction rooms, but require room to be cleared to advance
         if (!teleporting)
         {
-            if (currentRoom.cleared || destinationRoom.cleared || destinationRoom.faction == gameManager.playerFaction || currentRoom.faction == gameManager.playerFaction)
+            if (currentRoom.cleared || destinationRoom.cleared || destinationRoom.faction == GameManager.instance.playerFaction || currentRoom.faction == GameManager.instance.playerFaction)
                 StartCoroutine(TeleportPlayer());
             else if (!currentRoom.cleared)
                 GameObject.FindWithTag("Tooltip").GetComponent<Tooltip>().ShowTooltip("Clear the room of enemies first!", 2f);
@@ -42,15 +40,15 @@ public class Teleporter : Interactable
     private IEnumerator TeleportPlayer()
     {
         teleporting = true;
-        gameManager.playerCharacter.player.freeze = teleporting;
-        fader.FadeOut();
+        GameManager.instance.playerCharacter.player.freeze = teleporting;
+        FaderOverlay.instance.FadeOut();
 
         yield return new WaitForSeconds(1f);
-        gameManager.playerCharacter.transform.position = destination;
+        GameManager.instance.playerCharacter.transform.position = destination;
 
         
         teleporting = false;
-        gameManager.playerCharacter.player.freeze = teleporting;
-        fader.FadeIn();
+        GameManager.instance.playerCharacter.player.freeze = teleporting;
+        FaderOverlay.instance.FadeIn();
     }
 }

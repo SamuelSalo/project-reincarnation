@@ -103,7 +103,7 @@ public class AI : MonoBehaviour
     private void UpdateAIState()
     {
         if (Vector2.Distance(transform.position, target.position) < chaseRange
-            && character.gameManager.playerFaction != character.faction && Vector2.Distance(transform.position, target.position) > attackRange)
+            && GameManager.instance.playerFaction != character.faction && Vector2.Distance(transform.position, target.position) > attackRange)
         {
             state = State.Chasing;
         }
@@ -118,7 +118,7 @@ public class AI : MonoBehaviour
         } 
 
         if (Vector2.Distance(transform.position, target.position) <= attackRange
-            && character.gameManager.playerFaction != character.faction)
+            && GameManager.instance.playerFaction != character.faction)
         {
             state = State.Attacking;
             Attack();
@@ -207,7 +207,7 @@ public class AI : MonoBehaviour
     /// </summary>
     public void ActivateAttackHurtbox()
     {
-        character.gameSFX.PlaySlashSFX();
+        GameSFX.instance.PlaySlashSFX();
         var hits = Physics2D.OverlapBoxAll(transform.position + transform.up, new Vector2(1f, 1f), 0f);
         if (hits.Length != 0)
         {

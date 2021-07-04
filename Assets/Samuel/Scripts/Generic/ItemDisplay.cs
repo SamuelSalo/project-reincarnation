@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Rarity = Item.Rarity;
+using Rarity = PerkObject.Rarity;
 
 public class ItemDisplay : MonoBehaviour
 {
-    public Item item;
+    public PerkObject item;
 
     [Space]
 
     public TMP_Text nameLabel;
     public TMP_Text descriptionLabel;
-    public TMP_Text priceLabel;
     public Image iconImage;
 
     public void UpdateDisplay()
@@ -29,7 +28,6 @@ public class ItemDisplay : MonoBehaviour
 
         nameLabel.text = item.name;
         descriptionLabel.text = item.description;
-        if (priceLabel) priceLabel.text = item.price.ToString() + "G";
         iconImage.sprite = item.icon;
 
         switch (item.rarity)

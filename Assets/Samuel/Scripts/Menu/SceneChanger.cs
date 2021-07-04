@@ -11,7 +11,7 @@ public class SceneChanger : MonoBehaviour
 
     private IEnumerator FadeToSceneCoRoutine(int _index)
     {
-        GameObject.FindWithTag("FaderOverlay").GetComponent<FaderOverlay>().FadeOut();
+        FaderOverlay.instance.FadeOut();
         yield return new WaitForSecondsRealtime(1f);
         var asyncLoad = SceneManager.LoadSceneAsync(_index);
         while(!asyncLoad.isDone)

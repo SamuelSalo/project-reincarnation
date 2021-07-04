@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Rarity = Item.Rarity;
+using Rarity = PerkObject.Rarity;
 
 [CreateAssetMenu(menuName = "ScriptableObject/New DroptableItem", fileName = "New DroptableItem")]
 public class DroptableItem : ScriptableObject
@@ -12,5 +12,5 @@ public class DroptableItem : ScriptableObject
     public Type type;
 
     public int goldAmount;
-    public Item item;
+    public PerkObject item;
 }

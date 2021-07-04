@@ -23,6 +23,21 @@ public class StatsManager : MonoBehaviour
         playerControls.Disable();
     }
     #endregion
+    #region Singleton
+
+    public static StatsManager instance;
+
+    private void Awake()
+    {
+        if (instance)
+        {
+            Debug.LogWarning("Multiple instances of " + name + "found!");
+            return;
+        }
+        instance = this;
+    }
+
+    #endregion
 
     private GameManager gameManager;
 
