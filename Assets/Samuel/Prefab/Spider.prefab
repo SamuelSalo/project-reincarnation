@@ -77,7 +77,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1722927047
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 4687347902702853, guid: 6965407fab45fb949bb024e1b943bfa4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -171,12 +171,10 @@ MonoBehaviour:
   damage: 25
   movementSpeed: 0
   health: 0
-  gameManager: {fileID: 0}
   animator: {fileID: 0}
   player: {fileID: 0}
   floatingHealthbar: {fileID: 0}
   room: {fileID: 0}
-  gameSFX: {fileID: 0}
   rb: {fileID: 0}
   ai: {fileID: 0}
   agent: {fileID: 0}

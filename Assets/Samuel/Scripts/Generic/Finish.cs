@@ -25,9 +25,9 @@ public class Finish : Interactable
             if (GameManager.instance.playerFaction != faction && room.cleared)
                 FinishGame();
             else if(GameManager.instance.playerFaction == faction)
-                GameObject.FindWithTag("Tooltip").GetComponent<Tooltip>().ShowTooltip("Wrong direction! Go to the other end...", 2f);
+                Tooltip.instance.ShowTooltip("Wrong direction! Go to the other end...", 2f);
             else if(GameManager.instance.playerFaction != faction && !room.cleared)
-                GameObject.FindWithTag("Tooltip").GetComponent<Tooltip>().ShowTooltip("Clear the room of enemies first!", 2f);
+                Tooltip.instance.ShowTooltip("Clear the room of enemies first!", 2f);
         }
     }
 

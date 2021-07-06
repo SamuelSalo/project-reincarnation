@@ -4,6 +4,22 @@ using UnityEngine;
 
 public class Tooltip : MonoBehaviour
 {
+    #region Singleton
+
+    public static Tooltip instance;
+
+    private void Awake()
+    {
+        if(instance)
+        {
+            Debug.LogWarning("Multiple tooltip instances detected.");
+            return;
+        }
+
+        instance = this;
+    }
+
+    #endregion
     private TMP_Text tooltipText;
 
     private void Start()

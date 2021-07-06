@@ -100,6 +100,8 @@ public class Character : MonoBehaviour
 
         spriteFlasher.Flash();
         UpdateHealthbar();
+
+        CombatText.instance.ShowDamageText(_damage, (Vector2)transform.position + (Vector2)Random.onUnitSphere);
     }
     /// <summary>
     /// Restore health to this character.
@@ -111,6 +113,8 @@ public class Character : MonoBehaviour
 
         UpdateHealthbar();
         GameSFX.instance.PlayHealSFX();
+
+        CombatText.instance.ShowHealText(_amount, (Vector2)transform.position + (Vector2)Random.onUnitSphere);
     }
 
     /// <summary>
