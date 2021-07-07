@@ -16,7 +16,7 @@ MonoBehaviour:
   aiVariables: {fileID: 11400000, guid: 41a77d4821f629a4d8f65bae48bcf583, type: 2}
   maxHealth: 100
   maxStamina: 150
-  staminaRecovery: 10
+  staminaRecovery: 15
   damage: 25
   attackRate: 0.75
   dashCooldown: 1

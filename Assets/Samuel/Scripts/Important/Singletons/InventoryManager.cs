@@ -42,7 +42,14 @@ public class InventoryManager : MonoBehaviour
 
     public void GiveTokens(int _amt)
     {
-        bloodTokens += _amt;
+        int adjAmount = _amt;
+
+        if(PerkManager.instance.gravelordsBlessing > 0)
+        {
+            adjAmount += PerkManager.instance.gravelordsBlessing * 10;
+        }
+
+        bloodTokens += adjAmount;
         tokensText.text = bloodTokens + " Blood Tokens";
     }
 
@@ -70,10 +77,13 @@ public class InventoryManager : MonoBehaviour
                 txt.color = Color.blue;
                 break;
             case Rarity.Epic:
-                txt.color = new Color(238, 130, 238);
+                txt.color = new Color32(238, 130, 238, 255); //purple
                 break;
             case Rarity.Legendary:
-                txt.color = new Color(255, 165, 0);
+                txt.color = new Color32(255, 165, 0, 255); //orange
+                break;
+            case Rarity.Negative:
+                txt.color = Color.red;
                 break;
         }
 

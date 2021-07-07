@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    public PerkObject TEST_PERK;
     [HideInInspector] public Character.Faction playerFaction;
     [HideInInspector] public Character playerCharacter;
 
@@ -72,6 +71,7 @@ public class GameManager : MonoBehaviour
         SetPlayer(_killer);
         playerCharacter.PlayerControlled(true);
         playerCharacter.transform.SetParent(null);
+        _killer.UpdateHealthbar();
 
         if(_killer.room && _killer.room.npcs.Contains(_killer.transform))
             _killer.room.npcs.Remove(_killer.transform);
@@ -106,7 +106,6 @@ public class GameManager : MonoBehaviour
         StatsManager.instance.GiveXP(50);
         InventoryManager.instance.GiveTokens(25);
         StatsManager.instance.UpdateCharacterStats();
-        InventoryManager.instance.AddPerk(TEST_PERK);
     }
 
     /// <summary>

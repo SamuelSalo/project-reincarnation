@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
             dash = false;
             GameSFX.instance.PlayDashSFX();
 
-            stamina -= 20f;
+            stamina -= 25f;
             StopCoroutine(nameof(DashRoutine));
             StartCoroutine(DashRoutine());
         }
@@ -138,10 +138,10 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Attack()
     {
-        if(Time.time >= attackTimer && stamina > 20f)
+        if(Time.time >= attackTimer && stamina > 25f)
         {
             attackTimer = Time.time + 1f / character.attackRate;
-            stamina -= 20f;
+            stamina -= 25f;
 
             StopCoroutine(nameof(AttackRoutine));
             StartCoroutine(AttackRoutine());
@@ -155,7 +155,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Dash()
     {
-        if(Time.time >= dashTimer && stamina > 20f)
+        if(Time.time >= dashTimer && stamina > 25f)
         {
             dashTimer = Time.time + dashCooldown;
             dash = true;

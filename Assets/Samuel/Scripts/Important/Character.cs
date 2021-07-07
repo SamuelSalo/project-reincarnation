@@ -38,7 +38,6 @@ public class Character : MonoBehaviour
     public bool invincible; 
     public bool isPlayer = false;
     public bool isBoss = false;
-    
 
     private void Start()
     {
@@ -82,7 +81,14 @@ public class Character : MonoBehaviour
     /// </summary>
     public void DealDamage(float _damage, Character _target)
     {
-        _target.TakeDamage(_damage, this);
+        float adjDamage = _damage;
+
+        if(PerkManager.instance.whetstone > 0 && PercentageChance(20) && isPlayer)
+        {
+            adjDamage += 10 * PerkManager.instance.whetstone;
+        }
+
+        _target.TakeDamage(adjDamage, this);
     }
 
     /// <summary>
@@ -91,6 +97,17 @@ public class Character : MonoBehaviour
     public void TakeDamage(float _damage, Character _source)
     {
         if (invincible || (!isPlayer && ai.WillDodgeAttack())) return;
+
+        if(PerkManager.instance.luckyCharm > 0 && PercentageChance(5 * PerkManager.instance.luckyCharm) && isPlayer)
+        {
+            //TODO perk fx
+            return;
+        }
+
+        if(PerkManager.instance.gravelordsCurse > 0 && isPlayer)
+        {
+            InventoryManager.instance.SpendTokens(5 * PerkManager.instance.gravelordsCurse);
+        }
 
         GameSFX.instance.PlayHurtSFX();
         health -= _damage;
@@ -215,5 +232,15 @@ public class Character : MonoBehaviour
         player.moveSpeed = movementSpeed;
         player.moveSmoothing = characterStats.moveSmoothing;
         player.turnSmoothing = characterStats.turnSmoothing;
+    }
+
+    /// <summary>
+    /// Return bool from precentage chance random roll
+    /// </summary>
+    /// <param name="_percentage"></param>
+    /// <returns></returns>
+    private bool PercentageChance(float _percentage)
+    {
+        return Random.Range(0, 100) <= _percentage;
     }
 }

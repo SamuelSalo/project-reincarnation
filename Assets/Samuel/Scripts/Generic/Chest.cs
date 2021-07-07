@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Rarity = PerkObject.Rarity;
 using Type = DroptableItem.Type;
@@ -41,19 +39,19 @@ public class Chest : Interactable
                 break;
 
             case Rarity.Legendary:
-                item = legendaries[Random.Range(0, legendaries.Length)];
+                item = legendaries[Random.Range(0, legendaries.Length )];
                 break;
             
         }
 
         switch (item.type)
         {
-            case Type.Item:
-               InventoryManager.instance.AddPerk(item.item);
+            case Type.Perk:
+               InventoryManager.instance.AddPerk(item.perk);
                 break;
 
-            case Type.Gold:
-                InventoryManager.instance.GiveTokens(item.goldAmount);
+            case Type.BloodTokens:
+                InventoryManager.instance.GiveTokens(item.tokenAmount);
                 break;
         }
         OpenChest();

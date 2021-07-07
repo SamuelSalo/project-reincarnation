@@ -36,10 +36,13 @@ public class ItemDisplay : MonoBehaviour
                 nameLabel.color = Color.blue;
                 break;
             case Rarity.Epic:
-                nameLabel.color = new Color(238, 130, 238);
+                nameLabel.color = new Color32(238, 130, 238, 255); //purple 
                 break;
             case Rarity.Legendary:
-                nameLabel.color = new Color(255, 165, 0);
+                nameLabel.color = new Color32(255, 165, 0, 255); //orange
+                break;
+            case Rarity.Negative:
+                nameLabel.color = Color.red;
                 break;
         }
     }
