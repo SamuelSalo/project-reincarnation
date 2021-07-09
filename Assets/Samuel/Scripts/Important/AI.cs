@@ -233,8 +233,7 @@ public class AI : MonoBehaviour
 
 
     /// <summary>
-    /// Roll dice to dodge attack or not
-    /// Perform dash independent of AI in separate class
+    /// Randomly choose to dodge attack or not
     /// </summary>
     /// <returns></returns>
     public bool WillDodgeAttack()

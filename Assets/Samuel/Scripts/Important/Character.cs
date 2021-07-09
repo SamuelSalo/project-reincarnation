@@ -78,13 +78,15 @@ public class Character : MonoBehaviour
         else
             transform.tag = "AI";
     }
+
+    #region Damage Handling
     /// <summary>
     /// This character deals damage to another character.
     /// </summary>
     public void DealDamage(float _damage, Character _target)
     {
         float adjDamage = _damage;
-
+        
         //perks
         if(isPlayer)
         {
@@ -93,25 +95,9 @@ public class Character : MonoBehaviour
                 adjDamage *= 2;
                 CameraShake.instance.Shake(0.25f, 0.5f);
             }
-            if(PerkManager.instance.serratedBlade > 0)
+            if(PerkManager.instance.tearstonePendant > 0 && health > maxHealth / 3)
             {
-                _target.Bleed(3 * PerkManager.instance.serratedBlade, this);
-            }
-            if(PerkManager.instance.frostRelic > 0)
-            {
-                _target.Slow(2, 5f * PerkManager.instance.frostRelic);
-            }
-            if(PerkManager.instance.vampiricBlade > 0)
-            {
-                RestoreHealth(adjDamage * (PerkManager.instance.vampiricBlade * 0.1f));
-            }
-            if(PerkManager.instance.deathMark)
-            {
-                if (PerkManager.instance.DeathMark(_target))
-                {
-                    CameraShake.instance.Shake(0.25f, 0.5f);
-                    _target.Death(this);
-                }
+                adjDamage *= 1f + (.1f * PerkManager.instance.tearstonePendant);
             }
         }
 
@@ -123,43 +109,46 @@ public class Character : MonoBehaviour
     /// </summary>
     public void TakeDamage(float _damage, Character _source)
     {
+        float adjDamage = _damage;
+
         if (invincible || (!isPlayer && ai.WillDodgeAttack())) return;
 
-        //perks
-        if(isPlayer)
+        if (isPlayer)
         {
             if (PerkManager.instance.luckyCharm > 0 && PercentageChance(5 * PerkManager.instance.luckyCharm))
             {
                 //TODO perk fx
                 return;
             }
-
             if (PerkManager.instance.gravelordsCurse > 0)
             {
                 InventoryManager.instance.SpendTokens(5 * PerkManager.instance.gravelordsCurse);
             }
-
-            if(PerkManager.instance.thornmailArmor > 0)
+            if (PerkManager.instance.thornmailArmor > 0)
             {
                 _source.Bleed(3 * PerkManager.instance.thornmailArmor, this);
             }
-
-            if(PerkManager.instance.bleedingTendencies > 0)
+            if (PerkManager.instance.bleedingTendencies > 0)
             {
                 Bleed(PerkManager.instance.bleedingTendencies * 3, this);
             }
+            if (PerkManager.instance.tearstonePendant > 0 && health > maxHealth / 3)
+            {
+                adjDamage *= 1f - (.1f * PerkManager.instance.tearstonePendant);
+            }
         }
-        
+
+        if (!isPlayer && _source.isPlayer)
+            _source.PlayerProcOnHitEffects(this, adjDamage);
 
         GameSFX.instance.PlayHurtSFX();
-        health -= _damage;
 
+        health -=adjDamage;
         if (health <= 0)
             Death(_source);
 
         spriteFlasher.Flash();
         UpdateHealthbar();
-
         CombatText.instance.ShowDamageText(_damage, (Vector2)transform.position + (Vector2)Random.onUnitSphere);
     }
 
@@ -190,6 +179,30 @@ public class Character : MonoBehaviour
     }
 
     /// <summary>
+    /// Handle character death.
+    /// Tells GameManager what died, and what killed it.
+    /// </summary>
+    public void Death(Character _killer)
+    {
+        GameSFX.instance.PlayDeathSFX();
+
+        if (isPlayer)
+        {
+            GameManager.instance.PlayerDeath(_killer);
+        }  
+        else
+        {
+            GameManager.instance.PlayerKill(this);
+            room.npcs.Remove(transform);
+        }
+        var remains = Instantiate(Resources.Load("Remains"), transform.position, Quaternion.identity) as GameObject;
+        remains.GetComponent<Remains>().faction = faction;
+        Destroy(gameObject);
+        floatingHealthbar.Dispose();
+    }
+    #endregion
+
+    /// <summary>
     /// Updates animator movement variables.
     /// Attack animations are handled separately.
     /// </summary>
@@ -213,29 +226,6 @@ public class Character : MonoBehaviour
             animator.SetFloat("xMove", velocity.x);
             animator.SetFloat("yMove", velocity.y);
         }
-    }
-
-    /// <summary>
-    /// Handle character death.
-    /// Tells GameManager what died, and what killed it.
-    /// </summary>
-    public void Death(Character _killer)
-    {
-        GameSFX.instance.PlayDeathSFX();
-
-        if (isPlayer)
-        {
-            GameManager.instance.PlayerDeath(_killer);
-        }  
-        else
-        {
-            GameManager.instance.PlayerKill(this);
-            room.npcs.Remove(transform);
-        }
-        var remains = Instantiate(Resources.Load("Remains"), transform.position, Quaternion.identity) as GameObject;
-        remains.GetComponent<Remains>().faction = faction;
-        Destroy(gameObject);
-        floatingHealthbar.Dispose();
     }
 
     /// <summary>
@@ -272,6 +262,9 @@ public class Character : MonoBehaviour
         floatingHealthbar.SetHealthValue(health, maxHealth);
     }
 
+    /// <summary>
+    /// Update character stats
+    /// </summary>
     public void UpdateStats()
     {
         maxHealth = characterStats.maxHealth;
@@ -289,11 +282,6 @@ public class Character : MonoBehaviour
         player.turnSmoothing = characterStats.turnSmoothing;
     }
 
-    /// <summary>
-    /// Return bool from precentage chance random roll
-    /// </summary>
-    /// <param name="_percentage"></param>
-    /// <returns></returns>
     private bool PercentageChance(float _percentage)
     {
         return Random.Range(0, 100) <= _percentage;
@@ -352,4 +340,27 @@ public class Character : MonoBehaviour
     }
     #endregion
 
+    public void PlayerProcOnHitEffects(Character _target, float _damage)
+    {
+        if (PerkManager.instance.serratedBlade > 0)
+        {
+            _target.Bleed(3 * PerkManager.instance.serratedBlade, this);
+        }
+        if (PerkManager.instance.frostRelic > 0)
+        {
+            _target.Slow(2, 5f * PerkManager.instance.frostRelic);
+        }
+        if (PerkManager.instance.vampiricBlade > 0)
+        {
+            RestoreHealth(_damage * (PerkManager.instance.vampiricBlade * 0.1f));
+        }
+        if (PerkManager.instance.deathMark)
+        {
+            if (PerkManager.instance.DeathMark(_target))
+            {
+                CameraShake.instance.Shake(0.25f, 0.5f);
+                _target.Death(this);
+            }
+        }
+    }
 }

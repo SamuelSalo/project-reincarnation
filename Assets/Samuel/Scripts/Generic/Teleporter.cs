@@ -40,7 +40,8 @@ public class Teleporter : Interactable
     private IEnumerator TeleportPlayer()
     {
         teleporting = true;
-        GameManager.instance.playerCharacter.player.freeze = teleporting;
+        GameManager.instance.playerCharacter.player.freeze = true;
+        GameManager.instance.canPause = false;
         FaderOverlay.instance.FadeOut();
 
         yield return new WaitForSeconds(1f);
@@ -48,7 +49,8 @@ public class Teleporter : Interactable
 
         
         teleporting = false;
-        GameManager.instance.playerCharacter.player.freeze = teleporting;
+        GameManager.instance.canPause = true;
+        GameManager.instance.playerCharacter.player.freeze = false;
         FaderOverlay.instance.FadeIn();
     }
 }
