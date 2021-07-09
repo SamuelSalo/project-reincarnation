@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     private Character character;
     
     [HideInInspector] public bool freeze;
-    private float currentSpeed;
+    [HideInInspector] public float currentSpeed;
     private float attackDuration;
 
     private void OnEnable()

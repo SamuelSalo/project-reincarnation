@@ -33,24 +33,33 @@ public class CombatText : MonoBehaviour
     public int lowDmgTreshold;
     public int highDmgTreshold;
 
+    /// <summary>
+    /// Automatic color combat text
+    /// </summary>
+    /// <param name="_damage"></param>
+    /// <param name="_location"></param>
     public void ShowDamageText(float _damage, Vector2 _location)
     {
         var text = CreateCombatText(_location);
 
         text.text = _damage.ToString();
         float mappedValue = Map(_damage, lowDmgTreshold, highDmgTreshold, 0f, 1f);
-        Debug.Log(mappedValue);
         var color = Color.Lerp(lowDmgColor, highDmgColor, mappedValue);
         color.a = 1;
         text.color = color;
     }
 
-    public void ShowHealText(float _amount, Vector2 _location)
+    /// <summary>
+    /// Overload with custom color
+    /// </summary>
+    /// <param name="_damage"></param>
+    /// <param name="_location"></param>
+    /// <param name=""></param>
+    public void ShowDamageText(float _damage, Vector2 _location, Color32 _color)
     {
         var text = CreateCombatText(_location);
-
-        text.text = _amount.ToString();
-        text.color = Color.green;
+        text.text = _damage.ToString();
+        text.color = _color;
     }
 
     private float Map(float value, float from1, float to1, float from2, float to2)

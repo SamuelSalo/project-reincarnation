@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
     {
         lives--;
 
-        if (_killer.isBoss || permaDeath)  
+        if (_killer.isBoss || permaDeath || _killer == playerCharacter)  
         {
             PermanentDeath();
             return;

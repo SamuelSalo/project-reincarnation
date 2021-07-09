@@ -15,7 +15,7 @@ public class AI : MonoBehaviour
     private float chaseRange;
     private float patrolRange;
     private float attackRange;
-    private float chaseSpeed;
+    [HideInInspector] public float chaseSpeed;
     private float patrolSpeed;
     private float turnSmoothing;
 

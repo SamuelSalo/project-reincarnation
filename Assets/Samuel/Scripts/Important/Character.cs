@@ -39,6 +39,8 @@ public class Character : MonoBehaviour
     public bool isPlayer = false;
     public bool isBoss = false;
 
+    private int bleedDamage;
+
     private void Start()
     {
         player = GetComponent<Player>();
@@ -83,9 +85,34 @@ public class Character : MonoBehaviour
     {
         float adjDamage = _damage;
 
-        if(PerkManager.instance.whetstone > 0 && PercentageChance(20) && isPlayer)
+        //perks
+        if(isPlayer)
         {
-            adjDamage += 10 * PerkManager.instance.whetstone;
+            if (PerkManager.instance.whetstone > 0 && PercentageChance(5 * PerkManager.instance.whetstone))
+            {
+                adjDamage *= 2;
+                CameraShake.instance.Shake(0.25f, 0.5f);
+            }
+            if(PerkManager.instance.serratedBlade > 0)
+            {
+                _target.Bleed(3 * PerkManager.instance.serratedBlade, this);
+            }
+            if(PerkManager.instance.frostRelic > 0)
+            {
+                _target.Slow(2, 5f * PerkManager.instance.frostRelic);
+            }
+            if(PerkManager.instance.vampiricBlade > 0)
+            {
+                RestoreHealth(adjDamage * (PerkManager.instance.vampiricBlade * 0.1f));
+            }
+            if(PerkManager.instance.deathMark)
+            {
+                if (PerkManager.instance.DeathMark(_target))
+                {
+                    CameraShake.instance.Shake(0.25f, 0.5f);
+                    _target.Death(this);
+                }
+            }
         }
 
         _target.TakeDamage(adjDamage, this);
@@ -98,16 +125,31 @@ public class Character : MonoBehaviour
     {
         if (invincible || (!isPlayer && ai.WillDodgeAttack())) return;
 
-        if(PerkManager.instance.luckyCharm > 0 && PercentageChance(5 * PerkManager.instance.luckyCharm) && isPlayer)
+        //perks
+        if(isPlayer)
         {
-            //TODO perk fx
-            return;
-        }
+            if (PerkManager.instance.luckyCharm > 0 && PercentageChance(5 * PerkManager.instance.luckyCharm))
+            {
+                //TODO perk fx
+                return;
+            }
 
-        if(PerkManager.instance.gravelordsCurse > 0 && isPlayer)
-        {
-            InventoryManager.instance.SpendTokens(5 * PerkManager.instance.gravelordsCurse);
+            if (PerkManager.instance.gravelordsCurse > 0)
+            {
+                InventoryManager.instance.SpendTokens(5 * PerkManager.instance.gravelordsCurse);
+            }
+
+            if(PerkManager.instance.thornmailArmor > 0)
+            {
+                _source.Bleed(3 * PerkManager.instance.thornmailArmor, this);
+            }
+
+            if(PerkManager.instance.bleedingTendencies > 0)
+            {
+                Bleed(PerkManager.instance.bleedingTendencies * 3, this);
+            }
         }
+        
 
         GameSFX.instance.PlayHurtSFX();
         health -= _damage;
@@ -120,6 +162,19 @@ public class Character : MonoBehaviour
 
         CombatText.instance.ShowDamageText(_damage, (Vector2)transform.position + (Vector2)Random.onUnitSphere);
     }
+
+    private void TakeBleedDamage(float _damage, Character _source)
+    {
+        health -= _damage;
+
+        if (health <= 0)
+            Death(_source);
+
+        spriteFlasher.Flash();
+        UpdateHealthbar();
+
+        CombatText.instance.ShowDamageText(_damage, (Vector2)transform.position + (Vector2)Random.onUnitSphere, new Color32(120,0,0,255));
+    }
     /// <summary>
     /// Restore health to this character.
     /// </summary>
@@ -131,7 +186,7 @@ public class Character : MonoBehaviour
         UpdateHealthbar();
         GameSFX.instance.PlayHealSFX();
 
-        CombatText.instance.ShowHealText(_amount, (Vector2)transform.position + (Vector2)Random.onUnitSphere);
+        CombatText.instance.ShowDamageText(_amount, (Vector2)transform.position + (Vector2)Random.onUnitSphere, Color.green);
     }
 
     /// <summary>
@@ -164,7 +219,7 @@ public class Character : MonoBehaviour
     /// Handle character death.
     /// Tells GameManager what died, and what killed it.
     /// </summary>
-    private void Death(Character _killer)
+    public void Death(Character _killer)
     {
         GameSFX.instance.PlayDeathSFX();
 
@@ -243,4 +298,58 @@ public class Character : MonoBehaviour
     {
         return Random.Range(0, 100) <= _percentage;
     }
+
+    #region Bleed
+    public void Bleed(int _amount, Character _source)
+    {
+        
+        if(bleedDamage == 0)
+        {
+            bleedDamage += _amount;
+            StartCoroutine(BleedRoutine(_source));
+        }
+        else
+        {
+            bleedDamage += _amount;
+        }
+    }
+
+    private IEnumerator BleedRoutine(Character _source)
+    {
+        while(bleedDamage > 0)
+        {
+            bleedDamage--;
+            TakeBleedDamage(1, _source);
+            yield return new WaitForSeconds(0.33f);
+        }
+    }
+    #endregion
+    #region Slow
+    public void Slow(float _duration, float _strength)
+    {
+        StopCoroutine(nameof(SlowRoutine));
+        StartCoroutine(SlowRoutine(_duration, _strength));
+    }
+
+    private IEnumerator SlowRoutine(float _duration, float _strength)
+    {
+        float normalSpeed;
+
+        if(isPlayer)
+        {
+            normalSpeed = player.currentSpeed;
+            player.currentSpeed = normalSpeed - normalSpeed * (_strength / 100);
+            yield return new WaitForSeconds(_duration);
+            player.currentSpeed = normalSpeed;
+        }
+        else
+        {
+            normalSpeed = ai.chaseSpeed;
+            ai.chaseSpeed = normalSpeed - normalSpeed * (_strength / 100);
+            yield return new WaitForSeconds(_duration);
+            ai.chaseSpeed = normalSpeed;
+        }
+    }
+    #endregion
+
 }

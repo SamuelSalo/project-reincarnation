@@ -25,20 +25,41 @@ public class PerkBehaviour : MonoBehaviour
             case "Wise Man's Journal":
                 PerkManager.instance.wiseMansJournal++;
                 break;
+            case "Thornmail Armor":
+                PerkManager.instance.thornmailArmor++;
+                break;
+            case "Death Mark":
+                PerkManager.instance.deathMark = true;
+                break;
 
             //Epic
-            case "Lucky Charm":
-                PerkManager.instance.luckyCharm++;
+            case "Frost Relic":
+                PerkManager.instance.frostRelic++;
+                break;
+            case "Vampiric Blade":
+                PerkManager.instance.vampiricBlade++;
+                break;
+            case "Tearstone Pendant":
+                PerkManager.instance.tearstonePendant++;
                 break;
 
             //Rare
             case "Whetstone":
                 PerkManager.instance.whetstone++;
                 break;
+            case "Lucky Charm":
+                PerkManager.instance.luckyCharm++;
+                break;
+            case "Serrated Blade":
+                PerkManager.instance.serratedBlade++;
+                break;
 
             //Negative
             case "Gravelord's Curse":
                 PerkManager.instance.gravelordsCurse++;
+                break;
+            case "Bleeding Tendencies":
+                PerkManager.instance.bleedingTendencies++;
                 break;
 
             //Default
