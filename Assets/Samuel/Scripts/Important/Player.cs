@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     private Character character;
     
     [HideInInspector] public bool freeze;
+    [HideInInspector] public bool slowed;
     [HideInInspector] public float currentSpeed;
     private float attackDuration;
 
@@ -65,8 +66,12 @@ public class Player : MonoBehaviour
 
         GetLookDirection();
         UpdateStamina();
-        currentSpeed = character.animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") ? .2f : moveSpeed;
-        currentSpeed = dashSlowdown ? 1f : moveSpeed;
+
+        if (!slowed)
+        {
+            currentSpeed = character.animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") ? .2f : moveSpeed;
+            currentSpeed = dashSlowdown ? 1f : moveSpeed;
+        }
     }
 
     private void FixedUpdate()

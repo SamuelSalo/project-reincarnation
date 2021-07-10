@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chaseRange: 5
   patrolRange: 4
-  attackRange: 1.5
-  chaseSpeed: 2.5
+  attackRange: 2
   patrolSpeed: 1.5

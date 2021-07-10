@@ -33,7 +33,7 @@ public class Character : MonoBehaviour
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public AI ai;
     [HideInInspector] public NavMeshAgent agent;
-    [HideInInspector] public SpriteFlash spriteFlasher;
+    [HideInInspector] public SpriteTint spriteTinter;
 
     public bool invincible; 
     public bool isPlayer = false;
@@ -44,7 +44,7 @@ public class Character : MonoBehaviour
     private void Start()
     {
         player = GetComponent<Player>();
-        spriteFlasher = GetComponent<SpriteFlash>();
+        spriteTinter = GetComponent<SpriteTint>();
         ai = GetComponent<AI>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
@@ -95,7 +95,7 @@ public class Character : MonoBehaviour
                 adjDamage *= 2;
                 CameraShake.instance.Shake(0.25f, 0.5f);
             }
-            if(PerkManager.instance.tearstonePendant > 0 && health > maxHealth / 3)
+            if(PerkManager.instance.tearstonePendant > 0 && health < maxHealth / 3)
             {
                 adjDamage *= 1f + (.1f * PerkManager.instance.tearstonePendant);
             }
@@ -132,7 +132,7 @@ public class Character : MonoBehaviour
             {
                 Bleed(PerkManager.instance.bleedingTendencies * 3, this);
             }
-            if (PerkManager.instance.tearstonePendant > 0 && health > maxHealth / 3)
+            if (PerkManager.instance.tearstonePendant > 0 && health < maxHealth / 3)
             {
                 adjDamage *= 1f - (.1f * PerkManager.instance.tearstonePendant);
             }
@@ -147,7 +147,7 @@ public class Character : MonoBehaviour
         if (health <= 0)
             Death(_source);
 
-        spriteFlasher.Flash();
+        spriteTinter.FlashColor(SpriteTint.DamageRed);
         UpdateHealthbar();
         CombatText.instance.ShowDamageText(_damage, (Vector2)transform.position + (Vector2)Random.onUnitSphere);
     }
@@ -159,7 +159,7 @@ public class Character : MonoBehaviour
         if (health <= 0)
             Death(_source);
 
-        spriteFlasher.Flash();
+        spriteTinter.FlashColor(SpriteTint.BloodRed);
         UpdateHealthbar();
 
         CombatText.instance.ShowDamageText(_damage, (Vector2)transform.position + (Vector2)Random.onUnitSphere, new Color32(120,0,0,255));
@@ -170,7 +170,7 @@ public class Character : MonoBehaviour
     public void RestoreHealth(float _amount)
     {
         health = Mathf.Clamp(health + _amount, 0, maxHealth);
-        spriteFlasher.Flash();
+        spriteTinter.FlashColor(SpriteTint.HealGreen);
 
         UpdateHealthbar();
         GameSFX.instance.PlayHealSFX();
@@ -317,6 +317,7 @@ public class Character : MonoBehaviour
     {
         StopCoroutine(nameof(SlowRoutine));
         StartCoroutine(SlowRoutine(_duration, _strength));
+        spriteTinter.DurationTint(SpriteTint.SlowLBlue, _duration);
     }
 
     private IEnumerator SlowRoutine(float _duration, float _strength)
@@ -325,17 +326,21 @@ public class Character : MonoBehaviour
 
         if(isPlayer)
         {
+            player.slowed = true;
             normalSpeed = player.currentSpeed;
             player.currentSpeed = normalSpeed - normalSpeed * (_strength / 100);
             yield return new WaitForSeconds(_duration);
             player.currentSpeed = normalSpeed;
+            player.slowed = false;
         }
         else
         {
+            ai.slowed = true;
             normalSpeed = ai.chaseSpeed;
-            ai.chaseSpeed = normalSpeed - normalSpeed * (_strength / 100);
+            agent.speed = normalSpeed - normalSpeed * (_strength / 100);
             yield return new WaitForSeconds(_duration);
-            ai.chaseSpeed = normalSpeed;
+            agent.speed = normalSpeed;
+            ai.slowed = false;
         }
     }
     #endregion
@@ -348,7 +353,7 @@ public class Character : MonoBehaviour
         }
         if (PerkManager.instance.frostRelic > 0)
         {
-            _target.Slow(2, 5f * PerkManager.instance.frostRelic);
+            _target.Slow(2, 20f * PerkManager.instance.frostRelic);
         }
         if (PerkManager.instance.vampiricBlade > 0)
         {

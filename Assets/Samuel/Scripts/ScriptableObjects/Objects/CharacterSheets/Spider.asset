@@ -21,6 +21,6 @@ MonoBehaviour:
   attackRate: 0.75
   dashCooldown: 1
   dashSpeed: 7.5
-  movementSpeed: 2
+  movementSpeed: 2.25
   moveSmoothing: 0.1
   turnSmoothing: 0.52

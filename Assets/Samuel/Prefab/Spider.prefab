@@ -58,7 +58,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 52ade092ef8ec4a4181e05695a67e572, type: 2}
+  - {fileID: 2100000, guid: 1d670b9ae67619e4c916430604b54ad6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -131,6 +131,7 @@ MonoBehaviour:
   stamina: 0
   moveDirection: {x: 0, y: 0}
   freeze: 0
+  currentSpeed: 0
 --- !u!114 &4185865905383392666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,6 +147,7 @@ MonoBehaviour:
   state: 0
   aiVariables: {fileID: 0}
   target: {fileID: 0}
+  chaseSpeed: 0
   drawRangeGizmos: 0
 --- !u!114 &4185865905383392664
 MonoBehaviour:
@@ -178,7 +180,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   ai: {fileID: 0}
   agent: {fileID: 0}
-  spriteFlasher: {fileID: 0}
+  spriteTinter: {fileID: 0}
   invincible: 0
   isPlayer: 0
   isBoss: 0

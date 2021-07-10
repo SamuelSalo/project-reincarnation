@@ -15,7 +15,7 @@ public class AI : MonoBehaviour
     private float chaseRange;
     private float patrolRange;
     private float attackRange;
-    [HideInInspector] public float chaseSpeed;
+    [HideInInspector]public float chaseSpeed;
     private float patrolSpeed;
     private float turnSmoothing;
 
@@ -24,6 +24,7 @@ public class AI : MonoBehaviour
     private Vector2 patrolDestination = Vector2.zero;
     private Vector2 atkDirection;
 
+    [HideInInspector] public bool slowed;
     public bool drawRangeGizmos = false;
     private bool idling = false;
     private float timer;
@@ -73,13 +74,13 @@ public class AI : MonoBehaviour
         {
             case State.Patrolling:
                 UpdatePatrolCycle();
-                agent.speed = patrolSpeed;
+                if (!slowed) agent.speed = patrolSpeed;
                 character.floatingHealthbar.visible = false;
                 break;
 
             case State.Chasing:
                 UpdateChaseCycle();
-                agent.speed = chaseSpeed;
+                if (!slowed) agent.speed = chaseSpeed;
                 character.floatingHealthbar.visible = true;
                 break;
 
@@ -87,7 +88,6 @@ public class AI : MonoBehaviour
                 character.floatingHealthbar.visible = true;
                 break;
         }
-
         if(attacking)
         {
             agent.velocity = Vector3.zero;

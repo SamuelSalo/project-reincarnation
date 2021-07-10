@@ -54,7 +54,7 @@ public class BloodShrine : Interactable
 
     public void PurchaseWish()
     {
-        var negativePerk = Random.Range(0, 100) <= currentNegativeChance;
+        var negativePerk = Random.Range(1, 100) < currentNegativeChance;
 
         InventoryManager.instance.SpendTokens(currentWishCost);
         PerkObject perkToGive;
@@ -91,7 +91,7 @@ public class BloodShrine : Interactable
         tokensDisplay.text = InventoryManager.instance.bloodTokens + " Blood Tokens";
 
         currentNegativeChance = currentWishCost >= 100 ? 0 : 100 - currentWishCost;
-        currentLegendaryChance = currentWishCost <= 100 ? 0 : (currentWishCost - 100) / 3;
+        currentLegendaryChance = currentWishCost <= 100 ? 0 : (currentWishCost - 100) / 4;
 
         negativeChanceText.color = Color.Lerp(Color.green, Color.red, (float)currentNegativeChance / 100);
         negativeChanceText.text = "Chance of negative perk: " + currentNegativeChance + "%";
