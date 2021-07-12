@@ -60,13 +60,13 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void PlayerDeath(Character _killer)
     {
-        lives--;
-
-        if (_killer.isBoss || permaDeath || _killer == playerCharacter)  
+        if (_killer.isBoss || permaDeath || _killer == playerCharacter || !_killer)  
         {
             PermanentDeath();
             return;
         }
+
+        lives--;
 
         SetPlayer(_killer);
         playerCharacter.PlayerControlled(true);

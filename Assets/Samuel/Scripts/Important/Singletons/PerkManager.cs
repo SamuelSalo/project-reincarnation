@@ -60,4 +60,66 @@ public class PerkManager : MonoBehaviour
     [Header("Negative")]
     public int gravelordsCurse;
     public int bleedingTendencies;
+
+    public void Activate(PerkObject _perkObject)
+    {
+        if (!_perkObject)
+        {
+            Debug.LogWarning("Tried to activate perk without perk object!");
+            return;
+        }
+
+        Debug.Log(_perkObject.perkName);
+        switch (_perkObject.perkName)
+        {
+            //Legendary
+            case "Gravelord's Blessing":
+                gravelordsBlessing++;
+                break;
+            case "Wise Man's Journal":
+                wiseMansJournal++;
+                break;
+            case "Thornmail Armor":
+               thornmailArmor++;
+                break;
+            case "Death Mark":
+                deathMark = true;
+                break;
+
+            //Epic
+            case "Frost Relic":
+               frostRelic++;
+                break;
+            case "Vampiric Blade":
+                vampiricBlade++;
+                break;
+            case "Tearstone Pendant":
+                tearstonePendant++;
+                break;
+
+            //Rare
+            case "Whetstone":
+                whetstone++;
+                break;
+            case "Lucky Charm":
+                luckyCharm++;
+                break;
+            case "Serrated Blade":
+                serratedBlade++;
+                break;
+
+            //Negative
+            case "Gravelord's Curse":
+                gravelordsCurse++;
+                break;
+            case "Bleeding Tendencies":
+                bleedingTendencies++;
+                break;
+
+            //Default
+            default:
+                Debug.LogWarning("Perk switch defaulted! Possible misspelling of: " + _perkObject.perkName);
+                break;
+        }
+    }
 }

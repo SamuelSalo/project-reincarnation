@@ -86,7 +86,7 @@ public class Character : MonoBehaviour
     public void DealDamage(float _damage, Character _target)
     {
         float adjDamage = _damage;
-        
+        bool crit = false;
         //perks
         if(isPlayer)
         {
@@ -94,12 +94,19 @@ public class Character : MonoBehaviour
             {
                 adjDamage *= 2;
                 CameraShake.instance.Shake(0.25f, 0.5f);
+                crit = true;
             }
-            if(PerkManager.instance.tearstonePendant > 0 && health < maxHealth / 3)
+
+            if (PerkManager.instance.tearstonePendant > 0 && health < maxHealth / 3)
             {
                 adjDamage *= 1f + (.1f * PerkManager.instance.tearstonePendant);
             }
         }
+
+        if (!crit)
+            GameSFX.instance.PlayHurtSFX();
+        else
+            GameSFX.instance.PlayCritSFX();
 
         _target.TakeDamage(adjDamage, this);
     }
@@ -117,7 +124,7 @@ public class Character : MonoBehaviour
         {
             if (PerkManager.instance.luckyCharm > 0 && PercentageChance(5 * PerkManager.instance.luckyCharm))
             {
-                //TODO perk fx
+                spriteTinter.FlashColor(Color.white);
                 return;
             }
             if (PerkManager.instance.gravelordsCurse > 0)
@@ -140,8 +147,6 @@ public class Character : MonoBehaviour
 
         if (!isPlayer && _source.isPlayer)
             _source.PlayerProcOnHitEffects(this, adjDamage);
-
-        GameSFX.instance.PlayHurtSFX();
 
         health -=adjDamage;
         if (health <= 0)

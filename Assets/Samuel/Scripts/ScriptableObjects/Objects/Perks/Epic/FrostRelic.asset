@@ -20,4 +20,4 @@ MonoBehaviour:
     slows them for 2s.
 
     Increases slow effect strength. (Stackable)'
-  icon: {fileID: 0}
+  icon: {fileID: -2240230676536485099, guid: 5c1f7516f59552e4eab51d34ae5abe44, type: 3}

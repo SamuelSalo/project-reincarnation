@@ -16,4 +16,4 @@ MonoBehaviour:
   perkName: Death Mark
   description: "A human skull artifact of an ancient shaman. \nYour third consecutive
     attack instantly executes any enemy."
-  icon: {fileID: 0}
+  icon: {fileID: 6712533827511893643, guid: 5178e9369fe8e29479e295e430431433, type: 3}

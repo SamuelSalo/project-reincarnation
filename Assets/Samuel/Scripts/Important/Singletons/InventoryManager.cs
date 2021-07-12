@@ -27,7 +27,6 @@ public class InventoryManager : MonoBehaviour
     public int bloodTokens;
     public TMP_Text tokensText;
     public List<PerkObject> perkInventory;
-    public GameObject perkHolder;
 
     [Space]
     [Header("UI")]
@@ -63,29 +62,11 @@ public class InventoryManager : MonoBehaviour
     {
         perkInventory.Add(_perk);
 
-        var perkBehaviour = perkHolder.AddComponent<PerkBehaviour>();
-        perkBehaviour.perkObject = _perk;
-        perkBehaviour.Activate();
+        PerkManager.instance.Activate(_perk);
         StatsManager.instance.UpdateCharacterStats();
 
         var obj = Instantiate(perkListObjectPrefab, perkList.transform);
-        var txt = obj.GetComponent<TMP_Text>();
-        txt.text = _perk.name;
-        switch (_perk.rarity)
-        {
-            case Rarity.Rare:
-                txt.color = Color.blue;
-                break;
-            case Rarity.Epic:
-                txt.color = new Color32(238, 130, 238, 255); //purple
-                break;
-            case Rarity.Legendary:
-                txt.color = new Color32(255, 165, 0, 255); //orange
-                break;
-            case Rarity.Negative:
-                txt.color = Color.red;
-                break;
-        }
+        obj.GetComponent<PerkDisplay>().SetPerkToDisplay(_perk);
 
         perkAmountText.text = "Activated Perks: " + perkInventory.Count;
     }

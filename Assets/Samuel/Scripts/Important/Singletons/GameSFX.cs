@@ -25,6 +25,8 @@ public class GameSFX : MonoBehaviour
     public AudioClip[] deathSFX;
     public AudioClip[] dashSFX;
     public AudioClip[] healSFX;
+    public AudioClip critSFX;
+
     public AudioMixerGroup sfxGroup;
 
     public void PlayHurtSFX()
@@ -59,6 +61,13 @@ public class GameSFX : MonoBehaviour
     {
         var audioSource = NewAudioInstance();
         audioSource.clip = healSFX[Random.Range(0, healSFX.Length)];
+        audioSource.Play();
+        Destroy(audioSource.gameObject, audioSource.clip.length);
+    }
+    public void PlayCritSFX()
+    {
+        var audioSource = NewAudioInstance();
+        audioSource.clip = critSFX;
         audioSource.Play();
         Destroy(audioSource.gameObject, audioSource.clip.length);
     }

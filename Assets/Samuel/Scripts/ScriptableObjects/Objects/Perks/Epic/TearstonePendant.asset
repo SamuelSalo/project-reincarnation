@@ -19,4 +19,4 @@ MonoBehaviour:
 
     Increased strength and damage resistance while
     below 33% health. (Stackable)'
-  icon: {fileID: 0}
+  icon: {fileID: 1726664191366948030, guid: 5c1f7516f59552e4eab51d34ae5abe44, type: 3}

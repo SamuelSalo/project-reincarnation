@@ -56,13 +56,13 @@ public class StatsManager : MonoBehaviour
 
     [Space]
 
-    public int maxHPBonus;
-    public float maxStaminaBonus;
-    public float staminaRecoveryBonus;
-    public float atkDamageBonus;
-    public float atkRateReduction;
-    public float dashSpeedBonus;
-    public float dashCooldownReduction;
+    [HideInInspector] public int maxHPBonus;
+    [HideInInspector] public float maxStaminaBonus;
+    [HideInInspector] public float staminaRecoveryBonus;
+    [HideInInspector] public float atkDamageBonus;
+    [HideInInspector] public float atkRateReduction;
+    [HideInInspector] public float dashSpeedBonus;
+    [HideInInspector] public float dashCooldownReduction;
 
     [Space]
 
