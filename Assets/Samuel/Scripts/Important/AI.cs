@@ -68,7 +68,7 @@ public class AI : MonoBehaviour
         if (!target || dashing) return;
 
         UpdateAIState();
-        character.UpdateAnimator();
+        character.UpdateAnimator(character.agent.velocity);
 
         switch (state)
         {
@@ -228,7 +228,7 @@ public class AI : MonoBehaviour
         
         atkDirection = transform.up;
         timer = Time.time + (1f / character.attackRate);
-        character.animator.SetTrigger("Attack");
+        character.animator.SetTrigger("attack");
     }
 
 

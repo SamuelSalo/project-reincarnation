@@ -12,7 +12,7 @@ public class FloatingHealthbar : MonoBehaviour
     {
         if (!target) return;
 
-        transform.position = (Vector2)target.position + new Vector2(0, 1f);
+        transform.position = (Vector2)target.position + new Vector2(0, 0.75f);
         transform.GetChild(0).gameObject.SetActive(visible);
     }
 

@@ -8,7 +8,6 @@ public class Player : MonoBehaviour
 
     [HideInInspector] public float moveSpeed;
     [HideInInspector] public float moveSmoothing;
-    [HideInInspector] public float turnSmoothing;
     [HideInInspector] public float dashCooldown;
     [HideInInspector] public float dashSpeed;
     [HideInInspector] public float stamina;
@@ -20,8 +19,6 @@ public class Player : MonoBehaviour
     private bool dashSlowdown;
 
     [HideInInspector] public Vector2 moveDirection = Vector2.zero;
-    private Vector2 mousePosition;
-    private Vector2 lookDirection;
     private Vector2 refVelocity = Vector2.zero;
 
     private Character character;
@@ -42,7 +39,6 @@ public class Player : MonoBehaviour
             playerControls.Gameplay.Dash.performed += context => Dash();
 
             playerControls.Gameplay.Movement.performed += context => moveDirection = context.ReadValue<Vector2>();
-            playerControls.Gameplay.MousePosition.performed += context => mousePosition = context.ReadValue<Vector2>();
         }
 
         playerControls.Enable();
@@ -64,12 +60,11 @@ public class Player : MonoBehaviour
     {
         if (freeze) { character.rb.velocity = Vector2.zero; return; }
 
-        GetLookDirection();
         UpdateStamina();
 
         if (!slowed)
         {
-            currentSpeed = character.animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") ? .2f : moveSpeed;
+            currentSpeed = character.animator.GetCurrentAnimatorStateInfo(0).IsName("attack") ? .2f : moveSpeed;
             currentSpeed = dashSlowdown ? 1f : moveSpeed;
         }
     }
@@ -79,10 +74,7 @@ public class Player : MonoBehaviour
         if (freeze) return;
         
         character.rb.velocity = Vector2.SmoothDamp(character.rb.velocity, moveDirection * currentSpeed, ref refVelocity, moveSmoothing);
-        
-        transform.up = Vector2.Lerp(transform.up, lookDirection, turnSmoothing);
-
-        character.UpdateAnimator();
+        character.UpdateAnimator(moveDirection);
 
         if (dash)
         {
@@ -115,17 +107,6 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Get look direction from mouse position
-    /// </summary>
-    private void GetLookDirection()
-    {
-        var mousePos = Camera.main.ScreenToWorldPoint(mousePosition);
-        var heading = mousePos - transform.position;
-        lookDirection = heading / heading.magnitude;
-        lookDirection.Normalize();
-    }
-
-    /// <summary>
     /// Update stamina UI and variables
     /// </summary>
     private void UpdateStamina()
@@ -151,7 +132,7 @@ public class Player : MonoBehaviour
             StopCoroutine(nameof(AttackRoutine));
             StartCoroutine(AttackRoutine());
 
-            character.animator.SetTrigger("Attack");
+            character.animator.SetTrigger("attack");
         }
     }
 

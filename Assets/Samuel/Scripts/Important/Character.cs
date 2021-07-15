@@ -211,25 +211,17 @@ public class Character : MonoBehaviour
     /// Updates animator movement variables.
     /// Attack animations are handled separately.
     /// </summary>
-    public void UpdateAnimator()
+    public void UpdateAnimator(Vector2 _velocity)
     {
-        if (isPlayer)
+        _velocity.Normalize();
+
+        animator.SetFloat("movementMagnitude", _velocity.magnitude);
+        if (_velocity.magnitude > 0)
         {
-            if(player.moveDirection == Vector2.zero)
-            {
-                animator.SetFloat("xMove", 0f);
-                animator.SetFloat("yMove", 0f);
-                return;
-            }
-            var velocity = transform.InverseTransformVector(rb.velocity.normalized);
-            animator.SetFloat("xMove", velocity.x);
-            animator.SetFloat("yMove", velocity.y);
-        }
-        else
-        {
-            var velocity = transform.InverseTransformVector(agent.velocity.normalized);
-            animator.SetFloat("xMove", velocity.x);
-            animator.SetFloat("yMove", velocity.y);
+            animator.SetFloat("movementY", _velocity.y);
+            animator.SetFloat("movementX", _velocity.x);
+            animator.SetFloat("idleY", _velocity.y);
+            animator.SetFloat("idleX", _velocity.x);
         }
     }
 
@@ -284,7 +276,6 @@ public class Character : MonoBehaviour
         agent.speed = movementSpeed;
         player.moveSpeed = movementSpeed;
         player.moveSmoothing = characterStats.moveSmoothing;
-        player.turnSmoothing = characterStats.turnSmoothing;
     }
 
     private bool PercentageChance(float _percentage)
