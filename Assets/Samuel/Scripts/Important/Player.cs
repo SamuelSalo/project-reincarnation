@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
 
     [HideInInspector] public Vector2 moveDirection = Vector2.zero;
     private Vector2 refVelocity = Vector2.zero;
+    private Vector2 rawInput;
 
     private Character character;
     
@@ -38,7 +39,7 @@ public class Player : MonoBehaviour
             playerControls.Gameplay.Attack.performed += context => Attack();
             playerControls.Gameplay.Dash.performed += context => Dash();
 
-            playerControls.Gameplay.Movement.performed += context => moveDirection = context.ReadValue<Vector2>();
+            playerControls.Gameplay.Movement.performed += context => rawInput = context.ReadValue<Vector2>();
         }
 
         playerControls.Enable();
@@ -72,9 +73,9 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         if (freeze) return;
-        
+        moveDirection = rawInput.normalized;
         character.rb.velocity = Vector2.SmoothDamp(character.rb.velocity, moveDirection * currentSpeed, ref refVelocity, moveSmoothing);
-        character.UpdateAnimator(moveDirection);
+        character.UpdateAnimator(rawInput);
 
         if (dash)
         {
@@ -141,7 +142,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Dash()
     {
-        if(Time.time >= dashTimer && stamina > 25f)
+        if(Time.time >= dashTimer && stamina > 25f && rawInput != Vector2.zero)
         {
             dashTimer = Time.time + dashCooldown;
             dash = true;

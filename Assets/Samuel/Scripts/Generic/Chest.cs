@@ -1,22 +1,25 @@
 using UnityEngine;
 using Rarity = PerkObject.Rarity;
-using Type = DroptableItem.Type;
 
 public class Chest : Interactable
 {
+    private PerkObject[] rares, epics, legendaries, negatives;
+    private SpriteTint spriteTint;
     private bool opened;
-
-    public DroptableItem[] rares, epics, legendaries;
 
     protected override void Start()
     {
         base.Start();
+        PerkLoader.LoadPerks(ref negatives,ref  rares, ref epics, ref legendaries);
+        spriteTint = GetComponent<SpriteTint>();
     }
 
     public override void Interact()
     {
         base.Interact();
         if (!interactable || opened) return;
+
+        bool item = Random.Range(0, 101) > 66;
 
         var rng = Random.Range(0, 101);
 
@@ -25,41 +28,44 @@ public class Chest : Interactable
         else if (rng < 90) rarityRNG = Rarity.Epic; //30%
         else rarityRNG = Rarity.Legendary; // 10%
 
-        DroptableItem item = null;
-
-        switch (rarityRNG)
+        if (item)
         {
-            case Rarity.Rare:
-                item = rares[Random.Range(0, rares.Length)];
-
-                break;
-
-            case Rarity.Epic:
-                item = epics[Random.Range(0, epics.Length)];
-                break;
-
-            case Rarity.Legendary:
-                item = legendaries[Random.Range(0, legendaries.Length )];
-                break;
-            
+            switch (rarityRNG)
+            {
+                case Rarity.Rare:
+                    InventoryManager.instance.AddPerk(rares[Random.Range(0, rares.Length)]);
+                    spriteTint.FlashColor(Color.blue);
+                    break;
+                case Rarity.Epic:
+                    InventoryManager.instance.AddPerk(epics[Random.Range(0, epics.Length)]);
+                    spriteTint.FlashColor(new Color32(238, 130, 238, 255));
+                    break;
+                case Rarity.Legendary:
+                    InventoryManager.instance.AddPerk(legendaries[Random.Range(0, legendaries.Length)]);
+                    spriteTint.FlashColor(new Color32(255, 165, 0, 255));
+                    break;
+            }
+        }
+        else
+        {
+            switch (rarityRNG)
+            {
+                case Rarity.Rare:
+                    InventoryManager.instance.GiveTokens(50);
+                    spriteTint.FlashColor(Color.red);
+                    break;
+                case Rarity.Epic:
+                    InventoryManager.instance.GiveTokens(100);
+                    spriteTint.FlashColor(Color.red);
+                    break;
+                case Rarity.Legendary:
+                    InventoryManager.instance.GiveTokens(200);
+                    spriteTint.FlashColor(Color.red);
+                    break;
+            }
         }
 
-        switch (item.type)
-        {
-            case Type.Perk:
-               InventoryManager.instance.AddPerk(item.perk);
-                break;
-
-            case Type.BloodTokens:
-                InventoryManager.instance.GiveTokens(item.tokenAmount);
-                break;
-        }
-        OpenChest();
-        //TODO droptable
-    }
-    private void OpenChest()
-    {
-        //TODO open chest sprite
+        //WIP need animation
         opened = true;
         GetComponent<SpriteRenderer>().color = Color.red;
     }

@@ -8,14 +8,9 @@ using UnityEngine.UI;
 /// </summary>
 public class BloodShrine : Interactable
 {
-    [Header("Droptable")]
+   private PerkObject[] negatives, rares, epics, legendaries;
 
-    public PerkObject[] rares;
-    public PerkObject[] epics;
-    public PerkObject[] legendaries;
-    public PerkObject[] negatives;
-
-    [Space] [Header("Panels")]
+    [Header("Panels")]
 
     public GameObject shrineUI;
     public GameObject gameUI;
@@ -35,6 +30,7 @@ public class BloodShrine : Interactable
     protected override void Start()
     {
         base.Start();
+        PerkLoader.LoadPerks(ref negatives, ref rares, ref epics, ref legendaries);
     }
 
     public override void Interact()

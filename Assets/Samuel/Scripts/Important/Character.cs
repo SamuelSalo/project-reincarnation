@@ -90,16 +90,16 @@ public class Character : MonoBehaviour
         //perks
         if(isPlayer)
         {
-            if (PerkManager.instance.whetstone > 0 && PercentageChance(5 * PerkManager.instance.whetstone))
+            if (PerkManager.instance.perkDictionary["Whetstone"] > 0 && PercentageChance(5 * PerkManager.instance.perkDictionary["Whetstone"]))
             {
                 adjDamage *= 2;
                 CameraShake.instance.Shake(0.25f, 0.5f);
                 crit = true;
             }
 
-            if (PerkManager.instance.tearstonePendant > 0 && health < maxHealth / 3)
+            if (PerkManager.instance.perkDictionary["Tearstone Pendant"] > 0 && health < maxHealth / 3)
             {
-                adjDamage *= 1f + (.1f * PerkManager.instance.tearstonePendant);
+                adjDamage *= 1f + (.1f * PerkManager.instance.perkDictionary["Tearstone Pendant"]);
             }
         }
 
@@ -122,26 +122,30 @@ public class Character : MonoBehaviour
 
         if (isPlayer)
         {
-            if (PerkManager.instance.luckyCharm > 0 && PercentageChance(5 * PerkManager.instance.luckyCharm))
+            if (PerkManager.instance.perkDictionary["Lucky Charm"] > 0 && PercentageChance(5 * PerkManager.instance.perkDictionary["Lucky Charm"]))
             {
                 spriteTinter.FlashColor(Color.white);
                 return;
             }
-            if (PerkManager.instance.gravelordsCurse > 0)
+            if (PerkManager.instance.perkDictionary["Gravelord's Curse"] > 0)
             {
-                InventoryManager.instance.SpendTokens(5 * PerkManager.instance.gravelordsCurse);
+                InventoryManager.instance.SpendTokens(5 * PerkManager.instance.perkDictionary["Gravelord's Curse"]);
             }
-            if (PerkManager.instance.thornmailArmor > 0)
+            if (PerkManager.instance.perkDictionary["Thornmail Armor"] > 0)
             {
-                _source.Bleed(3 * PerkManager.instance.thornmailArmor, this);
+                _source.Bleed(3 * PerkManager.instance.perkDictionary["Thornmail Armor"], this);
             }
-            if (PerkManager.instance.bleedingTendencies > 0)
+            if (PerkManager.instance.perkDictionary["Hemorrhage"] > 0)
             {
-                Bleed(PerkManager.instance.bleedingTendencies * 3, this);
+                Bleed(PerkManager.instance.perkDictionary["Hemorrhage"] * 3, this);
             }
-            if (PerkManager.instance.tearstonePendant > 0 && health < maxHealth / 3)
+            if (PerkManager.instance.perkDictionary["Plate Armor"] > 0)
             {
-                adjDamage *= 1f - (.1f * PerkManager.instance.tearstonePendant);
+                adjDamage *= 1f - (.1f * PerkManager.instance.perkDictionary["Plate Armor"]);
+            }
+            if (PerkManager.instance.perkDictionary["Tearstone Pendant"] > 0 && health < maxHealth / 3)
+            {
+                adjDamage *= 1f - (.1f * PerkManager.instance.perkDictionary["Tearstone Pendant"]);
             }
         }
 
@@ -213,10 +217,8 @@ public class Character : MonoBehaviour
     /// </summary>
     public void UpdateAnimator(Vector2 _velocity)
     {
-        _velocity.Normalize();
-
-        animator.SetFloat("movementMagnitude", _velocity.magnitude);
-        if (_velocity.magnitude > 0)
+        animator.SetFloat("movementMagnitude", _velocity.normalized.magnitude);
+        if (_velocity.normalized.magnitude > 0)
         {
             animator.SetFloat("movementY", _velocity.y);
             animator.SetFloat("movementX", _velocity.x);
@@ -272,10 +274,14 @@ public class Character : MonoBehaviour
         dashCooldown = characterStats.dashCooldown;
         dashSpeed = characterStats.dashSpeed;
         movementSpeed = characterStats.movementSpeed;
+
         ai.aiVariables = aiVariables;
         agent.speed = movementSpeed;
+
         player.moveSpeed = movementSpeed;
         player.moveSmoothing = characterStats.moveSmoothing;
+        player.dashCooldown = dashCooldown;
+        player.dashSpeed = dashSpeed;
     }
 
     private bool PercentageChance(float _percentage)
@@ -343,19 +349,19 @@ public class Character : MonoBehaviour
 
     public void PlayerProcOnHitEffects(Character _target, float _damage)
     {
-        if (PerkManager.instance.serratedBlade > 0)
+        if (PerkManager.instance.perkDictionary["Serrated Blade"] > 0)
         {
-            _target.Bleed(3 * PerkManager.instance.serratedBlade, this);
+            _target.Bleed(3 * PerkManager.instance.perkDictionary["Serrated Blade"], this);
         }
-        if (PerkManager.instance.frostRelic > 0)
+        if (PerkManager.instance.perkDictionary["Frost Relic"] > 0)
         {
-            _target.Slow(2, 20f * PerkManager.instance.frostRelic);
+            _target.Slow(2, 20f * PerkManager.instance.perkDictionary["Frost Relic"]);
         }
-        if (PerkManager.instance.vampiricBlade > 0)
+        if (PerkManager.instance.perkDictionary["Vampiric Blade"] > 0)
         {
-            RestoreHealth(_damage * (PerkManager.instance.vampiricBlade * 0.1f));
+            RestoreHealth(_damage * (PerkManager.instance.perkDictionary["Vampiric Blade"] * 0.1f));
         }
-        if (PerkManager.instance.deathMark)
+        if (PerkManager.instance.perkDictionary["Death Mark"] > 0)
         {
             if (PerkManager.instance.DeathMark(_target))
             {

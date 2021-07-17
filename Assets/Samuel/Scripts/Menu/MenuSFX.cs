@@ -3,6 +3,22 @@ using UnityEngine.Audio;
 
 public class MenuSFX : MonoBehaviour
 {
+    #region Singleton
+
+    public static MenuSFX instance;
+
+    private void Awake()
+    {
+        if (instance)
+        {
+            Debug.LogWarning("Multiple instances of " + name + "found!");
+            return;
+        }
+        instance = this;
+    }
+
+    #endregion
+
     public AudioClip select;
     public AudioClip click;
     public AudioMixerGroup sfxGroup;

@@ -3,7 +3,6 @@ using UnityEngine;
 public class StartMenu : MonoBehaviour
 {
     public GameObject gameUI;
-    public GameManager gameManager;
 
     private void OnEnable()
     {
@@ -12,21 +11,21 @@ public class StartMenu : MonoBehaviour
     public void StartAsMonster()
     {
         Time.timeScale = 1f;
-        GameObject player = Instantiate(Resources.Load("Characters/Player/PlayerSpider"), Vector2.zero, Quaternion.identity) as GameObject;
-        gameManager.SetPlayer(player.GetComponent<Character>());
+        GameObject player = Instantiate(Resources.Load("Characters/Player/Pyramidhead"), Vector2.zero, Quaternion.identity) as GameObject;
+        GameManager.instance.SetPlayer(player.GetComponent<Character>());
         gameUI.SetActive(true);
         gameObject.SetActive(false);
         Destroy(gameObject);
-        gameManager.canPause = true;
+        GameManager.instance.canPause = true;
     }
 
     public void StartAsHuman()
     {
         Time.timeScale = 1f;
-        var player = Instantiate(Resources.Load("Characters/Player/PlayerHuman"), Vector2.zero, Quaternion.identity) as GameObject;
-        gameManager.SetPlayer(player.GetComponent<Character>());
+        var player = Instantiate(Resources.Load("Characters/Player/Knight"), Vector2.zero, Quaternion.identity) as GameObject;
+        GameManager.instance.SetPlayer(player.GetComponent<Character>());
         gameUI.SetActive(true);
         Destroy(gameObject);
-        gameManager.canPause = true;
+        GameManager.instance.canPause = true;
     }
 }

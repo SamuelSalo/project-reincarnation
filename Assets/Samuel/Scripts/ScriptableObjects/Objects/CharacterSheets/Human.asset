@@ -20,7 +20,7 @@ MonoBehaviour:
   damage: 25
   attackRate: 0.75
   dashCooldown: 1
-  dashSpeed: 7.5
+  dashSpeed: 10
   movementSpeed: 1
   moveSmoothing: 0.05
   turnSmoothing: 0

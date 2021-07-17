@@ -1,10 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using UnityEngine.UIElements;
-using Rarity = PerkObject.Rarity;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -43,9 +39,9 @@ public class InventoryManager : MonoBehaviour
     {
         int adjAmount = _amt;
 
-        if(PerkManager.instance.gravelordsBlessing > 0)
+        if(PerkManager.instance.perkDictionary["Gravelord's Blessing"] > 0)
         {
-            adjAmount += PerkManager.instance.gravelordsBlessing * 10;
+            adjAmount += PerkManager.instance.perkDictionary["Gravelord's Blessing"] * 10;
         }
 
         bloodTokens += adjAmount;

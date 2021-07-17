@@ -117,9 +117,9 @@ public class StatsManager : MonoBehaviour
     {
         int adjAmount = _amount;
 
-        if(PerkManager.instance.wiseMansJournal > 0)
+        if(PerkManager.instance.perkDictionary["Wise Man's Journal"] > 0)
         {
-            adjAmount += 10 * PerkManager.instance.wiseMansJournal;
+            adjAmount += 10 * PerkManager.instance.perkDictionary["Wise Man's Journal"];
         }
 
         XP += adjAmount;
