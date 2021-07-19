@@ -90,7 +90,7 @@ public class Character : MonoBehaviour
         //perks
         if(isPlayer)
         {
-            if (PerkManager.instance.perkDictionary["Whetstone"] > 0 && PercentageChance(5 * PerkManager.instance.perkDictionary["Whetstone"]))
+            if (PerkManager.instance.perkDictionary["Whetstone"] > 0 && Utils.PercentageChance(5 * PerkManager.instance.perkDictionary["Whetstone"]))
             {
                 adjDamage *= 2;
                 CameraShake.instance.Shake(0.25f, 0.5f);
@@ -122,7 +122,7 @@ public class Character : MonoBehaviour
 
         if (isPlayer)
         {
-            if (PerkManager.instance.perkDictionary["Lucky Charm"] > 0 && PercentageChance(5 * PerkManager.instance.perkDictionary["Lucky Charm"]))
+            if (PerkManager.instance.perkDictionary["Lucky Charm"] > 0 && Utils.PercentageChance(5 * PerkManager.instance.perkDictionary["Lucky Charm"]))
             {
                 spriteTinter.FlashColor(Color.white);
                 return;
@@ -282,11 +282,6 @@ public class Character : MonoBehaviour
         player.moveSmoothing = characterStats.moveSmoothing;
         player.dashCooldown = dashCooldown;
         player.dashSpeed = dashSpeed;
-    }
-
-    private bool PercentageChance(float _percentage)
-    {
-        return Random.Range(0, 100) <= _percentage;
     }
 
     #region Bleed

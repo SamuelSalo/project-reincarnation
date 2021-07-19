@@ -43,7 +43,7 @@ public class CombatText : MonoBehaviour
         var text = CreateCombatText(_location);
 
         text.text = _damage.ToString();
-        float mappedValue = Map(_damage, lowDmgTreshold, highDmgTreshold, 0f, 1f);
+        float mappedValue = Utils.Map(_damage, lowDmgTreshold, highDmgTreshold, 0f, 1f);
         var color = Color.Lerp(lowDmgColor, highDmgColor, mappedValue);
         color.a = 1;
         text.color = color;
@@ -60,11 +60,6 @@ public class CombatText : MonoBehaviour
         var text = CreateCombatText(_location);
         text.text = _damage.ToString();
         text.color = _color;
-    }
-
-    private float Map(float value, float from1, float to1, float from2, float to2)
-    {
-        return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
     }
 
     private TMP_Text CreateCombatText(Vector2 _location)

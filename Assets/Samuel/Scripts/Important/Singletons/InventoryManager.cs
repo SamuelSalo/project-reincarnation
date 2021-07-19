@@ -57,13 +57,8 @@ public class InventoryManager : MonoBehaviour
     public void AddPerk(PerkObject _perk)
     {
         perkInventory.Add(_perk);
-
         PerkManager.instance.Activate(_perk);
-        StatsManager.instance.UpdateCharacterStats();
-
-        var obj = Instantiate(perkListObjectPrefab, perkList.transform);
-        obj.GetComponent<PerkDisplay>().SetPerkToDisplay(_perk);
-
+        Instantiate(perkListObjectPrefab, perkList.transform).GetComponent<PerkDisplay>().SetPerkToDisplay(_perk);
         perkAmountText.text = "Activated Perks: " + perkInventory.Count;
     }
 }

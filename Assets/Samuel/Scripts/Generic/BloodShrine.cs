@@ -57,11 +57,11 @@ public class BloodShrine : Interactable
 
         if (!negativePerk)
         {
-            if(PercentageChance(currentLegendaryChance))
+            if(Utils.PercentageChance(currentLegendaryChance))
             {
                 perkToGive = legendaries[Random.Range(0, legendaries.Length)];
             }
-            else if(PercentageChance(currentLegendaryChance * 1.5f))
+            else if(Utils.PercentageChance(currentLegendaryChance * 1.5f))
             {
                 perkToGive = epics[Random.Range(0, epics.Length)];
             }
@@ -101,10 +101,5 @@ public class BloodShrine : Interactable
         gameUI.SetActive(true);
         shrineUI.SetActive(false);
         GameManager.instance.canPause = true;
-    }
-
-    private bool PercentageChance(float _percentage)
-    {
-        return Random.Range(0, 100) <= _percentage;
     }
 }

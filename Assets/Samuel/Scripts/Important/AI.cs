@@ -45,7 +45,7 @@ public class AI : MonoBehaviour
         attackDuration = character.faction == Character.Faction.Blue ? 0.5f : 0.7f;
 
         chaseRange = aiVariables.chaseRange;
-        patrolRange = aiVariables.chaseRange;
+        patrolRange = aiVariables.patrolRange;
         attackRange = aiVariables.attackRange;
         chaseSpeed = character.characterStats.movementSpeed;
         patrolSpeed = aiVariables.patrolSpeed;
@@ -154,7 +154,7 @@ public class AI : MonoBehaviour
         transform.up = Vector2.Lerp(transform.up, agent.velocity.normalized, turnSmoothing);
         agent.isStopped = false;
         patrollingTimer += Time.fixedDeltaTime;
-
+        chaseRange = PerkManager.instance.perkDictionary["Hooded Cloak"] > 0 ? aiVariables.chaseRange * 0.8f : aiVariables.chaseRange;
         if (Vector2.Distance(transform.position, patrolDestination) < attackRange || agent.isPathStale || patrollingTimer > 5f)
             StartCoroutine(ResetPatrol());
     }

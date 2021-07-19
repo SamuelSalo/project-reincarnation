@@ -83,7 +83,7 @@ public class Player : MonoBehaviour
             character.rb.velocity = moveDirection * dashSpeed;
             dash = false;
             GameSFX.instance.PlayDashSFX();
-
+            character.spriteTinter.DurationTint(new Color(1, 1, 1, 0.33f), 0.2f);
             stamina -= 25f;
             StopCoroutine(nameof(DashRoutine));
             StartCoroutine(DashRoutine());
