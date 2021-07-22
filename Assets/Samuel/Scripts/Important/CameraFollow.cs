@@ -6,7 +6,6 @@ public class CameraFollow : MonoBehaviour
     public float smoothing;
 
     public Transform target;
-
     // Smoothly follow target character.
     private void LateUpdate()
     {

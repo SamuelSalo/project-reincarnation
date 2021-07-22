@@ -18,10 +18,10 @@ GameObject:
   - component: {fileID: 7381901302908972688}
   - component: {fileID: 7381901302908972691}
   - component: {fileID: 3468884653869160785}
-  - component: {fileID: 8278473037956999783}
+  - component: {fileID: -2182374350540892200}
   m_Layer: 7
-  m_Name: Pyramidhead
-  m_TagString: Untagged
+  m_Name: NPCPyramidHead
+  m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -117,7 +117,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7381901302908972695}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.7503662
   m_Speed: 3.5
@@ -139,7 +139,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7381901302908972695}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e290c32c81b9cf04996e678d6fcce56f, type: 3}
   m_Name: 
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7381901302908972695}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98961f2f3a500fb4abc1b9d768d0d7ac, type: 3}
   m_Name: 
@@ -225,7 +225,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   spriteTinter: {fileID: 0}
   invincible: 0
-  isPlayer: 1
+  isPlayer: 0
   isBoss: 0
 --- !u!114 &7381901302908972691
 MonoBehaviour:
@@ -272,7 +272,7 @@ PolygonCollider2D:
       - {x: 0.25, y: -0.013}
       - {x: 0.25, y: 0.015625}
       - {x: 0.035, y: 0.125}
---- !u!61 &8278473037956999783
+--- !u!61 &-2182374350540892200
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

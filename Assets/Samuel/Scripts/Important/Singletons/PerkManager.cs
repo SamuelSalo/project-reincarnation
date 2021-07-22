@@ -60,7 +60,7 @@ public class PerkManager : MonoBehaviour
     {
         Debug.Log(_perk.perkName);
 
-        if (perkDictionary.ContainsKey(_perk.name))
+        if (perkDictionary.ContainsKey(_perk.perkName))
         {
             perkDictionary[_perk.perkName]++;
         }

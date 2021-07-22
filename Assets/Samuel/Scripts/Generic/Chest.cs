@@ -6,12 +6,14 @@ public class Chest : Interactable
     private PerkObject[] rares, epics, legendaries, negatives;
     private SpriteTint spriteTint;
     private bool opened;
+    private Animator animator;
 
     protected override void Start()
     {
         base.Start();
         PerkLoader.LoadPerks(ref negatives,ref  rares, ref epics, ref legendaries);
         spriteTint = GetComponent<SpriteTint>();
+        animator = GetComponent<Animator>();
     }
 
     public override void Interact()
@@ -19,7 +21,14 @@ public class Chest : Interactable
         base.Interact();
         if (!interactable || opened) return;
 
-        bool item = Random.Range(0, 101) > 66;
+        opened = true;
+        animator.SetTrigger("openChest");
+    }
+
+    public void OpenChest()
+    {
+        Debug.Log("xd");
+        bool item = Random.Range(0, 101) > 50;
 
         var rng = Random.Range(0, 101);
 
@@ -64,9 +73,5 @@ public class Chest : Interactable
                     break;
             }
         }
-
-        //WIP need animation
-        opened = true;
-        GetComponent<SpriteRenderer>().color = Color.red;
     }
 }

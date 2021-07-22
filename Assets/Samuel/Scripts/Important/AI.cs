@@ -10,7 +10,7 @@ public class AI : MonoBehaviour
     public State state = State.Patrolling;
 
     [HideInInspector] public AIVariables aiVariables;
-    [HideInInspector] public Transform target;
+    public Transform target;
 
     private float chaseRange;
     private float patrolRange;
@@ -91,7 +91,6 @@ public class AI : MonoBehaviour
         if(attacking)
         {
             agent.velocity = Vector3.zero;
-            transform.up = atkDirection;
         }
     }
 
@@ -151,10 +150,9 @@ public class AI : MonoBehaviour
         else if ((Vector2)agent.destination != patrolDestination)
             agent.SetDestination(patrolDestination);
 
-        transform.up = Vector2.Lerp(transform.up, agent.velocity.normalized, turnSmoothing);
         agent.isStopped = false;
         patrollingTimer += Time.fixedDeltaTime;
-        chaseRange = PerkManager.instance.perkDictionary["Hooded Cloak"] > 0 ? aiVariables.chaseRange * 0.8f : aiVariables.chaseRange;
+        //chaseRange = PerkManager.instance.perkDictionary["Hooded Cloak"] > 0 ? aiVariables.chaseRange * 0.8f : aiVariables.chaseRange;
         if (Vector2.Distance(transform.position, patrolDestination) < attackRange || agent.isPathStale || patrollingTimer > 5f)
             StartCoroutine(ResetPatrol());
     }

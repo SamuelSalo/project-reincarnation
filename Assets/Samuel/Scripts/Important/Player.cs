@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -20,7 +21,7 @@ public class Player : MonoBehaviour
 
     [HideInInspector] public Vector2 moveDirection = Vector2.zero;
     private Vector2 refVelocity = Vector2.zero;
-    private Vector2 rawInput;
+    private Vector2 rawInput, lookDirection;
 
     private Character character;
     
@@ -43,6 +44,10 @@ public class Player : MonoBehaviour
         }
 
         playerControls.Enable();
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + moveDirection);
     }
 
     private void OnDisable()
@@ -74,13 +79,15 @@ public class Player : MonoBehaviour
     {
         if (freeze) return;
         moveDirection = rawInput.normalized;
+        if (moveDirection.magnitude > 0) lookDirection = moveDirection;
+
         character.rb.velocity = Vector2.SmoothDamp(character.rb.velocity, moveDirection * currentSpeed, ref refVelocity, moveSmoothing);
         character.UpdateAnimator(rawInput);
 
         if (dash)
         {
             StartCoroutine(DashIFrames());
-            character.rb.velocity = moveDirection * dashSpeed;
+            character.rb.velocity = lookDirection * dashSpeed;
             dash = false;
             GameSFX.instance.PlayDashSFX();
             character.spriteTinter.DurationTint(new Color(1, 1, 1, 0.33f), 0.2f);
@@ -96,13 +103,24 @@ public class Player : MonoBehaviour
     public void ActivateAttackHurtbox()
     {
         GameSFX.instance.PlaySlashSFX();
-        var hits = Physics2D.OverlapBoxAll(transform.position + transform.up, new Vector2(1f, 1f), 0f);
+        
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, lookDirection, 1f);
+        List<Character> hitChars = new List<Character>();
         if (hits.Length != 0)
         {
-            foreach (Collider2D hit in hits)
+            foreach (RaycastHit2D hit in hits)
             {
-                if (hit.transform.CompareTag("AI") && hit.transform.GetComponent<Character>().faction != character.faction)
-                    character.DealDamage(character.damage, hit.transform.GetComponent<Character>());
+                if (hit.transform.CompareTag("AI"))
+                {
+                    var hitCharacter = hit.transform.GetComponent<Character>();
+                    if (hitChars.Contains(hitCharacter)) return;
+                    hitChars.Add(hitCharacter);
+                    if (hitCharacter.faction != character.faction)
+                        character.DealDamage(character.damage, hitCharacter);
+                }
+
+                //TODO trap hitreg
+                
             }
         }
     }

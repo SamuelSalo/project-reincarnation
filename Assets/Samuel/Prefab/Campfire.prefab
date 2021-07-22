@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4765481909077540319}
   - component: {fileID: 4765481909077540318}
   - component: {fileID: 4765481909077540316}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Campfire
   m_TagString: Untagged
   m_Icon: {fileID: 0}

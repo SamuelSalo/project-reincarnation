@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e827098ec07f2fd4da87d831b17ba3fd, type: 3}
   m_Name: PlateArmor
   m_EditorClassIdentifier: 
-  rarity: 0
+  rarity: 1
   perkName: Plate Armor
   description: 'Basic but sturdy armor plating.
 

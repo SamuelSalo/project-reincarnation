@@ -157,7 +157,7 @@ public class GameManager : MonoBehaviour
     public void SetPlayer(Character _playerCharacter)
     {
         playerCharacter = _playerCharacter;
-        playerFaction = playerCharacter.faction;
+        playerFaction = playerCharacter.characterStats.faction;
         healthBarFill.color = playerFaction == Character.Faction.Red ? Color.red : Color.blue;
         cameraFollow.target = playerCharacter.transform;
         lightFollow.target = playerCharacter.transform;

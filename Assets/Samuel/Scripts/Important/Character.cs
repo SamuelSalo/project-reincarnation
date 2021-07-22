@@ -43,6 +43,7 @@ public class Character : MonoBehaviour
 
     private void Start()
     {
+        
         player = GetComponent<Player>();
         spriteTinter = GetComponent<SpriteTint>();
         ai = GetComponent<AI>();
@@ -266,6 +267,7 @@ public class Character : MonoBehaviour
     /// </summary>
     public void UpdateStats()
     {
+        faction = characterStats.faction;
         maxHealth = characterStats.maxHealth;
         maxStamina = characterStats.maxStamina;
         staminaRecovery = characterStats.staminaRecovery;
