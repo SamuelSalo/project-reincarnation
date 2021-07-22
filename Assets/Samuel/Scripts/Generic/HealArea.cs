@@ -10,7 +10,7 @@ public class HealArea : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && !collision.isTrigger)
         {
             target = collision.GetComponent<Character>();
             InvokeRepeating(nameof(Restore), 0f, restoreSpeed);
@@ -20,7 +20,7 @@ public class HealArea : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && !collision.isTrigger)
         {
             target = null;
             if (IsInvoking(nameof(Restore)))

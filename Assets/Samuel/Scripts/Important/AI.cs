@@ -22,7 +22,7 @@ public class AI : MonoBehaviour
     private Character character;
     private NavMeshAgent agent;
     private Vector2 patrolDestination = Vector2.zero;
-    private Vector2 atkDirection;
+    private Vector2 facingDirection;
 
     [HideInInspector] public bool slowed;
     public bool drawRangeGizmos = false;
@@ -68,7 +68,7 @@ public class AI : MonoBehaviour
         if (!target || dashing) return;
 
         UpdateAIState();
-        character.UpdateAnimator(character.agent.velocity);
+        character.UpdateAnimator(facingDirection);
 
         switch (state)
         {
@@ -92,6 +92,12 @@ public class AI : MonoBehaviour
         {
             agent.velocity = Vector3.zero;
         }
+
+        if (agent.velocity.magnitude > 0)
+            facingDirection = agent.velocity.normalized;
+
+        facingDirection.x = Mathf.Round(facingDirection.x);
+        facingDirection.y = Mathf.Round(facingDirection.y);
     }
 
     /// <summary>
@@ -163,7 +169,6 @@ public class AI : MonoBehaviour
     /// </summary>
     private void UpdateChaseCycle()
     {
-        transform.up = Vector2.Lerp(transform.up, agent.velocity.normalized, turnSmoothing);
         agent.isStopped = false;
         agent.SetDestination(target.position);
     }
@@ -206,13 +211,24 @@ public class AI : MonoBehaviour
     public void ActivateAttackHurtbox()
     {
         GameSFX.instance.PlaySlashSFX();
-        var hits = Physics2D.OverlapBoxAll(transform.position + transform.up, new Vector2(1f, 1f), 0f);
+
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, facingDirection, 1f);
+        List<Character> hitChars = new List<Character>();
         if (hits.Length != 0)
         {
-            foreach (Collider2D hit in hits)
+            foreach (RaycastHit2D hit in hits)
             {
-                if (hit.transform.CompareTag("Player") && hit.transform.GetComponent<Character>().faction != character.faction)
-                    character.DealDamage(character.damage, hit.transform.GetComponent<Character>());
+                if (hit.transform.CompareTag("Player"))
+                {
+                    var hitCharacter = hit.transform.GetComponent<Character>();
+                    if (hitChars.Contains(hitCharacter)) return;
+                    hitChars.Add(hitCharacter);
+                    if (hitCharacter.faction != character.faction)
+                        character.DealDamage(character.damage, hitCharacter);
+                }
+
+                //TODO trap hitreg
+
             }
         }
     }
@@ -223,8 +239,6 @@ public class AI : MonoBehaviour
     {
         if (Time.time < timer) return;
         StartCoroutine(AttackRoutine());
-        
-        atkDirection = transform.up;
         timer = Time.time + (1f / character.attackRate);
         character.animator.SetTrigger("attack");
     }

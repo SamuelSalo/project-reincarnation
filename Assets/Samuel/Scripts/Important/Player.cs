@@ -105,16 +105,13 @@ public class Player : MonoBehaviour
         GameSFX.instance.PlaySlashSFX();
         
         RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, lookDirection, 1f);
-        List<Character> hitChars = new List<Character>();
         if (hits.Length != 0)
         {
             foreach (RaycastHit2D hit in hits)
             {
-                if (hit.transform.CompareTag("AI"))
+                if (hit.transform.CompareTag("AI") && hit.collider.isTrigger)
                 {
                     var hitCharacter = hit.transform.GetComponent<Character>();
-                    if (hitChars.Contains(hitCharacter)) return;
-                    hitChars.Add(hitCharacter);
                     if (hitCharacter.faction != character.faction)
                         character.DealDamage(character.damage, hitCharacter);
                 }
