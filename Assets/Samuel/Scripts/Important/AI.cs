@@ -65,8 +65,7 @@ public class AI : MonoBehaviour
     // Update state of AI, then do actions depending on said state.
     private void FixedUpdate()
     {
-        if (!target || dashing) return;
-
+        if (target==null || dashing) return;
         UpdateAIState();
         character.UpdateAnimator(facingDirection);
 
@@ -93,7 +92,6 @@ public class AI : MonoBehaviour
             agent.velocity = Vector3.zero;
         }
 
-
         facingDirection = agent.velocity.normalized;
         facingDirection.x = Mathf.Round(facingDirection.x);
         facingDirection.y = Mathf.Round(facingDirection.y);
@@ -106,6 +104,8 @@ public class AI : MonoBehaviour
     /// </summary>
     private void UpdateAIState()
     {
+        if (target == null) return;
+
         if (Vector2.Distance(transform.position, target.position) < chaseRange
             && GameManager.instance.playerFaction != character.faction &&
             Vector2.Distance(transform.position, target.position) > attackRange
