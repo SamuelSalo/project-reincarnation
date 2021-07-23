@@ -71,7 +71,7 @@ public class Player : MonoBehaviour
         if (!slowed)
         {
             currentSpeed = character.animator.GetCurrentAnimatorStateInfo(0).IsName("attack") ? .2f : moveSpeed;
-            currentSpeed = dashSlowdown ? 1f : moveSpeed;
+            currentSpeed = dashSlowdown ? 0.5f : moveSpeed;
         }
     }
 
@@ -104,7 +104,7 @@ public class Player : MonoBehaviour
     {
         GameSFX.instance.PlaySlashSFX();
         
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, lookDirection, 1f);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, lookDirection, 0.5f);
         if (hits.Length != 0)
         {
             foreach (RaycastHit2D hit in hits)
@@ -140,6 +140,8 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Attack()
     {
+        if (Time.timeScale == 0) return;
+
         if(Time.time >= attackTimer && stamina > 25f)
         {
             attackTimer = Time.time + 1f / character.attackRate;
@@ -157,7 +159,8 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Dash()
     {
-        if(Time.time >= dashTimer && stamina > 25f && rawInput != Vector2.zero)
+        if (Time.timeScale == 0) return;
+        if (Time.time >= dashTimer && stamina > 25f && rawInput != Vector2.zero)
         {
             dashTimer = Time.time + dashCooldown;
             dash = true;

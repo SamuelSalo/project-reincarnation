@@ -18,4 +18,4 @@ MonoBehaviour:
 
     Attacked enemies
     bleed for +3 damage overtime. (Stackable)'
-  icon: {fileID: -8990076692083907336, guid: 5c1f7516f59552e4eab51d34ae5abe44, type: 3}
+  icon: {fileID: 2073753059339176754, guid: 5c1f7516f59552e4eab51d34ae5abe44, type: 3}

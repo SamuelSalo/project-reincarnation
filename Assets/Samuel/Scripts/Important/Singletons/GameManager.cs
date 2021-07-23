@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     [HideInInspector] public Character.Faction playerFaction;
     [HideInInspector] public Character playerCharacter;
+    public Room currentRoom;
 
     public bool canPause;
     public CameraFollow cameraFollow;

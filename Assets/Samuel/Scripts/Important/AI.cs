@@ -93,9 +93,8 @@ public class AI : MonoBehaviour
             agent.velocity = Vector3.zero;
         }
 
-        if (agent.velocity.magnitude > 0)
-            facingDirection = agent.velocity.normalized;
 
+        facingDirection = agent.velocity.normalized;
         facingDirection.x = Mathf.Round(facingDirection.x);
         facingDirection.y = Mathf.Round(facingDirection.y);
     }
@@ -108,7 +107,9 @@ public class AI : MonoBehaviour
     private void UpdateAIState()
     {
         if (Vector2.Distance(transform.position, target.position) < chaseRange
-            && GameManager.instance.playerFaction != character.faction && Vector2.Distance(transform.position, target.position) > attackRange)
+            && GameManager.instance.playerFaction != character.faction &&
+            Vector2.Distance(transform.position, target.position) > attackRange
+            && GameManager.instance.currentRoom == character.room)
         {
             state = State.Chasing;
         }
@@ -212,7 +213,7 @@ public class AI : MonoBehaviour
     {
         GameSFX.instance.PlaySlashSFX();
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, facingDirection, 1f);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, facingDirection, 0.5f);
         List<Character> hitChars = new List<Character>();
         if (hits.Length != 0)
         {
@@ -270,10 +271,12 @@ public class AI : MonoBehaviour
     /// <returns></returns>
     public IEnumerator AIPerformDash(Vector2 direction)
     {
+        GameSFX.instance.PlayDashSFX();
+        character.spriteTinter.DurationTint(new Color(1, 1, 1, 0.5f), 0.1f);
         dashing = true;
         agent.enabled = false;
         character.rb.bodyType = RigidbodyType2D.Dynamic;
-        character.rb.velocity = direction * character.dashSpeed;
+        character.rb.velocity = direction * (character.dashSpeed / 2);
         yield return new WaitForSeconds(0.1f);
         character.rb.velocity = Vector2.zero;
         agent.enabled = true;

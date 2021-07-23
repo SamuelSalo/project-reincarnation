@@ -50,6 +50,7 @@ public class Teleporter : Interactable
         
         teleporting = false;
         GameManager.instance.canPause = true;
+        GameManager.instance.currentRoom = destinationRoom;
         GameManager.instance.playerCharacter.player.freeze = false;
         FaderOverlay.instance.FadeIn();
     }
