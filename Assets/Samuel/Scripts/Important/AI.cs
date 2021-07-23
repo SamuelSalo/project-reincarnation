@@ -36,14 +36,16 @@ public class AI : MonoBehaviour
     private void Start()
 	{
         character = GetComponent<Character>();
+    }
+
+    public void InitializeAI()
+    {
+        attackDuration = 0.5f;
         agent = character.agent;
-
         agent.updateRotation = false;
-		agent.updateUpAxis = false;
+        agent.updateUpAxis = false;
         agent.isStopped = true;
-
-        attackDuration = character.faction == Character.Faction.Blue ? 0.5f : 0.7f;
-
+        transform.rotation = Quaternion.identity;
         chaseRange = aiVariables.chaseRange;
         patrolRange = aiVariables.patrolRange;
         attackRange = aiVariables.attackRange;

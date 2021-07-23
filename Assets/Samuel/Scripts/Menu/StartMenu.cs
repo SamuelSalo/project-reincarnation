@@ -17,6 +17,12 @@ public class StartMenu : MonoBehaviour
         gameObject.SetActive(false);
         Destroy(gameObject);
         GameManager.instance.canPause = true;
+
+        var ais = GameObject.FindGameObjectsWithTag("AI");
+        foreach (GameObject ai in ais)
+        {
+            ai.GetComponent<AI>().InitializeAI();
+        }
     }
 
     public void StartAsHuman()
@@ -27,5 +33,11 @@ public class StartMenu : MonoBehaviour
         gameUI.SetActive(true);
         Destroy(gameObject);
         GameManager.instance.canPause = true;
+
+        var ais = GameObject.FindGameObjectsWithTag("AI");
+        foreach (GameObject ai in ais)
+        {
+            ai.GetComponent<AI>().InitializeAI();
+        }
     }
 }
