@@ -63,6 +63,7 @@ public class StatsManager : MonoBehaviour
     [HideInInspector] public float atkRateReduction;
     [HideInInspector] public float dashSpeedBonus;
     [HideInInspector] public float dashCooldownReduction;
+    [HideInInspector] public float atkRangeBonus;
 
     [Space]
 
@@ -99,6 +100,7 @@ public class StatsManager : MonoBehaviour
                 dashSpeedBonus += 1f;
                 dashCooldownReduction += 0.2f;
                 atkRateReduction += 0.05f;
+                atkRangeBonus += 0.1f;
                 break;
 
             case "Strength":
@@ -188,6 +190,7 @@ public class StatsManager : MonoBehaviour
         character.maxStamina = characterStats.maxStamina + maxStaminaBonus;
         character.staminaRecovery = characterStats.staminaRecovery + staminaRecoveryBonus;
         character.attackRate = characterStats.attackRate - atkRateReduction;
+        character.attackRange = characterStats.attackRange + atkRangeBonus;
         character.dashSpeed = characterStats.dashSpeed + dashSpeedBonus;
         character.UpdateHealthbar();
     }

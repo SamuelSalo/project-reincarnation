@@ -13,6 +13,7 @@ public class CharacterStats : ScriptableObject
 
     public float damage;
     public float attackRate;
+    public float attackRange;
     public float dashCooldown;
     public float dashSpeed;
 

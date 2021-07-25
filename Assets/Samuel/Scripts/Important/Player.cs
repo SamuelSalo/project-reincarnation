@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using SFXType = GameSFX.SFXType;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
@@ -89,7 +89,7 @@ public class Player : MonoBehaviour
             StartCoroutine(DashIFrames());
             character.rb.velocity = lookDirection * dashSpeed;
             dash = false;
-            GameSFX.instance.PlayDashSFX();
+            GameSFX.instance.PlaySFX(SFXType.Dash);
             character.spriteTinter.DurationTint(new Color(1, 1, 1, 0.33f), 0.2f);
             stamina -= 25f;
             StopCoroutine(nameof(DashRoutine));
@@ -102,23 +102,34 @@ public class Player : MonoBehaviour
     /// </summary>
     public void ActivateAttackHurtbox()
     {
-        GameSFX.instance.PlaySlashSFX();
-        
         RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, lookDirection, 0.5f);
+        bool miss = true;
         if (hits.Length != 0)
         {
             foreach (RaycastHit2D hit in hits)
             {
                 if (hit.transform.CompareTag("AI") && hit.collider.isTrigger)
                 {
+                    miss = false;
+
                     var hitCharacter = hit.transform.GetComponent<Character>();
                     if (hitCharacter.faction != character.faction)
                         character.DealDamage(character.damage, hitCharacter);
                 }
 
                 //TODO trap hitreg
-                
+
             }
+        }
+        else miss = true;
+
+        if(!miss)
+        {
+            GameSFX.instance.PlaySFX(SFXType.Hit);
+        }
+        else
+        {
+            GameSFX.instance.PlaySFX(SFXType.Miss);
         }
     }
 

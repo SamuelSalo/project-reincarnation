@@ -1,6 +1,7 @@
 using UnityEngine.AI;
 using UnityEngine;
 using System.Collections;
+using SFXType = GameSFX.SFXType;
 
 [RequireComponent(typeof(AI))]
 [RequireComponent(typeof(Player))]
@@ -16,6 +17,7 @@ public class Character : MonoBehaviour
 
     //Stats
     [HideInInspector] public float attackRate;
+    [HideInInspector] public float attackRange;
     [HideInInspector] public float dashSpeed;
     [HideInInspector] public float dashCooldown;
     [HideInInspector] public float maxHealth;
@@ -87,7 +89,6 @@ public class Character : MonoBehaviour
     public void DealDamage(float _damage, Character _target)
     {
         float adjDamage = _damage;
-        bool crit = false;
         //perks
         if(isPlayer)
         {
@@ -95,7 +96,6 @@ public class Character : MonoBehaviour
             {
                 adjDamage *= 2;
                 CameraShake.instance.Shake(0.25f, 0.5f);
-                crit = true;
             }
 
             if (PerkManager.instance.perkDictionary["Tearstone Pendant"] > 0 && health < maxHealth / 3)
@@ -103,12 +103,6 @@ public class Character : MonoBehaviour
                 adjDamage *= 1f + (.1f * PerkManager.instance.perkDictionary["Tearstone Pendant"]);
             }
         }
-
-        if (!crit)
-            GameSFX.instance.PlayHurtSFX();
-        else
-            GameSFX.instance.PlayCritSFX();
-
         _target.TakeDamage(adjDamage, this);
     }
 
@@ -183,7 +177,7 @@ public class Character : MonoBehaviour
         spriteTinter.FlashColor(SpriteTint.HealGreen);
 
         UpdateHealthbar();
-        GameSFX.instance.PlayHealSFX();
+        GameSFX.instance.PlaySFX(SFXType.Heal);
 
         CombatText.instance.ShowDamageText(_amount, (Vector2)transform.position + (Vector2)Random.onUnitSphere, Color.green);
     }
@@ -194,7 +188,7 @@ public class Character : MonoBehaviour
     /// </summary>
     public void Death(Character _killer)
     {
-        GameSFX.instance.PlayDeathSFX();
+        GameSFX.instance.PlaySFX(SFXType.Death);
 
         if (isPlayer)
         {
@@ -273,6 +267,7 @@ public class Character : MonoBehaviour
         staminaRecovery = characterStats.staminaRecovery;
         damage = characterStats.damage;
         attackRate = characterStats.attackRate;
+        attackRange = characterStats.attackRange;
         dashCooldown = characterStats.dashCooldown;
         dashSpeed = characterStats.dashSpeed;
         movementSpeed = characterStats.movementSpeed;

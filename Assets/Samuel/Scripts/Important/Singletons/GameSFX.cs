@@ -3,6 +3,7 @@ using UnityEngine.Audio;
 
 public class GameSFX : MonoBehaviour
 {
+    public enum SFXType { Hit, Miss, Death, Dash, Heal, Crit};
 
     #region Singleton
 
@@ -19,55 +20,27 @@ public class GameSFX : MonoBehaviour
     }
 
     #endregion
-
-    public AudioClip[] hurtSFX;
-    public AudioClip[] slashSFX;
+    public AudioClip[] hitSFX;
+    public AudioClip[] missSFX;
     public AudioClip[] deathSFX;
     public AudioClip[] dashSFX;
     public AudioClip[] healSFX;
-    public AudioClip critSFX;
 
     public AudioMixerGroup sfxGroup;
 
-    public void PlayHurtSFX()
+    public void PlaySFX(SFXType sfxType)
     {
         var audioSource = NewAudioInstance();
-        audioSource.clip = hurtSFX[Random.Range(0, hurtSFX.Length)];
-        audioSource.Play();
-        Destroy(audioSource.gameObject, audioSource.clip.length);
-    }
-    public void PlaySlashSFX()
-    {
-        var audioSource = NewAudioInstance();
-        audioSource.clip = slashSFX[Random.Range(0, slashSFX.Length)];
-        audioSource.Play();
-        Destroy(audioSource.gameObject, audioSource.clip.length);
-    }
-    public void PlayDeathSFX()
-    {
-        var audioSource = NewAudioInstance();
-        audioSource.clip = deathSFX[Random.Range(0, deathSFX.Length)];
-        audioSource.Play();
-        Destroy(audioSource.gameObject, audioSource.clip.length);
-    }
-    public void PlayDashSFX()
-    {
-        var audioSource = NewAudioInstance();
-        audioSource.clip = dashSFX[Random.Range(0, dashSFX.Length)];
-        audioSource.Play();
-        Destroy(audioSource.gameObject, audioSource.clip.length);
-    }
-    public void PlayHealSFX()
-    {
-        var audioSource = NewAudioInstance();
-        audioSource.clip = healSFX[Random.Range(0, healSFX.Length)];
-        audioSource.Play();
-        Destroy(audioSource.gameObject, audioSource.clip.length);
-    }
-    public void PlayCritSFX()
-    {
-        var audioSource = NewAudioInstance();
-        audioSource.clip = critSFX;
+        audioSource.clip = sfxType switch
+        {
+            SFXType.Hit => GetRandomClip(hitSFX),
+            SFXType.Miss => GetRandomClip(missSFX),
+            SFXType.Death => GetRandomClip(deathSFX),
+            SFXType.Dash => GetRandomClip(dashSFX),
+            SFXType.Heal => GetRandomClip(healSFX),
+            _ => throw new System.NotImplementedException()
+        };
+
         audioSource.Play();
         Destroy(audioSource.gameObject, audioSource.clip.length);
     }
@@ -79,5 +52,9 @@ public class GameSFX : MonoBehaviour
         var audioSource = audioObject.AddComponent<AudioSource>();
         audioSource.outputAudioMixerGroup = sfxGroup;
         return audioSource;
+    }
+    private AudioClip GetRandomClip(AudioClip[] clips)
+    {
+        return clips[Random.Range(0, clips.Length)];
     }
 }

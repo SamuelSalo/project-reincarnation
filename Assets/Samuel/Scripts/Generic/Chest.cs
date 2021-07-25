@@ -27,7 +27,6 @@ public class Chest : Interactable
 
     public void OpenChest()
     {
-        Debug.Log("xd");
         bool item = Random.Range(0, 101) > 50;
 
         var rng = Random.Range(0, 101);

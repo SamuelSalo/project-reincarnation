@@ -1,7 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using SFXType = GameSFX.SFXType;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class AI : MonoBehaviour
@@ -213,25 +213,30 @@ public class AI : MonoBehaviour
     /// </summary>
     public void ActivateAttackHurtbox()
     {
-        GameSFX.instance.PlaySlashSFX();
-
         RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, facingDirection, 0.5f);
-        List<Character> hitChars = new List<Character>();
+        bool miss = true;
         if (hits.Length != 0)
         {
             foreach (RaycastHit2D hit in hits)
             {
-                if (hit.transform.CompareTag("Player"))
+                if (hit.transform.CompareTag("Player") && hit.collider.isTrigger)
                 {
+                    miss = false;
+
                     var hitCharacter = hit.transform.GetComponent<Character>();
-                    if (hitChars.Contains(hitCharacter)) return;
-                    hitChars.Add(hitCharacter);
                     if (hitCharacter.faction != character.faction)
                         character.DealDamage(character.damage, hitCharacter);
                 }
+                else miss = true;
 
-                //TODO trap hitreg
-
+                if (!miss)
+                {
+                    GameSFX.instance.PlaySFX(SFXType.Hit);
+                }
+                else
+                {
+                    GameSFX.instance.PlaySFX(SFXType.Miss);
+                }
             }
         }
     }
@@ -273,7 +278,7 @@ public class AI : MonoBehaviour
     /// <returns></returns>
     public IEnumerator AIPerformDash(Vector2 direction)
     {
-        GameSFX.instance.PlayDashSFX();
+        GameSFX.instance.PlaySFX(SFXType.Dash);
         character.spriteTinter.DurationTint(new Color(1, 1, 1, 0.5f), 0.1f);
         dashing = true;
         agent.enabled = false;

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour
@@ -34,8 +31,6 @@ public class Interactable : MonoBehaviour
     public virtual void Interact()
     {
         if (!interactable) return;
-
-        Debug.Log("Player interacted with " + transform.name);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
