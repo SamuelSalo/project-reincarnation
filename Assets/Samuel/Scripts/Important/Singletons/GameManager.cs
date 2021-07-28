@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void PlayerDeath(Character _killer)
     {
-        if (_killer.isBoss || permaDeath || _killer == playerCharacter || !_killer)  
+        if (_killer.isBoss || permaDeath || _killer == playerCharacter)  
         {
             PermanentDeath();
             return;
@@ -79,9 +79,15 @@ public class GameManager : MonoBehaviour
     }
     
     /// <summary>
+    /// Overload for instant player death without source
+    /// </summary>
+    public void PlayerDeath()
+    {
+        PermanentDeath();
+    }
+    /// <summary>
     /// Update list of enemies when player character is swapped.
     /// Then set that updated list's target as the player.
-    /// TODO: faction differences
     /// </summary>
     public void UpdateAIs()
     {
@@ -96,6 +102,7 @@ public class GameManager : MonoBehaviour
             ai.target = playerCharacter.transform;
         }  
     }
+
     /// <summary>
     /// Player killed someone?
     /// Call this to update list of enemies to avoid nullreference errors.
@@ -110,7 +117,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// TODO: permadeath
+    /// Handle permanent death.
     /// </summary>
     private void PermanentDeath()
     {

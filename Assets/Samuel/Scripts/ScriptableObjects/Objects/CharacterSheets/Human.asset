@@ -17,8 +17,9 @@ MonoBehaviour:
   maxHealth: 100
   maxStamina: 150
   staminaRecovery: 15
-  damage: 25
+  damage: 20
   attackRate: 0.75
+  attackRange: 0
   dashCooldown: 1
   dashSpeed: 10
   movementSpeed: 1

@@ -220,6 +220,7 @@ MonoBehaviour:
   aiVariables: {fileID: 11400000, guid: 41a77d4821f629a4d8f65bae48bcf583, type: 2}
   characterStats: {fileID: 11400000, guid: 827e02384ad3f9845a385939a8a763a4, type: 2}
   attackRate: 0
+  attackRange: 0
   dashSpeed: 0
   dashCooldown: 0
   maxHealth: 0
@@ -256,7 +257,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.1168242, y: 1.1162791}
+    oldSize: {x: 1.0004883, y: 1}
     newSize: {x: 3, y: 3.0007327}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -264,14 +265,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.0213, y: 0.125}
-      - {x: -0.25, y: 0.013}
-      - {x: -0.25, y: -0.015625}
-      - {x: -0.035, y: -0.125}
-      - {x: 0.013, y: -0.125}
-      - {x: 0.25, y: -0.013}
-      - {x: 0.25, y: 0.015625}
-      - {x: 0.035, y: 0.125}
+    - - {x: -0.2, y: 0}
+      - {x: 0, y: -0.1}
+      - {x: 0.2, y: 0}
+      - {x: 0, y: 0.1}
 --- !u!61 &3945095728469251310
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -289,12 +286,12 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.1168242, y: 1.1162791}
+    oldSize: {x: 1.0004883, y: 1}
     newSize: {x: 3, y: 3.0007327}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.7}
+  m_Size: {x: 0.2, y: 0.6}
   m_EdgeRadius: 0

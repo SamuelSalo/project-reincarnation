@@ -156,6 +156,32 @@ public class Character : MonoBehaviour
         CombatText.instance.ShowDamageText(_damage, (Vector2)transform.position + (Vector2)Random.onUnitSphere);
     }
 
+    /// <summary>
+    /// Overload without source
+    /// </summary>
+    public void TakeDamage(float _damage)
+    {
+        float adjDamage = _damage;
+
+        if (invincible) return;
+
+        if (isPlayer)
+        {
+            //TODO perks
+        }
+
+        health -= adjDamage;
+        if (health <= 0)
+            Death();
+
+        spriteTinter.FlashColor(SpriteTint.DamageRed);
+        UpdateHealthbar();
+        CombatText.instance.ShowDamageText(_damage, (Vector2)transform.position + (Vector2)Random.onUnitSphere);
+    }
+
+    /// <summary>
+    /// Internal function to handle bleeding dmg
+    /// </summary>
     private void TakeBleedDamage(float _damage, Character _source)
     {
         health -= _damage;
@@ -199,6 +225,30 @@ public class Character : MonoBehaviour
             GameManager.instance.PlayerKill(this);
             room.npcs.Remove(transform);
         }
+        var remains = Instantiate(Resources.Load("Remains"), transform.position, Quaternion.identity) as GameObject;
+        remains.GetComponent<Remains>().faction = faction;
+        Destroy(gameObject);
+        floatingHealthbar.Dispose();
+    }
+
+    /// <summary>
+    /// Handle character death.
+    /// Overload for no source.
+    /// </summary>
+    public void Death()
+    {
+        GameSFX.instance.PlaySFX(SFXType.Death);
+
+        if (isPlayer)
+        {
+            GameManager.instance.PlayerDeath();
+        }
+        else
+        {
+            GameManager.instance.PlayerKill(this);
+            room.npcs.Remove(transform);
+        }
+
         var remains = Instantiate(Resources.Load("Remains"), transform.position, Quaternion.identity) as GameObject;
         remains.GetComponent<Remains>().faction = faction;
         Destroy(gameObject);

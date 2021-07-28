@@ -83,7 +83,7 @@ public class StatsManager : MonoBehaviour
         {
             case "Vitality":
                 vitLevel++;
-
+                
                 maxHPBonus += 5;
                 break;
 
@@ -138,7 +138,6 @@ public class StatsManager : MonoBehaviour
     public void LevelUp()
     {
         Tooltip.instance.ShowTooltip("You gained a skill point! Press 'I' to level up!", 5f);
-        GameManager.instance.playerCharacter.health = GameManager.instance.playerCharacter.maxHealth;
 
         skillPoints++;
         currentLevel++;
@@ -187,6 +186,7 @@ public class StatsManager : MonoBehaviour
 
         character.damage = characterStats.damage + atkDamageBonus;
         character.maxHealth = characterStats.maxHealth + maxHPBonus;
+        character.health = characterStats.maxHealth;
         character.maxStamina = characterStats.maxStamina + maxStaminaBonus;
         character.staminaRecovery = characterStats.staminaRecovery + staminaRecoveryBonus;
         character.attackRate = characterStats.attackRate - atkRateReduction;
