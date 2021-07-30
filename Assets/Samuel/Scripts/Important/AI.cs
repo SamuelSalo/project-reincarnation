@@ -279,7 +279,7 @@ public class AI : MonoBehaviour
     public IEnumerator AIPerformDash(Vector2 direction)
     {
         GameSFX.instance.PlaySFX(SFXType.Dash);
-        character.spriteTinter.DurationTint(new Color(1, 1, 1, 0.5f), 0.1f);
+        character.spriteTinter.FlashColor(Color.white);
         dashing = true;
         agent.enabled = false;
         character.rb.bodyType = RigidbodyType2D.Dynamic;

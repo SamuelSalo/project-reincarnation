@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [Range(0.001f, 0.02f)]
+    [Range(0.01f, 0.1f)]
     public float smoothing;
 
     public Transform target;

@@ -55,17 +55,11 @@ TagManager:
   - name: Ground
     uniqueID: 225114099
     locked: 0
-  - name: TopWall
-    uniqueID: 3597233397
-    locked: 0
-  - name: Object
+  - name: Automatic Sorting Axis
     uniqueID: 1468900473
     locked: 0
-  - name: Characters
-    uniqueID: 1722927047
-    locked: 0
-  - name: BottomWall
-    uniqueID: 438993961
+  - name: Details
+    uniqueID: 1248963533
     locked: 0
   - name: Healthbars
     uniqueID: 3630126139

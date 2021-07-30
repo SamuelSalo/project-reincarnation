@@ -361,7 +361,7 @@ public class Character : MonoBehaviour
     {
         StopCoroutine(nameof(SlowRoutine));
         StartCoroutine(SlowRoutine(_duration, _strength));
-        spriteTinter.DurationTint(SpriteTint.SlowLBlue, _duration);
+        spriteTinter.FlashColor(SpriteTint.SlowLBlue);
     }
 
     private IEnumerator SlowRoutine(float _duration, float _strength)

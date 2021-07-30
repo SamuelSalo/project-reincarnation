@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 1595643785458724627}
   - component: {fileID: 1253316501494712155}
   - component: {fileID: 3945095728469251310}
+  - component: {fileID: 5652022392640945326}
   m_Layer: 7
   m_Name: Knight
   m_TagString: Untagged
@@ -77,8 +78,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1722927047
-  m_SortingLayer: 4
+  m_SortingLayerID: 1468900473
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -516403843406334326, guid: 3754c72bd9237ae40bfa96c33a629484, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -90,7 +91,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!114 &1595643785458724628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,10 +254,10 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.3}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0.25}
     oldSize: {x: 1.0004883, y: 1}
     newSize: {x: 3, y: 3.0007327}
     adaptiveTilingThreshold: 0.5
@@ -265,10 +266,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.2, y: 0}
-      - {x: 0, y: -0.1}
-      - {x: 0.2, y: 0}
-      - {x: 0, y: 0.1}
+    - - {x: 0, y: 0.065}
+      - {x: 0.13, y: 0}
+      - {x: 0, y: -0.065}
+      - {x: -0.13, y: 0}
 --- !u!61 &3945095728469251310
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -282,10 +283,10 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.25}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0.25}
     oldSize: {x: 1.0004883, y: 1}
     newSize: {x: 3, y: 3.0007327}
     adaptiveTilingThreshold: 0.5
@@ -295,3 +296,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.6}
   m_EdgeRadius: 0
+--- !u!114 &5652022392640945326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1595643785458724639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3818d103ae1264348b52ea6f448f2fb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 0.15
