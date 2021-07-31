@@ -3,49 +3,68 @@ using UnityEngine;
 using UnityEngine.AI;
 using SFXType = GameSFX.SFXType;
 
-[RequireComponent(typeof(NavMeshAgent))]
 public class AI : MonoBehaviour
 {
     public enum State { Patrolling, Chasing, Attacking }
     public State state = State.Patrolling;
 
     [HideInInspector] public AIVariables aiVariables;
+    [HideInInspector] public NavMeshAgent agent;
+
     public Transform target;
+    private Character character;
 
     private float chaseRange;
     private float patrolRange;
     private float attackRange;
-    [HideInInspector]public float chaseSpeed;
+    [HideInInspector] public float chaseSpeed;
     private float patrolSpeed;
     private float turnSmoothing;
-
-    private Character character;
-    private NavMeshAgent agent;
-    private Vector2 patrolDestination = Vector2.zero;
-    private Vector2 facingDirection;
-
-    [HideInInspector] public bool slowed;
-    public bool drawRangeGizmos = false;
-    private bool idling = false;
     private float timer;
     private float patrollingTimer;
     private bool attacking;
     private bool dashing;
     private float attackDuration;
 
+    private Vector2 patrolDestination = Vector2.zero;
+    private Vector2 facingDirection;
+
+    [HideInInspector] public bool slowed;
+    public bool drawRangeGizmos = false;
+    private bool idling = false;
+
     private void Start()
 	{
+        attackDuration = 0.5f;
         character = GetComponent<Character>();
     }
 
+    private void OnEnable()
+    {
+        if (agent)
+            agent.enabled = true;
+    }
+    private void OnDisable()
+    {
+        if (agent)
+            agent.enabled = false;
+    }
+
+    /// <summary>
+    /// Call this to initialize AI. Otherwise they spawn invisible.
+    /// </summary>
     public void InitializeAI()
     {
-        attackDuration = 0.5f;
-        agent = character.agent;
+        Debug.Log(transform.name + " AI Initializing");
+        agent = gameObject.AddComponent<NavMeshAgent>();
+
+        agent.radius = 0.2f;
+        agent.height = 0.1f;
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         agent.isStopped = true;
         transform.rotation = Quaternion.identity;
+
         chaseRange = aiVariables.chaseRange;
         patrolRange = aiVariables.patrolRange;
         attackRange = aiVariables.attackRange;
@@ -56,7 +75,7 @@ public class AI : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (!drawRangeGizmos) return;
+        if (!drawRangeGizmos || !target || !agent) return;
 
         Gizmos.DrawWireSphere(transform.position, chaseRange);
         Gizmos.DrawWireSphere(transform.position, attackRange);
@@ -68,6 +87,7 @@ public class AI : MonoBehaviour
     private void FixedUpdate()
     {
         if (target==null || dashing) return;
+
         UpdateAIState();
         character.UpdateAnimator(facingDirection);
 

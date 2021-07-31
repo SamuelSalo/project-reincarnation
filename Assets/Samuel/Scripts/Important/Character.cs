@@ -1,4 +1,3 @@
-using UnityEngine.AI;
 using UnityEngine;
 using System.Collections;
 using SFXType = GameSFX.SFXType;
@@ -6,7 +5,6 @@ using SFXType = GameSFX.SFXType;
 [RequireComponent(typeof(AI))]
 [RequireComponent(typeof(Player))]
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(NavMeshAgent))]
 public class Character : MonoBehaviour
 {
     public enum Faction { Blue, Red };
@@ -34,7 +32,6 @@ public class Character : MonoBehaviour
     [HideInInspector] public Room room;
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public AI ai;
-    [HideInInspector] public NavMeshAgent agent;
     [HideInInspector] public SpriteTint spriteTinter;
 
     public bool invincible; 
@@ -49,7 +46,6 @@ public class Character : MonoBehaviour
         player = GetComponent<Player>();
         spriteTinter = GetComponent<SpriteTint>();
         ai = GetComponent<AI>();
-        agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
 
@@ -74,7 +70,6 @@ public class Character : MonoBehaviour
 
         player.enabled = _controlled;
         ai.enabled = !_controlled;
-        agent.enabled = !_controlled;
 
         if (_controlled)
             transform.tag = "Player";
@@ -323,7 +318,6 @@ public class Character : MonoBehaviour
         movementSpeed = characterStats.movementSpeed;
 
         ai.aiVariables = aiVariables;
-        agent.speed = movementSpeed;
 
         player.moveSpeed = movementSpeed;
         player.moveSmoothing = characterStats.moveSmoothing;
@@ -381,9 +375,9 @@ public class Character : MonoBehaviour
         {
             ai.slowed = true;
             normalSpeed = ai.chaseSpeed;
-            agent.speed = normalSpeed - normalSpeed * (_strength / 100);
+            ai.chaseSpeed = normalSpeed - normalSpeed * (_strength / 100);
             yield return new WaitForSeconds(_duration);
-            agent.speed = normalSpeed;
+            ai.chaseSpeed = normalSpeed;
             ai.slowed = false;
         }
     }
