@@ -201,15 +201,18 @@ public class AI : MonoBehaviour
     /// </summary>
     private IEnumerator RandomPatrolDestination()
     {
-        Vector2 position;
+        Vector2 direction, position; 
         var range = patrolRange;
+
         do
         {
+            direction = new Vector2(Random.Range(-1, 2), Random.Range(-1, 2));
             range += 0.1f;
-            position = Random.insideUnitCircle.normalized * Random.Range(attackRange * 2, range);
+            position =direction * Random.Range(attackRange * 2, range);
             position = transform.TransformPoint(position);
         }
-        while (Physics2D.OverlapCircle(position, 0.5f, LayerMask.GetMask("Wall")) || !Physics2D.OverlapCircle(position, 0.5f));
+        while (direction == Vector2.zero && (Physics2D.OverlapCircle(position, 0.5f, LayerMask.GetMask("Unpassable")) || !Physics2D.OverlapCircle(position, 0.5f)));
+        
         patrolDestination = position;
         yield return null;
     }
@@ -239,7 +242,7 @@ public class AI : MonoBehaviour
         {
             foreach (RaycastHit2D hit in hits)
             {
-                if (hit.transform.CompareTag("Player") && hit.collider.isTrigger)
+                if (hit.transform.CompareTag("Player"))
                 {
                     miss = false;
 
@@ -247,7 +250,6 @@ public class AI : MonoBehaviour
                     if (hitCharacter.faction != character.faction)
                         character.DealDamage(character.damage, hitCharacter);
                 }
-                else miss = true;
 
                 if (!miss)
                 {

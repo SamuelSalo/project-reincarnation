@@ -20,9 +20,10 @@ public class Player : MonoBehaviour
     private bool dashSlowdown;
 
     [HideInInspector] public Vector2 moveDirection = Vector2.zero;
+    private Vector2 hitPosition => (Vector2)transform.position + new Vector2(0f, 0.3f);
     private Vector2 refVelocity = Vector2.zero;
     private Vector2 rawInput, lookDirection;
-
+    private Matrix4x4 isoScaleMatrix;
     private Character character;
     
     [HideInInspector] public bool freeze;
@@ -57,6 +58,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        isoScaleMatrix = Matrix4x4.Scale(new Vector3(1f, 0.5f, 1f));
         character = GetComponent<Character>();
         stamina = character.maxStamina;
         attackDuration = character.faction == Character.Faction.Blue ? 0.5f : 0.7f;
@@ -78,7 +80,10 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         if (freeze) return;
-        moveDirection = rawInput.normalized;
+        moveDirection = rawInput;
+        moveDirection = isoScaleMatrix.MultiplyPoint(moveDirection);
+        moveDirection.Normalize();
+
         if (moveDirection.magnitude > 0) lookDirection = moveDirection;
 
         character.rb.velocity = Vector2.SmoothDamp(character.rb.velocity, moveDirection * currentSpeed, ref refVelocity, moveSmoothing);
@@ -102,13 +107,13 @@ public class Player : MonoBehaviour
     /// </summary>
     public void ActivateAttackHurtbox()
     {
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, lookDirection, 0.5f);
+        Collider2D[] hits = Physics2D.OverlapBoxAll((Vector2)transform.position + lookDirection * 0.25f, new Vector2(0.2f, 0.2f), 0f);
         bool miss = true;
         if (hits.Length != 0)
         {
-            foreach (RaycastHit2D hit in hits)
+            foreach (Collider2D hit in hits)
             {
-                if (hit.transform.CompareTag("AI") && hit.collider.isTrigger)
+                if (hit.transform.CompareTag("AI"))
                 {
                     miss = false;
 

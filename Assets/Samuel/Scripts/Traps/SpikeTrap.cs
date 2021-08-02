@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class SpikeTrap : MonoBehaviour
 {
@@ -36,10 +37,19 @@ public class SpikeTrap : MonoBehaviour
 
     public void SpikeTrapAnimatorCallback()
     {
-        foreach(Collider2D contact in contactList)
+        try
         {
-            //TODO trap damage reducing perk
-            contact.GetComponent<Character>().TakeDamage(damage);
+            foreach (Collider2D contact in contactList)
+            {
+                //TODO trap damage reducing perk
+                contact.GetComponent<Character>().TakeDamage(damage);
+            }
+        }
+        catch(InvalidOperationException e)
+        {
+            Debug.LogError(e.Message);
+            Debug.LogError("Known issue while spiketrap kills a character.");
+            
         }
         active = false;
     }

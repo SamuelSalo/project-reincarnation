@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4560534776898077051}
   - component: {fileID: 4560534776898077052}
   - component: {fileID: 4560534776898077053}
+  - component: {fileID: 8313790201220849448}
   m_Layer: 0
   m_Name: FlippedBloodShrine
   m_TagString: Untagged
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1468900473
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -2311291361205220221, guid: 3b6e2a7ed6e0dd24e843941a2f8eef2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -101,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LightType: 3
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.557
+  m_FalloffIntensity: 0.75
   m_Color: {r: 1, g: 0.34274194, b: 0.23113209, a: 1}
   m_Intensity: 1
   m_LightVolumeOpacity: 0
@@ -115,7 +116,7 @@ MonoBehaviour:
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
-  m_PointLightOuterRadius: 2.04
+  m_PointLightOuterRadius: 2
   m_PointLightDistance: 3
   m_PointLightQuality: 1
   m_ShapeLightParametricSides: 5
@@ -225,3 +226,16 @@ PolygonCollider2D:
       - {x: -0.0059702396, y: -0.7434865}
       - {x: 0.88166356, y: -0.18390536}
       - {x: 0.24146509, y: 0.23206681}
+--- !u!114 &8313790201220849448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4560534776898077054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04c34c8b5ba4b3b4ba50ef7af678bbfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomness: 0.01

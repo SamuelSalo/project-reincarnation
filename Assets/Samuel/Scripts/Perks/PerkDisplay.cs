@@ -16,21 +16,14 @@ public class PerkDisplay : MonoBehaviour
         perkText.text = _perk.perkName;
         perkDescription.text = _perk.description;
 
-        switch (_perk.rarity)
+        perkText.color = _perk.rarity switch
         {
-            case Rarity.Rare:
-                perkText.color = Color.blue;
-                break;
-            case Rarity.Epic:
-                perkText.color = new Color32(238, 130, 238, 255); //purple
-                break;
-            case Rarity.Legendary:
-                perkText.color = new Color32(255, 165, 0, 255); //orange
-                break;
-            case Rarity.Negative:
-                perkText.color = Color.red;
-                break;
-        }
+            Rarity.Negative => Color.red,
+            Rarity.Rare => Color.blue,
+            Rarity.Epic => Color.magenta,
+            Rarity.Legendary => Color.yellow,
+            _ => Color.black,
+        };
     }
     public void TogglePanel()
     {

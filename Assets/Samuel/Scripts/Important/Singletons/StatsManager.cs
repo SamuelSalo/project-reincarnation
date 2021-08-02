@@ -186,7 +186,7 @@ public class StatsManager : MonoBehaviour
 
         character.damage = characterStats.damage + atkDamageBonus;
         character.maxHealth = characterStats.maxHealth + maxHPBonus;
-        character.health = characterStats.maxHealth;
+        character.health = character.maxHealth;
         character.maxStamina = characterStats.maxStamina + maxStaminaBonus;
         character.staminaRecovery = characterStats.staminaRecovery + staminaRecoveryBonus;
         character.attackRate = characterStats.attackRate - atkRateReduction;
