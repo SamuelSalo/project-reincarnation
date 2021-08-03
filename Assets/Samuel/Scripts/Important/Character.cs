@@ -90,7 +90,7 @@ public class Character : MonoBehaviour
             if (PerkManager.instance.perkDictionary["Whetstone"] > 0 && Utils.PercentageChance(5 * PerkManager.instance.perkDictionary["Whetstone"]))
             {
                 adjDamage *= 2;
-                CameraShake.instance.Shake(0.25f, 0.5f);
+                CameraShake.instance.Shake(0.2f, 0.3f);
             }
 
             if (PerkManager.instance.perkDictionary["Tearstone Pendant"] > 0 && health < maxHealth / 3)
