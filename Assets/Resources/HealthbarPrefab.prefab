@@ -191,6 +191,7 @@ MonoBehaviour:
   healthBarFill: {fileID: 6416612633342449314}
   target: {fileID: 0}
   visible: 0
+  visualSmoothing: 8
 --- !u!1 &6416612632964057872
 GameObject:
   m_ObjectHideFlags: 0

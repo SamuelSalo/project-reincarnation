@@ -13,11 +13,9 @@ public class GameManager : MonoBehaviour
     public CameraFollow cameraFollow;
     public LightFollow lightFollow;
 
-    [Space] [Header("UI")]
-    public Slider healthBar;
-    public TMP_Text healthText;
-    public Image healthBarFill;
-    public Slider staminaBar;
+    [Space]
+    [Header("UI")]
+    public PlayerStatBars statBars;
     public TMP_Text permaDeathText;
     public Slider permaDeathBar;
     public TMP_Text livesText;
@@ -151,11 +149,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void UpdateUI()
     {
-        healthBar.maxValue = playerCharacter.maxHealth;
-        healthBar.value = playerCharacter.health;
-        healthText.text = $"{playerCharacter.health} / {playerCharacter.maxHealth}";
-        staminaBar.maxValue = playerCharacter.maxStamina;
-        staminaBar.value = playerCharacter.player.stamina;
+        statBars.SetHealth(playerCharacter.health, playerCharacter.maxHealth);
+        statBars.SetStamina(playerCharacter.player.stamina, playerCharacter.maxStamina);
     }
 
     /// <summary>
@@ -166,7 +161,7 @@ public class GameManager : MonoBehaviour
     {
         playerCharacter = _playerCharacter;
         playerFaction = playerCharacter.characterStats.faction;
-        healthBarFill.color = playerFaction == Character.Faction.Red ? Color.red : Color.blue;
+        statBars.SetHealthColor(playerFaction == Character.Faction.Red ? Color.red : Color.blue);
         cameraFollow.target = playerCharacter.transform;
         lightFollow.target = playerCharacter.transform;
 

@@ -152,7 +152,6 @@ public class AI : MonoBehaviour
             Attack();
         }
     }
-
     /// <summary>
     /// Stop chasing player after a delay of him leaving chase range.
     /// </summary>
@@ -163,7 +162,6 @@ public class AI : MonoBehaviour
             state = State.Patrolling;
         }
     }
-
     /// <summary>
     /// If AI has no destination, get one.
     /// If AI destination isn't that destination, set it.
@@ -185,7 +183,6 @@ public class AI : MonoBehaviour
         if (Vector2.Distance(transform.position, patrolDestination) < attackRange || agent.isPathStale || patrollingTimer > 5f)
             StartCoroutine(ResetPatrol());
     }
-
     /// <summary>
     /// Update player position as chase destination.
     /// Rotate character to face traveling direction.
@@ -195,18 +192,18 @@ public class AI : MonoBehaviour
         agent.isStopped = false;
         agent.SetDestination(target.position);
     }
-
     /// <summary>
     /// Returns a random unobstructed location within a min/max radius of this character in world space.
     /// </summary>
     private IEnumerator RandomPatrolDestination()
     {
-        Vector2 direction, position; 
+        Vector2 direction, position;
         var range = patrolRange;
 
         do
         {
             direction = new Vector2(Random.Range(-1, 2), Random.Range(-1, 2));
+            direction.Normalize();
             range += 0.1f;
             position =direction * Random.Range(attackRange * 2, range);
             position = transform.TransformPoint(position);
@@ -216,7 +213,6 @@ public class AI : MonoBehaviour
         patrolDestination = position;
         yield return null;
     }
-
     /// <summary>
     /// Wait for a random duration and reset the patrol destination.
     /// Next UpdatePatrolCycle call will automatically get a new destination.
@@ -230,7 +226,6 @@ public class AI : MonoBehaviour
         patrolDestination = Vector2.zero;
         idling = false;
     }
-
     /// <summary>
     /// Activates a temporary hurtbox and deals damage to all hostile characters inside it.
     /// </summary>
@@ -268,19 +263,18 @@ public class AI : MonoBehaviour
     public void Attack()
     {
         if (Time.time < timer) return;
+
         StartCoroutine(AttackRoutine());
         timer = Time.time + (1f / character.attackRate);
         character.animator.SetTrigger("attack");
     }
-
-
     /// <summary>
     /// Randomly choose to dodge attack or not
     /// </summary>
     /// <returns></returns>
     public bool WillDodgeAttack()
     {
-        if(Random.Range(0,100) >= 30)
+        if(Random.Range(0,100) >= 20)
         {
             return false;
         }
@@ -291,13 +285,10 @@ public class AI : MonoBehaviour
             return true;
         }
     }
-
     /// <summary>
     /// AI Dashing is performed here
     /// RB interferes with AI, so disable AI for the duration.
     /// </summary>
-    /// <param name="direction"></param>
-    /// <returns></returns>
     public IEnumerator AIPerformDash(Vector2 direction)
     {
         GameSFX.instance.PlaySFX(SFXType.Dash);
@@ -312,7 +303,6 @@ public class AI : MonoBehaviour
         character.rb.bodyType = RigidbodyType2D.Kinematic;
         dashing = false;
     }
-
     private IEnumerator AttackRoutine()
     {
         attacking = true;
