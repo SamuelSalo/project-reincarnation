@@ -28,7 +28,8 @@ public class Tooltip : MonoBehaviour
     }
     public void ShowTooltip(string _tooltipText, float _time)
     {
-        StopCoroutine(nameof(TooltipRoutine));
+        StopAllCoroutines();
+        tooltipText.enabled = false;
         StartCoroutine(TooltipRoutine(_tooltipText, _time));
     }
 

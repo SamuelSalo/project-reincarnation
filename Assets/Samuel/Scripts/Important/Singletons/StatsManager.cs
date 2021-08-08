@@ -67,7 +67,7 @@ public class StatsManager : MonoBehaviour
 
     [Space]
 
-    public Slider inGameXpBar;
+    public Image inGameXpBar;
     public Button lvlUpButton;
     public TMP_Text inGameSpText, inMenuSpText;
     public GameObject statsUI;
@@ -145,9 +145,7 @@ public class StatsManager : MonoBehaviour
 
     public void UpdateStatUI()
     {
-        inGameXpBar.minValue = currentLevel * 100;
-        inGameXpBar.maxValue = (currentLevel + 1) * 100;
-        inGameXpBar.value = XP;
+        inGameXpBar.fillAmount =  (float)(XP - (currentLevel * 100f)) / 100f;
         inGameSpText.text = "Skill Points: " + skillPoints;
         inMenuSpText.text = "Skill Points: " + skillPoints;
 

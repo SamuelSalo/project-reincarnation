@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     [Header("UI")]
     public PlayerStatBars statBars;
     public TMP_Text permaDeathText;
-    public Slider permaDeathBar;
+    public Image permaDeathBar;
     public TMP_Text livesText;
     [Space]
     public GameObject deathUI;
@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
         permaDeathText.color = permaDeath ? Color.red : Color.white;
 
         permaDeathBar.gameObject.SetActive(!permaDeath);
-        permaDeathBar.value = permaDeathTimer;
+        permaDeathBar.fillAmount = permaDeathTimer / 300f;
 
         livesText.gameObject.SetActive(!permaDeath);
         livesText.text = "Lives: " + lives;
