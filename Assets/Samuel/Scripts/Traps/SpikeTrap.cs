@@ -16,7 +16,7 @@ public class SpikeTrap : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if ((collision.transform.CompareTag("Player") || collision.transform.CompareTag("AI"))&& !collision.isTrigger && !active)
+        if ((collision.transform.CompareTag("Player") || collision.transform.CompareTag("AI")) && !collision.isTrigger && !active)
         {
             Activate();
             contactList.Add(collision);
@@ -37,19 +37,13 @@ public class SpikeTrap : MonoBehaviour
 
     public void SpikeTrapAnimatorCallback()
     {
-        try
+        foreach (Collider2D contact in contactList)
         {
-            foreach (Collider2D contact in contactList)
-            {
-                //TODO trap damage reducing perk
-                contact.GetComponent<Character>().TakeDamage(damage);
-            }
-        }
-        catch(InvalidOperationException e)
-        {
-            Debug.LogError(e.Message);
-            Debug.LogError("Known issue while spiketrap kills a character.");
-            
+            //TODO trap damage reducing perk
+            contact.GetComponent<Character>().TakeDamage(damage);
+
+            if (contact.GetComponent<Character>().health <= 0)
+                break;
         }
         active = false;
     }

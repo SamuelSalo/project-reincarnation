@@ -12,9 +12,8 @@ TagManager:
   - Tooltip
   - Room
   - AudioManager
-  - StaminaBar
   - ProgressBar
-  - HitReg
+  - Pot
   layers:
   - Default
   - TransparentFX

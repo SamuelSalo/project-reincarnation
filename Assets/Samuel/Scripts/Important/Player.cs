@@ -121,7 +121,11 @@ public class Player : MonoBehaviour
                     if (hitCharacter.faction != character.faction)
                         character.DealDamage(character.damage, hitCharacter);
                 }
-
+                else if(hit.transform.CompareTag("Pot"))
+                {
+                    miss = false;
+                    hit.GetComponent<Pot>().BreakPot();
+                }
                 //TODO trap hitreg
 
             }
