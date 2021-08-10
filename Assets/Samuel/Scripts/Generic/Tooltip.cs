@@ -26,9 +26,16 @@ public class Tooltip : MonoBehaviour
     {
         tooltipText = GetComponent<TMP_Text>();
     }
+
+    private void OnDisable()
+    {
+        StopCoroutine(nameof(TooltipRoutine));
+        tooltipText.enabled = false;
+    }
+
     public void ShowTooltip(string _tooltipText, float _time)
     {
-        StopAllCoroutines();
+        StopCoroutine(nameof(TooltipRoutine));
         tooltipText.enabled = false;
         StartCoroutine(TooltipRoutine(_tooltipText, _time));
     }
@@ -38,7 +45,7 @@ public class Tooltip : MonoBehaviour
         tooltipText.enabled = true;
         tooltipText.text = _text;
 
-        yield return new WaitForSeconds(_time);
+        yield return new WaitForSecondsRealtime(_time);
 
         tooltipText.enabled = false;
     }

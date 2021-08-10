@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class MenuItems : MonoBehaviour
 {
-
+#if UNITY_EDITOR
     [MenuItem("Sprites/Set Pivot(s)")]
     static void SetPivots()
     {
@@ -35,4 +35,5 @@ public class MenuItems : MonoBehaviour
     {
         return Selection.GetFiltered(typeof(Texture2D), SelectionMode.DeepAssets);
     }
+#endif
 }
