@@ -1,4 +1,4 @@
 # Project Reincarnation
 
-Repo projektiopinnot 1 - 2d-peli kurssia varten.
-Projekti jatkuu Kaupallisen Pelisovelluksen Kehittäminen-kesäkurssilla 2021 uudella tiimillä.
+A Unity2D roguelike rpg for a university course. 
+https://samuel-salo.itch.io/project-reincarnation
